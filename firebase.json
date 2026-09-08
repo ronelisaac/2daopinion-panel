@@ -2,9 +2,11 @@
   "emulators": {
     "auth": {"host": "127.0.0.1", "port": 9099},
     "firestore": {"host": "127.0.0.1", "port": 8080},
+    "storage": {"host": "127.0.0.1", "port": 9199},
     "ui": {"enabled": false},
     "singleProjectMode": true
   },
+  "storage": {"rules": "firebase/storage.rules"},
   "firestore": {
     "database": "(default)",
     "rules": "firebase/firestore.rules",

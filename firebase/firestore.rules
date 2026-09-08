@@ -104,6 +104,46 @@ service cloud.firestore {
           && getAfter(/databases/$(database)/documents/consultationDrafts/$(uid)).data.policyVersion == version;
       }
     }
+    function validAttachment(data, uid, documentId) {
+      return data.keys().hasAll(['id', 'authUserId', 'draftId', 'countryCode', 'title', 'fileName', 'size', 'mimeType', 'checksum', 'storageBackendId', 'objectKey', 'policyVersion', 'acceptedAt', 'createdAt'])
+        && data.keys().hasOnly(['id', 'authUserId', 'draftId', 'countryCode', 'title', 'fileName', 'size', 'mimeType', 'checksum', 'storageBackendId', 'objectKey', 'policyVersion', 'acceptedAt', 'createdAt'])
+        && documentId.matches('[a-f0-9]{64}') && data.id == documentId && data.authUserId == uid
+        && data.draftId == get(/databases/$(database)/documents/consultationDrafts/$(uid)).data.id
+        && data.countryCode == 'CL'
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 120
+        && data.fileName is string && data.fileName.size() > 0 && data.fileName.size() <= 255
+        && data.size is int && data.size > 0 && data.size <= 5242880
+        && data.mimeType in ['application/pdf', 'image/jpeg', 'image/png']
+        && data.checksum is string && data.checksum.matches('[a-f0-9]{64}')
+        && data.storageBackendId == 'firebase-development-v1'
+        && data.objectKey == 'private-drafts/' + uid + '/' + data.draftId + '/' + documentId
+        && data.policyVersion == 'dev-files-2026-09-08'
+        && data.acceptedAt == request.time && data.createdAt == request.time;
+    }
+    function validAttachmentQuota(data, uid) {
+      let documentId = data.lastDocumentId;
+      let previous = exists(/databases/$(database)/documents/draftAttachments/$(uid))
+        ? get(/databases/$(database)/documents/draftAttachments/$(uid)).data : {'count': 0, 'bytes': 0};
+      let added = getAfter(/databases/$(database)/documents/draftAttachments/$(uid)/files/$(documentId)).data;
+      return data.keys().hasAll(['count', 'bytes', 'lastDocumentId', 'updatedAt'])
+        && data.keys().hasOnly(['count', 'bytes', 'lastDocumentId', 'updatedAt'])
+        && documentId is string && documentId.matches('[a-f0-9]{64}')
+        && !exists(/databases/$(database)/documents/draftAttachments/$(uid)/files/$(documentId))
+        && data.count is int && data.count == previous.count + 1 && data.count <= 20
+        && data.bytes is int && data.bytes == previous.bytes + added.size && data.bytes <= 52428800
+        && data.updatedAt == request.time;
+    }
+    match /draftAttachments/{uid} {
+      allow get: if draftOwner(uid);
+      allow create, update: if draftOwner(uid) && validAttachmentQuota(request.resource.data, uid);
+      match /files/{documentId} {
+        allow get: if draftOwner(uid);
+        allow list: if draftOwner(uid) && request.query.limit != null && request.query.limit <= 20;
+        allow create: if draftOwner(uid) && validAttachment(request.resource.data, uid, documentId)
+          && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.lastDocumentId == documentId
+          && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.updatedAt == request.time;
+      }
+    }
     match /{document=**} {
       allow read, write: if false;
     }

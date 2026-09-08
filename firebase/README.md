@@ -1,5 +1,21 @@
 # Infraestructura Firebase compartida
 
+## E2-06: candidato local, NO desplegar todavía
+
+08/09/2026: se incorporan reservas privadas de documentos en Firestore, reglas de Storage y emulador Storage en `127.0.0.1:9199`. **Las nuevas reglas de este checkout no están publicadas.** La última entrega remota sigue siendo E2-05. No ejecutar el comando de despliegue histórico siguiente sin revisar y aprobar este cambio pendiente.
+
+`npm run test:rules` ejecuta 87 pruebas de Firestore/Storage. Comprueban propiedad, correo verificado, reserva transaccional, metadatos cerrados, cuota, ausencia de sobreescritura y denegación de listado Storage/acceso cruzado. Las reservas acumulan hasta 20 documentos/50 MiB por cuenta; cada archivo hasta 5 MiB. No se devuelve cuota al borrar bytes y los metadatos no son borrables por clientes. Es un límite conservador de pruebas, no una política comercial ni un máximo de facturación.
+
+La prueba integrada de Flutter requiere los tres emuladores; desde este repositorio, con Java y Chrome disponibles:
+
+```sh
+firebase emulators:exec --only auth,firestore,storage --project demo-2daopinion "cd ../2daopinion-app && flutter test --platform chrome test/integration/private_document_emulators.dart --reporter expanded"
+```
+
+Se verificó el recorrido con SDK Flutter real y datos ficticios. No se creó bucket remoto, no se modificó facturación ni se desplegaron servicios. Antes de habilitar remoto: aprobación de costos/ubicación, IAM de consultas cruzadas Storage–Firestore y prueba aislada de permisos. La alerta USD 10 no corta consumo. [Entrega y limitaciones](../../2daopinion-app/docs/E2-06-ARCHIVOS-PRIVADOS-LOCALES.md).
+
+## Historial remoto
+
 Actualización E2-05 (08/09/2026): `clinicalContext.birthDate` opcional, mapa cerrado de año/mes/día enteros. Fecha real entre 1900 y el día actual UTC, con rechazo de fechas futuras/imposibles. Mantiene compatibilidad con borradores anteriores y límites de 4000 por cadena. 71 pruebas de reglas aprobadas; despliegue exclusivo de reglas Firestore en `segundaopinion-ea0c8`. No se habilita Storage: la selección múltiple de archivos del paciente es solo en memoria. [Entrega de pacientes](../../2daopinion-app/docs/E2-05-CAMPOS-Y-DOCUMENTOS.md).
 
 Esta carpeta es la fuente de reglas e índices Firestore para pacientes y panel. No duplicarlos en el repositorio de pacientes. No contiene secretos ni datos de usuarios.

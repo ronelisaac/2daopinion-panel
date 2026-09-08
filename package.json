@@ -1,6 +1,6 @@
 {
   "name": "2daopinion-firebase-rules",
   "private": true,
-  "scripts": {"test:rules": "firebase emulators:exec --only firestore --project demo-2daopinion \"node --test --test-concurrency=1 firebase/test/*.test.mjs\""},
+  "scripts": {"test:rules": "firebase emulators:exec --only firestore,storage --project demo-2daopinion \"node --test --test-concurrency=1 firebase/test/*.test.mjs\""},
   "devDependencies": {"@firebase/rules-unit-testing": "5.0.2", "firebase": "12.18.0"}
 }
