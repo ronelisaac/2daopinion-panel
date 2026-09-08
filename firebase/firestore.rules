@@ -163,6 +163,15 @@ service cloud.firestore {
           && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.updatedAt == request.time;
       }
     }
+    match /patientNotices/{uid}/items/{noticeId} {
+      allow get: if draftOwner(uid);
+      allow list: if draftOwner(uid) && request.query.limit != null && request.query.limit <= 100;
+      allow update: if draftOwner(uid)
+        && resource.data.recipientId == uid && resource.data.id == noticeId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readAt'])
+        && request.resource.data.keys().hasAll(['readAt'])
+        && (request.resource.data.readAt == null || request.resource.data.readAt == request.time);
+    }
     match /{document=**} {
       allow read, write: if false;
     }

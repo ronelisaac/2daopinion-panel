@@ -1,6 +1,7 @@
 # Convenciones de 2daOpinion Panel
 
 - Flutter y Firebase directo, sin API propia en el MVP.
+- E2-08: reglas patientNotices candidatas y probadas solo localmente. Clientes leen sus avisos y cambian únicamente readAt; no crean ni borran. Productor e IAM pendientes; no desplegar por inercia ni activar push/email.
 - E2-06: firebase/storage.rules y los permisos draftAttachments de Firestore son candidatos probados solo en emuladores. No están desplegados; no publicar las reglas locales completas por inercia. No crear buckets ni activar carga remota sin confirmar costos, IAM y prueba de aislamiento remota. La cuota de reservas es acumulativa y no se libera al borrar bytes.
 - E2-07 amplía el candidato local: 20 documentos JPG/JPEG/PNG/DOC/XLS/PDF y una reserva de video opcional MP4/MOV (duración declarada hasta 30 s), 50 MiB combinados. Las reglas no inspeccionan contenido ni duración real; no habilitar uso clínico sin validación confiable.
 - Alcance vigente: docs/desarrollo/ALCANCE-001-EXPERIENCIA-Y-RECETAS.md en la raíz de 2daOpinion. Incluye términos separados de registro/solicitud, Acerca de, home con casos activos, footer, notificaciones, logout, persistencia y receta médica en MVP. No volver a excluir recetas; no habilitar emisión real sin resolver requisitos A18. Son compromisos, no funciones ya implementadas.

@@ -1,5 +1,9 @@
 # Infraestructura Firebase compartida
 
+## E2-08: avisos privados, candidato local
+
+`patientNotices/{uid}/items/{noticeId}` permite lectura al destinatario verificado con perfil y cambio exclusivo de `readAt` a hora del servidor o null. Clientes no pueden crear/borrar avisos ni cambiar su contenido. Consultas limitadas hasta 100. 102 pruebas de reglas aprobadas; integración con Flutter web/Auth/Firestore local verifica paginación, persistencia e aislamiento. No hay productor de eventos, push/email ni cambios remotos. **No desplegado**. [Alcance y pendientes](../../2daopinion-app/docs/E2-08-CENTRO-DE-AVISOS.md).
+
 ## E2-07: video opcional y formatos, solo local
 
 Las reglas candidatas ahora aceptan JPG/JPEG, PNG, DOC, XLS y PDF por extensión y MIME concordantes; un video MP4/MOV opcional con duración declarada entre 1 y 30000 ms y hasta 20 MiB. Documentos hasta 5 MiB. Cuota acumulada: 20 documentos más una reserva de video, 50 MiB entre todos; listado hasta 21. Compatibilidad con contadores anteriores sin `videoCount`. Las reglas no verifican duración ni formato binario real; hace falta inspección confiable antes del uso clínico. 95 pruebas de reglas aprobadas. **No desplegado**, ni bucket nuevo ni cambio de facturación. [E2-07](../../2daopinion-app/docs/E2-07-VIDEO-OPCIONAL-Y-FORMATOS.md) prevalece sobre los límites históricos siguientes.
