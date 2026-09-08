@@ -2,6 +2,8 @@
 
 Repositorio reservado para administración y portal médico, según el plan maestro.
 
+08/09/2026 · E1-04/E2-03: reglas de borradores ampliadas con contexto clínico versionado y compatibilidad de registros anteriores. Mantienen acceso exclusivo del propietario verificado, aceptación y revisión. El formulario público usa solo memoria de Flutter, no permisos anónimos. 61 pruebas de reglas aprobadas y publicadas en dev, únicamente Firestore Rules. Google permanece desactivado. Detalle en [la entrega de pacientes](../2daopinion-app/docs/E1-04-ACCESO-Y-FORMULARIO.md).
+
 Diseño confirmado: el mismo sistema visual de la app de pacientes (logo, colores, tipografía, botones e inputs), con widgets reutilizables y distribución responsiva adaptada al trabajo administrativo. Referencia central: `/Users/ronel/Documents/2daOpinion/docs/arquitectura/ADR-003-DISENO-COMPARTIDO.md`. El mecanismo de distribución del código visual compartido está pendiente.
 
 La app web «2daOpinion Panel Web» está registrada en el proyecto Firebase `segundaopinion-ea0c8`, con App ID `1:638989286509:web:057061662b7467cdec5364`.

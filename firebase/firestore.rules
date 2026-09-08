@@ -39,9 +39,25 @@ service cloud.firestore {
       return owner(uid) && request.auth.token.email_verified == true
         && exists(/databases/$(database)/documents/profiles/$(uid));
     }
+    function validClinicalContext(data) {
+      return data is map
+        && data.keys().hasAll(['schemaVersion', 'patientContext', 'knownDiagnosis', 'symptomEvolution', 'medicalHistory', 'allergies', 'questions', 'studySummary', 'specialty', 'modality'])
+        && data.keys().hasOnly(['schemaVersion', 'patientContext', 'knownDiagnosis', 'symptomEvolution', 'medicalHistory', 'allergies', 'questions', 'studySummary', 'specialty', 'modality'])
+        && data.schemaVersion == 1
+        && data.patientContext is string && data.patientContext.size() <= 4000
+        && data.knownDiagnosis is string && data.knownDiagnosis.size() <= 4000
+        && data.symptomEvolution is string && data.symptomEvolution.size() <= 4000
+        && data.medicalHistory is string && data.medicalHistory.size() <= 4000
+        && data.allergies is string && data.allergies.size() <= 4000
+        && data.questions is string && data.questions.size() <= 4000
+        && data.studySummary is string && data.studySummary.size() <= 4000
+        && data.specialty is string && data.specialty.size() <= 4000
+        && data.modality in ['', 'document_review', 'review_and_consultation'];
+    }
     function validDraft(data, uid) {
       return data.keys().hasAll(['id', 'authUserId', 'patientId', 'countryCode', 'status', 'environment', 'policyVersion', 'reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'revision', 'createdAt', 'updatedAt'])
-        && data.keys().hasOnly(['id', 'authUserId', 'patientId', 'countryCode', 'status', 'environment', 'policyVersion', 'reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'revision', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'authUserId', 'patientId', 'countryCode', 'status', 'environment', 'policyVersion', 'reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'clinicalContext', 'revision', 'createdAt', 'updatedAt'])
+        && (!('clinicalContext' in data) || validClinicalContext(data.clinicalContext))
         && data.id is string && data.id.matches('[a-zA-Z0-9]{20}')
         && data.authUserId == uid
         && data.patientId == get(/databases/$(database)/documents/profiles/$(uid)).data.id
@@ -63,7 +79,7 @@ service cloud.firestore {
         && getAfter(/databases/$(database)/documents/consultationDrafts/$(uid)/consents/dev-draft-storage-2026-09-08).data.acceptedAt == request.time;
       allow update: if draftOwner(uid) && validDraft(request.resource.data, uid)
         && request.resource.data.revision == resource.data.revision + 1
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'revision', 'updatedAt']);
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'clinicalContext', 'revision', 'updatedAt']);
       match /consents/{version} {
         allow get: if draftOwner(uid);
         allow create: if draftOwner(uid) && version == 'dev-draft-storage-2026-09-08'

@@ -7,6 +7,35 @@ let environment;
 const version = 'dev-draft-storage-2026-09-08';
 const draftId = 'DraftAbCdEfGhIjKl123';
 const patientId = 'AbCdEfGhIjKlMnOpQrSt';
+const clinical = {"schemaVersion":1,"patientContext":"","knownDiagnosis":"","symptomEvolution":"","medicalHistory":"","allergies":"","questions":"","studySummary":"","specialty":"","modality":""};
+test('clinical context upgrades legacy drafts without changing ownership or submission state',async()=>{
+  const database=databaseFor();
+  await assertSucceeds(save(database));
+  await assertSucceeds(updateDoc(doc(database,'consultationDrafts/alice'),{clinicalContext:{...clinical,questions:'Ejemplo ficticio'},revision:2,updatedAt:serverTimestamp()}));
+  await assertSucceeds(updateDoc(doc(database,'consultationDrafts/alice'),{reason:'Edición antigua',revision:3,updatedAt:serverTimestamp()}));
+  await assertFails(updateDoc(doc(databaseFor('bob'),'consultationDrafts/alice'),{clinicalContext:clinical,revision:4,updatedAt:serverTimestamp()}));
+  await assertFails(save(environment.unauthenticatedContext().firestore(),{clinicalContext:clinical}));
+});
+test('clinical context accepts supported modalities and rejects extra, malformed and oversized fields',async()=>{
+  const database=databaseFor();
+  for (const modality of ['', 'document_review', 'review_and_consultation']) {
+    await environment.clearFirestore();
+    await environment.withSecurityRulesDisabled(context=>setDoc(doc(context.firestore(),'profiles/alice'),{id:patientId,countryCode:'CL'}));
+    await assertSucceeds(save(database,{clinicalContext:{...clinical,modality}}));
+  }
+});
+for (const field of ["patientContext","knownDiagnosis","symptomEvolution","medicalHistory","allergies","questions","studySummary","specialty"]) {
+  test(`clinical context rejects long or non-string ${field}`,async()=>{
+    for (const value of ['x'.repeat(4001), [], null, 22]) {
+      await assertFails(save(databaseFor(),{clinicalContext:{...clinical,[field]:value}}));
+    }
+  });
+}
+test('clinical schema cannot smuggle extra keys, unknown modalities or versions',async()=>{
+  for (const value of [null, [], {}, {...clinical,schemaVersion:2}, {...clinical,doctorId:'somebody'}, {...clinical,modality:'video_paid'}]) {
+    await assertFails(save(databaseFor(),{clinicalContext:value}));
+  }
+});
 before(async () => {
   environment = await initializeTestEnvironment({projectId:'demo-2daopinion', firestore:{host:'127.0.0.1',port:8080,rules:readFileSync('firebase/firestore.rules','utf8')}});
 });
