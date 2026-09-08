@@ -1,6 +1,8 @@
 {
+  "functions": [{"source": "functions", "codebase": "panel-users", "ignore": ["node_modules", ".git", "*-debug.log", ".env.local", "test"]}],
   "emulators": {
     "auth": {"host": "127.0.0.1", "port": 9099},
+    "functions": {"host": "127.0.0.1", "port": 5001},
     "firestore": {"host": "127.0.0.1", "port": 8080},
     "storage": {"host": "127.0.0.1", "port": 9199},
     "ui": {"enabled": false},

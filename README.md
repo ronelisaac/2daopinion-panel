@@ -2,7 +2,11 @@
 
 Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
-## Estado vigente · E1-PANEL-02
+## Estado vigente · E1-PANEL-03
+
+CRUD real implementado con una función Firebase y pruebas completas en emuladores: altas por correo, roles por país, edición, baja reversible y reenvío. **Activación remota pendiente de aprobación IAM específica; no hay simulador ni se ha desplegado la función.** [Entrega, seguridad y bloqueo](docs/E1-PANEL-03-USUARIOS.md).
+
+## Login · E1-PANEL-02
 
 Login Firebase con email/contraseña, recuperación, restauración/cierre de sesión y menú según roles por país. Sin registro público ni selector de rol simulado. El primer superadmin CL fue provisionado con autorización expresa de Ronel; debe definir personalmente su contraseña mediante el correo solicitado. Usuarios y los demás módulos siguen pendientes de conexión operativa. [Entrega, pruebas y límites](docs/E1-PANEL-02-LOGIN.md). Este estado prevalece sobre el historial siguiente.
 

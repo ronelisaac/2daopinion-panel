@@ -302,4 +302,120 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get developmentNotice =>
       'DESARROLLO · Módulos clínicos y financieros todavía no habilitados.';
+
+  @override
+  String get staffCreate => 'Crear usuario';
+
+  @override
+  String get staffEdit => 'Editar usuario';
+
+  @override
+  String get staffName => 'Nombre y apellido';
+
+  @override
+  String get staffSave => 'Guardar cambios';
+
+  @override
+  String get staffCreateSend => 'Crear y enviar acceso';
+
+  @override
+  String get staffIntro =>
+      'Administra el equipo autorizado de este país. Las cuentas se crean por invitación, sin registro público.';
+
+  @override
+  String get staffInviteHint =>
+      'Se enviará un correo para que la persona defina su contraseña. Asigna únicamente los roles que necesita. No se pueden convertir cuentas existentes de pacientes desde aquí.';
+
+  @override
+  String get staffEditHint =>
+      'El correo no se cambia desde aquí. Modificar permisos cierra las sesiones de esta cuenta, incluso si también utiliza la app de pacientes.';
+
+  @override
+  String get staffSelectRole =>
+      'Selecciona al menos un rol para cada país habilitado.';
+
+  @override
+  String get staffDenied =>
+      'No tienes permisos vigentes para administrar estos usuarios. Vuelve a iniciar sesión.';
+
+  @override
+  String get staffInvalid => 'Revisa nombre, correo, países y roles.';
+
+  @override
+  String get staffDuplicate =>
+      'Ese correo ya pertenece a una cuenta. No se modificó ni se otorgaron permisos a la cuenta existente.';
+
+  @override
+  String get staffConflict =>
+      'La información cambió o hay otra operación en curso. Actualiza el listado antes de continuar.';
+
+  @override
+  String get staffProtected =>
+      'Esta cuenta está protegida o requiere revisión administrativa.';
+
+  @override
+  String get staffLimit =>
+      'Se alcanzó un límite de seguridad. Espera para reenviar un correo; el máximo de operaciones de desarrollo es 100 al día.';
+
+  @override
+  String get staffUnavailable =>
+      'El servicio de usuarios no está disponible o la operación quedó incompleta. Actualiza el listado: si aparece pendiente, usa Retomar operación. No crees otra cuenta para reemplazarla.';
+
+  @override
+  String get staffActive => 'Acceso activo';
+
+  @override
+  String get staffInactive => 'Acceso desactivado';
+
+  @override
+  String get staffVerified => 'Correo verificado';
+
+  @override
+  String get staffUnverified => 'Pendiente de verificar correo';
+
+  @override
+  String get staffPending => 'Operación pendiente';
+
+  @override
+  String get staffInviteNotSent => 'Envío de acceso pendiente';
+
+  @override
+  String get staffReadOnly =>
+      'Solo lectura: cuenta propia, protegida o con alcance fuera de tus permisos.';
+
+  @override
+  String get staffResume => 'Retomar operación';
+
+  @override
+  String get staffDeactivate => 'Desactivar acceso';
+
+  @override
+  String get staffReactivate => 'Reactivar acceso';
+
+  @override
+  String get staffResend => 'Reenviar acceso';
+
+  @override
+  String get staffResendConfirm =>
+      'Se enviará otro correo de recuperación a esta persona. No verás su contraseña. Espera al menos un minuto entre envíos.';
+
+  @override
+  String get staffChangeConfirm =>
+      'Se actualizará el acceso al panel y se cerrarán las sesiones de esta cuenta, incluso en pacientes. No se borra la cuenta ni su historial.';
+
+  @override
+  String get staffMailFailed =>
+      'Cuenta guardada, pero no se pudo confirmar el correo. Puedes reenviar el acceso desde el listado.';
+
+  @override
+  String get staffMailSent => 'Cuenta guardada y correo de acceso solicitado.';
+
+  @override
+  String get staffSaved => 'Cambios guardados.';
+
+  @override
+  String get staffEmpty => 'Todavía no hay usuarios en este país.';
+
+  @override
+  String get staffMore => 'Cargar más usuarios';
 }

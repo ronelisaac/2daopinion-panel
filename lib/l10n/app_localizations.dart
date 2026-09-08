@@ -615,6 +615,210 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'DESARROLLO · Módulos clínicos y financieros todavía no habilitados.'**
   String get developmentNotice;
+
+  /// No description provided for @staffCreate.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear usuario'**
+  String get staffCreate;
+
+  /// No description provided for @staffEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar usuario'**
+  String get staffEdit;
+
+  /// No description provided for @staffName.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre y apellido'**
+  String get staffName;
+
+  /// No description provided for @staffSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar cambios'**
+  String get staffSave;
+
+  /// No description provided for @staffCreateSend.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear y enviar acceso'**
+  String get staffCreateSend;
+
+  /// No description provided for @staffIntro.
+  ///
+  /// In es, this message translates to:
+  /// **'Administra el equipo autorizado de este país. Las cuentas se crean por invitación, sin registro público.'**
+  String get staffIntro;
+
+  /// No description provided for @staffInviteHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Se enviará un correo para que la persona defina su contraseña. Asigna únicamente los roles que necesita. No se pueden convertir cuentas existentes de pacientes desde aquí.'**
+  String get staffInviteHint;
+
+  /// No description provided for @staffEditHint.
+  ///
+  /// In es, this message translates to:
+  /// **'El correo no se cambia desde aquí. Modificar permisos cierra las sesiones de esta cuenta, incluso si también utiliza la app de pacientes.'**
+  String get staffEditHint;
+
+  /// No description provided for @staffSelectRole.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona al menos un rol para cada país habilitado.'**
+  String get staffSelectRole;
+
+  /// No description provided for @staffDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes para administrar estos usuarios. Vuelve a iniciar sesión.'**
+  String get staffDenied;
+
+  /// No description provided for @staffInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa nombre, correo, países y roles.'**
+  String get staffInvalid;
+
+  /// No description provided for @staffDuplicate.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese correo ya pertenece a una cuenta. No se modificó ni se otorgaron permisos a la cuenta existente.'**
+  String get staffDuplicate;
+
+  /// No description provided for @staffConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'La información cambió o hay otra operación en curso. Actualiza el listado antes de continuar.'**
+  String get staffConflict;
+
+  /// No description provided for @staffProtected.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cuenta está protegida o requiere revisión administrativa.'**
+  String get staffProtected;
+
+  /// No description provided for @staffLimit.
+  ///
+  /// In es, this message translates to:
+  /// **'Se alcanzó un límite de seguridad. Espera para reenviar un correo; el máximo de operaciones de desarrollo es 100 al día.'**
+  String get staffLimit;
+
+  /// No description provided for @staffUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'El servicio de usuarios no está disponible o la operación quedó incompleta. Actualiza el listado: si aparece pendiente, usa Retomar operación. No crees otra cuenta para reemplazarla.'**
+  String get staffUnavailable;
+
+  /// No description provided for @staffActive.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso activo'**
+  String get staffActive;
+
+  /// No description provided for @staffInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso desactivado'**
+  String get staffInactive;
+
+  /// No description provided for @staffVerified.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo verificado'**
+  String get staffVerified;
+
+  /// No description provided for @staffUnverified.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente de verificar correo'**
+  String get staffUnverified;
+
+  /// No description provided for @staffPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Operación pendiente'**
+  String get staffPending;
+
+  /// No description provided for @staffInviteNotSent.
+  ///
+  /// In es, this message translates to:
+  /// **'Envío de acceso pendiente'**
+  String get staffInviteNotSent;
+
+  /// No description provided for @staffReadOnly.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo lectura: cuenta propia, protegida o con alcance fuera de tus permisos.'**
+  String get staffReadOnly;
+
+  /// No description provided for @staffResume.
+  ///
+  /// In es, this message translates to:
+  /// **'Retomar operación'**
+  String get staffResume;
+
+  /// No description provided for @staffDeactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Desactivar acceso'**
+  String get staffDeactivate;
+
+  /// No description provided for @staffReactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Reactivar acceso'**
+  String get staffReactivate;
+
+  /// No description provided for @staffResend.
+  ///
+  /// In es, this message translates to:
+  /// **'Reenviar acceso'**
+  String get staffResend;
+
+  /// No description provided for @staffResendConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Se enviará otro correo de recuperación a esta persona. No verás su contraseña. Espera al menos un minuto entre envíos.'**
+  String get staffResendConfirm;
+
+  /// No description provided for @staffChangeConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Se actualizará el acceso al panel y se cerrarán las sesiones de esta cuenta, incluso en pacientes. No se borra la cuenta ni su historial.'**
+  String get staffChangeConfirm;
+
+  /// No description provided for @staffMailFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuenta guardada, pero no se pudo confirmar el correo. Puedes reenviar el acceso desde el listado.'**
+  String get staffMailFailed;
+
+  /// No description provided for @staffMailSent.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuenta guardada y correo de acceso solicitado.'**
+  String get staffMailSent;
+
+  /// No description provided for @staffSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambios guardados.'**
+  String get staffSaved;
+
+  /// No description provided for @staffEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay usuarios en este país.'**
+  String get staffEmpty;
+
+  /// No description provided for @staffMore.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más usuarios'**
+  String get staffMore;
 }
 
 class _AppLocalizationsDelegate
