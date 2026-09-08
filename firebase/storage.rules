@@ -18,9 +18,10 @@ service firebase.storage {
     match /private-drafts/{uid}/{draftId}/{documentId} {
       allow get, delete: if matchesReservation(uid, draftId, documentId);
       allow create: if resource == null && matchesReservation(uid, draftId, documentId)
-        && request.resource.size == attachment(uid, documentId).size && request.resource.size <= 5242880
+        && request.resource.size == attachment(uid, documentId).size
+        && request.resource.size <= (request.resource.contentType in ['video/mp4', 'video/quicktime'] ? 20971520 : 5242880)
         && request.resource.contentType == attachment(uid, documentId).mimeType
-        && request.resource.contentType in ['application/pdf', 'image/jpeg', 'image/png']
+        && request.resource.contentType in ['application/pdf', 'image/jpeg', 'image/png', 'application/msword', 'application/vnd.ms-excel', 'video/mp4', 'video/quicktime']
         && request.resource.metadata.documentId == documentId
         && request.resource.metadata.checksum == attachment(uid, documentId).checksum;
     }

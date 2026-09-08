@@ -5,12 +5,16 @@ import {doc,setDoc,getDoc,getDocs,collection,query,limit,writeBatch,serverTimest
 import {ref,uploadBytes,getBytes,deleteObject,listAll} from 'firebase/storage';
 let environment;
 const draftId='AbCdEfGhIjKlMnOpQrSt';
-const fileId='a'.repeat(64);
-const objectKey=`private-drafts/alice/${draftId}/${fileId}`;
+let sequence=0;
+let fileId;
+let objectKey;
 const bytes=new Uint8Array([37,80,68,70]);
-const metadata={contentType:'application/pdf',cacheControl:'private, no-store',customMetadata:{documentId:fileId,checksum:fileId}};
+let metadata;
 before(async()=>{environment=await initializeTestEnvironment({projectId:'demo-2daopinion',firestore:{host:'127.0.0.1',port:8080,rules:readFileSync('firebase/firestore.rules','utf8')},storage:{host:'127.0.0.1',port:9199,rules:readFileSync('firebase/storage.rules','utf8')}});});
 beforeEach(async()=>{
+  fileId=(++sequence).toString(16).padStart(64,'0');
+  objectKey=`private-drafts/alice/${draftId}/${fileId}`;
+  metadata={contentType:'application/pdf',cacheControl:'private, no-store',customMetadata:{documentId:fileId,checksum:fileId}};
   await environment.clearFirestore(); await environment.clearStorage();
   await environment.withSecurityRulesDisabled(async context=>{
     await setDoc(doc(context.firestore(),'profiles/alice'),{id:draftId,countryCode:'CL'});
@@ -72,3 +76,38 @@ test('lifetime reservations cannot exceed count or total bytes, nor be reset',as
 for(const [label,change] of Object.entries({size:{size:5242881},empty:{size:0},mime:{mimeType:'text/html'},title:{title:'x'.repeat(121)},name:{fileName:'x'.repeat(256)},url:{url:'https://invalid.test'},backend:{storageBackendId:'external'},path:{objectKey:'elsewhere'},draft:{draftId:'other'},owner:{authUserId:'bob'},consent:{policyVersion:'other'}})) {
   test(`reject invalid attachment ${label}`,async()=>assertFails(reserve(account(),change)));
 }
+for(const [extension,mimeType] of [['JPG','image/jpeg'],['jpeg','image/jpeg'],['png','image/png'],['DOC','application/msword'],['xls','application/vnd.ms-excel']]) {
+  test(`allows declared ${extension} with matching MIME only`,async()=>{
+    await assertSucceeds(reserve(account(),{fileName:`ficticio.${extension}`,mimeType}));
+    await assertSucceeds(uploadBytes(ref(account().storage(),objectKey),bytes,{...metadata,contentType:mimeType}));
+  });
+}
+test('rejects disallowed extensions, mismatched MIME and duration on documents',async()=>{
+  for(const change of [{fileName:'ficticio.docx'},{fileName:'ficticio.xlsx'},{fileName:'ficticio.gif'},{fileName:'ficticio.pdf.exe'},{fileName:'ficticio.doc'},{durationMilliseconds:1000}]) {
+    await assertFails(reserve(account(),change));
+  }
+});
+test('video reservation requires bounded declared duration, size and matching MIME',async()=>{
+  const video={fileName:'explicacion.mp4',mimeType:'video/mp4',durationMilliseconds:30000};
+  for(const change of [{durationMilliseconds:0},{durationMilliseconds:30001},{durationMilliseconds:1.5},{durationMilliseconds:null},{size:20971521}]) {
+    await assertFails(reserve(account(),{...video,...change},{videoCount:1}));
+  }
+  await assertFails(reserve(account(),video));
+  await assertSucceeds(reserve(account(),video,{videoCount:1}));
+  await assertSucceeds(uploadBytes(ref(account().storage(),objectKey),bytes,{...metadata,contentType:'video/mp4'}));
+  await assertFails(uploadBytes(ref(account('bob').storage(),objectKey),bytes,{...metadata,contentType:'video/mp4'}));
+});
+test('one video is additional to twenty studies but cannot be reset or repeated',async()=>{
+  await environment.withSecurityRulesDisabled(context=>setDoc(doc(context.firestore(),'draftAttachments/alice'),{count:20,bytes:80,lastDocumentId:'b'.repeat(64),updatedAt:new Date()}));
+  const video={fileName:'explicacion.mov',mimeType:'video/quicktime',durationMilliseconds:1500};
+  await assertSucceeds(reserve(account(),video,{count:21,bytes:84,videoCount:1}));
+  await assertSucceeds(getDocs(query(collection(account().firestore(),'draftAttachments/alice/files'),limit(21))));
+  await assertFails(getDocs(query(collection(account().firestore(),'draftAttachments/alice/files'),limit(22))));
+  await environment.withSecurityRulesDisabled(async context=>{
+    await deleteDoc(doc(context.firestore(),`draftAttachments/alice/files/${fileId}`));
+    await setDoc(doc(context.firestore(),'draftAttachments/alice'),{count:1,bytes:4,videoCount:1,lastDocumentId:'b'.repeat(64),updatedAt:new Date()});
+  });
+  await assertFails(reserve(account(),video,{count:2,bytes:8,videoCount:2}));
+  await assertFails(reserve(account(),video,{count:2,bytes:8,videoCount:1}));
+  await assertFails(reserve(account(),{},{count:2,bytes:8,videoCount:0}));
+});

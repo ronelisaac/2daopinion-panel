@@ -1,5 +1,9 @@
 # Infraestructura Firebase compartida
 
+## E2-07: video opcional y formatos, solo local
+
+Las reglas candidatas ahora aceptan JPG/JPEG, PNG, DOC, XLS y PDF por extensión y MIME concordantes; un video MP4/MOV opcional con duración declarada entre 1 y 30000 ms y hasta 20 MiB. Documentos hasta 5 MiB. Cuota acumulada: 20 documentos más una reserva de video, 50 MiB entre todos; listado hasta 21. Compatibilidad con contadores anteriores sin `videoCount`. Las reglas no verifican duración ni formato binario real; hace falta inspección confiable antes del uso clínico. 95 pruebas de reglas aprobadas. **No desplegado**, ni bucket nuevo ni cambio de facturación. [E2-07](../../2daopinion-app/docs/E2-07-VIDEO-OPCIONAL-Y-FORMATOS.md) prevalece sobre los límites históricos siguientes.
+
 ## E2-06: candidato local, NO desplegar todavía
 
 08/09/2026: se incorporan reservas privadas de documentos en Firestore, reglas de Storage y emulador Storage en `127.0.0.1:9199`. **Las nuevas reglas de este checkout no están publicadas.** La última entrega remota sigue siendo E2-05. No ejecutar el comando de despliegue histórico siguiente sin revisar y aprobar este cambio pendiente.
