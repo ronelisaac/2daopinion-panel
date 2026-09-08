@@ -1,0 +1,14 @@
+.DS_Store
+.firebase/
+*-debug.log
+*-debug.*.log
+.env
+.env.*
+!.env.example
+node_modules/
+.dart_tool/
+.flutter-plugins-dependencies
+build/
+coverage/
+*.pem
+*-adminsdk-*.json
