@@ -1,6 +1,7 @@
 # Convenciones de 2daOpinion Panel
 
 - Flutter y Firebase directo, sin API propia en el MVP.
+- E1-PANEL-02: login Firebase real con email/contraseña, recuperación y sesión; sin registro público ni simuladores. Claims panelAccess v1 con roles por país y correo verificado. Primer superadmin CL provisionado tras autorización expresa de Ronel. Ver docs/E1-PANEL-02-LOGIN.md. No crear más identidades/privilegios remotos ni abrir datos por inercia; CRUD real, auditoría y reglas por caso pendientes. El arranque normal no usa fixtures clínicas.
 - E1-PANEL-01: base Flutter web y bandeja de ejemplo, sin SDK Firebase ni acceso administrativo real. Ver docs/E1-PANEL-01-BANDEJA.md. Tema/logo/fuentes son una instantánea de pacientes, no se sincronizan automáticamente. No convertir ejemplos en accesos remotos sin implementar y probar roles/casos.
 - E2-08: reglas patientNotices candidatas y probadas solo localmente. Clientes leen sus avisos y cambian únicamente readAt; no crean ni borran. Productor e IAM pendientes; no desplegar por inercia ni activar push/email.
 - E2-06: firebase/storage.rules y los permisos draftAttachments de Firestore son candidatos probados solo en emuladores. No están desplegados; no publicar las reglas locales completas por inercia. No crear buckets ni activar carga remota sin confirmar costos, IAM y prueba de aislamiento remota. La cuota de reservas es acumulativa y no se libera al borrar bytes.

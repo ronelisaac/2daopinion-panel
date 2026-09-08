@@ -40,20 +40,25 @@ void main() {
     },
   );
   test(
-    'preview has no Firebase initialization, writes or remote clinical URLs',
+    'panel has no public registration, role provisioning or remote clinical URLs',
     () {
       for (final source in sources('lib')) {
         final content = source.readAsStringSync();
         expect(
-          content.contains('Firebase.initializeApp'),
+          content.contains('createUserWithEmailAndPassword'),
           isFalse,
           reason: source.path,
         );
         expect(content.contains('https://'), isFalse, reason: source.path);
+        expect(
+          content.contains('setCustomUserClaims'),
+          isFalse,
+          reason: source.path,
+        );
       }
       expect(
         File('lib/main.dart').readAsStringSync(),
-        contains('PreviewIntakeRepository()'),
+        isNot(contains('PreviewIntakeRepository()')),
       );
     },
   );

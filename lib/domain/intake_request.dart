@@ -37,7 +37,13 @@ class IntakeRequest {
 }
 
 class IntakeQuery {
-  const IntakeQuery({this.search = '', this.status, this.page = 0});
+  const IntakeQuery({
+    this.search = '',
+    this.status,
+    this.page = 0,
+    this.countryCode = 'CL',
+  });
+  final String countryCode;
   static const pageSize = 8;
   final String search;
   final IntakeStatus? status;

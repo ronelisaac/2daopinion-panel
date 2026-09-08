@@ -28,6 +28,7 @@ class _IntakeDetailScreenState extends State<IntakeDetailScreen> {
 
   @override
   Widget build(BuildContext context) => PanelShell(
+    preview: true,
     detail: true,
     child: ListenableBuilder(
       listenable: controller,

@@ -30,7 +30,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get scopeBody =>
-      'Puedes explorar solicitudes de ejemplo, filtrar y revisar sus metadatos. No se conecta a Firebase, no valida documentos, no asigna médicos ni envía mensajes. El acceso administrativo real requiere autenticación y permisos por rol/caso, todavía pendientes.';
+      'El acceso usa Firebase Authentication y requiere permisos administrativos asignados desde un entorno confiable. No hay registro público ni creación automática de roles. Los módulos operativos y las altas internas están pendientes; no se accede a datos clínicos.';
 
   @override
   String get close => 'Entendido';
@@ -160,4 +160,146 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get previewLabel => 'Vista previa';
+
+  @override
+  String get roleSuperadmin => 'Superadmin';
+
+  @override
+  String get roleOperations => 'Operación de país';
+
+  @override
+  String get roleMedical => 'Dirección médica';
+
+  @override
+  String get roleFinance => 'Finanzas de país';
+
+  @override
+  String get roleDoctor => 'Médico';
+
+  @override
+  String get menuDashboard => 'Resumen';
+
+  @override
+  String get menuDoctors => 'Médicos y verificación';
+
+  @override
+  String get menuClinicalReview => 'Revisión clínica';
+
+  @override
+  String get menuAssignments => 'Asignaciones';
+
+  @override
+  String get menuMyCases => 'Mis casos';
+
+  @override
+  String get menuAgenda => 'Agenda';
+
+  @override
+  String get menuReports => 'Informes';
+
+  @override
+  String get menuPrescriptions => 'Recetas';
+
+  @override
+  String get menuPayments => 'Cobros y devoluciones';
+
+  @override
+  String get menuPayouts => 'Honorarios y liquidaciones';
+
+  @override
+  String get menuReconciliation => 'Conciliación';
+
+  @override
+  String get menuPricing => 'Catálogo y precios';
+
+  @override
+  String get menuUsers => 'Usuarios';
+
+  @override
+  String get menuCountries => 'Países y configuración';
+
+  @override
+  String get menuGateways => 'Pasarelas de pago';
+
+  @override
+  String get menuAudit => 'Auditoría';
+
+  @override
+  String get signOut => 'Cerrar sesión';
+
+  @override
+  String get loginTitle => 'Acceso al panel';
+
+  @override
+  String get internalAccounts =>
+      'Acceso solo para el equipo autorizado. Las cuentas se crean desde el panel, no hay registro público.';
+
+  @override
+  String get loginUnavailable =>
+      'No pudimos conectar con el servicio de acceso. Revisa tu conexión e inténtalo nuevamente.';
+
+  @override
+  String get email => 'Correo electrónico';
+
+  @override
+  String get password => 'Contraseña';
+
+  @override
+  String get signIn => 'Ingresar';
+
+  @override
+  String get accessDenied =>
+      'Tu cuenta no tiene acceso a este panel o a esta sección.';
+
+  @override
+  String get accessDeniedHint =>
+      'Esta sección no está disponible para el rol y país seleccionados. Utiliza el menú para continuar.';
+
+  @override
+  String get modulePending =>
+      'Sección prevista para una próxima entrega. No realiza operaciones ni muestra datos reales.';
+
+  @override
+  String get dashboardHint =>
+      'El menú muestra las opciones de tu rol y país. Los módulos operativos se habilitarán en próximas entregas.';
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get confirm => 'Confirmar';
+
+  @override
+  String get invalidLogin =>
+      'Introduce un correo válido y una contraseña (máximo 128 caracteres).';
+
+  @override
+  String get argentina => 'Argentina';
+
+  @override
+  String get invalidCredentials =>
+      'No pudimos iniciar sesión con esas credenciales.';
+
+  @override
+  String get emailNotVerified =>
+      'Debes verificar tu correo antes de entrar al panel.';
+
+  @override
+  String get tooManyRequests =>
+      'Demasiados intentos. Espera unos minutos antes de volver a intentar.';
+
+  @override
+  String get signOutFailed =>
+      'No pudimos confirmar el cierre de sesión. Reintenta antes de dejar este equipo.';
+
+  @override
+  String get forgotPassword => 'Olvidé mi contraseña';
+
+  @override
+  String get resetSent =>
+      'Si el correo corresponde a una cuenta, recibirás instrucciones para recuperar el acceso.';
+
+  @override
+  String get developmentNotice =>
+      'DESARROLLO · Módulos clínicos y financieros todavía no habilitados.';
 }

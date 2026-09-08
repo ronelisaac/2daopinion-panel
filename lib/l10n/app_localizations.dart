@@ -133,7 +133,7 @@ abstract class AppLocalizations {
   /// No description provided for @scopeBody.
   ///
   /// In es, this message translates to:
-  /// **'Puedes explorar solicitudes de ejemplo, filtrar y revisar sus metadatos. No se conecta a Firebase, no valida documentos, no asigna médicos ni envía mensajes. El acceso administrativo real requiere autenticación y permisos por rol/caso, todavía pendientes.'**
+  /// **'El acceso usa Firebase Authentication y requiere permisos administrativos asignados desde un entorno confiable. No hay registro público ni creación automática de roles. Los módulos operativos y las altas internas están pendientes; no se accede a datos clínicos.'**
   String get scopeBody;
 
   /// No description provided for @close.
@@ -357,6 +357,264 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Vista previa'**
   String get previewLabel;
+
+  /// No description provided for @roleSuperadmin.
+  ///
+  /// In es, this message translates to:
+  /// **'Superadmin'**
+  String get roleSuperadmin;
+
+  /// No description provided for @roleOperations.
+  ///
+  /// In es, this message translates to:
+  /// **'Operación de país'**
+  String get roleOperations;
+
+  /// No description provided for @roleMedical.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección médica'**
+  String get roleMedical;
+
+  /// No description provided for @roleFinance.
+  ///
+  /// In es, this message translates to:
+  /// **'Finanzas de país'**
+  String get roleFinance;
+
+  /// No description provided for @roleDoctor.
+  ///
+  /// In es, this message translates to:
+  /// **'Médico'**
+  String get roleDoctor;
+
+  /// No description provided for @menuDashboard.
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen'**
+  String get menuDashboard;
+
+  /// No description provided for @menuDoctors.
+  ///
+  /// In es, this message translates to:
+  /// **'Médicos y verificación'**
+  String get menuDoctors;
+
+  /// No description provided for @menuClinicalReview.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión clínica'**
+  String get menuClinicalReview;
+
+  /// No description provided for @menuAssignments.
+  ///
+  /// In es, this message translates to:
+  /// **'Asignaciones'**
+  String get menuAssignments;
+
+  /// No description provided for @menuMyCases.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis casos'**
+  String get menuMyCases;
+
+  /// No description provided for @menuAgenda.
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda'**
+  String get menuAgenda;
+
+  /// No description provided for @menuReports.
+  ///
+  /// In es, this message translates to:
+  /// **'Informes'**
+  String get menuReports;
+
+  /// No description provided for @menuPrescriptions.
+  ///
+  /// In es, this message translates to:
+  /// **'Recetas'**
+  String get menuPrescriptions;
+
+  /// No description provided for @menuPayments.
+  ///
+  /// In es, this message translates to:
+  /// **'Cobros y devoluciones'**
+  String get menuPayments;
+
+  /// No description provided for @menuPayouts.
+  ///
+  /// In es, this message translates to:
+  /// **'Honorarios y liquidaciones'**
+  String get menuPayouts;
+
+  /// No description provided for @menuReconciliation.
+  ///
+  /// In es, this message translates to:
+  /// **'Conciliación'**
+  String get menuReconciliation;
+
+  /// No description provided for @menuPricing.
+  ///
+  /// In es, this message translates to:
+  /// **'Catálogo y precios'**
+  String get menuPricing;
+
+  /// No description provided for @menuUsers.
+  ///
+  /// In es, this message translates to:
+  /// **'Usuarios'**
+  String get menuUsers;
+
+  /// No description provided for @menuCountries.
+  ///
+  /// In es, this message translates to:
+  /// **'Países y configuración'**
+  String get menuCountries;
+
+  /// No description provided for @menuGateways.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasarelas de pago'**
+  String get menuGateways;
+
+  /// No description provided for @menuAudit.
+  ///
+  /// In es, this message translates to:
+  /// **'Auditoría'**
+  String get menuAudit;
+
+  /// No description provided for @signOut.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get signOut;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso al panel'**
+  String get loginTitle;
+
+  /// No description provided for @internalAccounts.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso solo para el equipo autorizado. Las cuentas se crean desde el panel, no hay registro público.'**
+  String get internalAccounts;
+
+  /// No description provided for @loginUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos conectar con el servicio de acceso. Revisa tu conexión e inténtalo nuevamente.'**
+  String get loginUnavailable;
+
+  /// No description provided for @email.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo electrónico'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña'**
+  String get password;
+
+  /// No description provided for @signIn.
+  ///
+  /// In es, this message translates to:
+  /// **'Ingresar'**
+  String get signIn;
+
+  /// No description provided for @accessDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta no tiene acceso a este panel o a esta sección.'**
+  String get accessDenied;
+
+  /// No description provided for @accessDeniedHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta sección no está disponible para el rol y país seleccionados. Utiliza el menú para continuar.'**
+  String get accessDeniedHint;
+
+  /// No description provided for @modulePending.
+  ///
+  /// In es, this message translates to:
+  /// **'Sección prevista para una próxima entrega. No realiza operaciones ni muestra datos reales.'**
+  String get modulePending;
+
+  /// No description provided for @dashboardHint.
+  ///
+  /// In es, this message translates to:
+  /// **'El menú muestra las opciones de tu rol y país. Los módulos operativos se habilitarán en próximas entregas.'**
+  String get dashboardHint;
+
+  /// No description provided for @cancel.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get cancel;
+
+  /// No description provided for @confirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get confirm;
+
+  /// No description provided for @invalidLogin.
+  ///
+  /// In es, this message translates to:
+  /// **'Introduce un correo válido y una contraseña (máximo 128 caracteres).'**
+  String get invalidLogin;
+
+  /// No description provided for @argentina.
+  ///
+  /// In es, this message translates to:
+  /// **'Argentina'**
+  String get argentina;
+
+  /// No description provided for @invalidCredentials.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos iniciar sesión con esas credenciales.'**
+  String get invalidCredentials;
+
+  /// No description provided for @emailNotVerified.
+  ///
+  /// In es, this message translates to:
+  /// **'Debes verificar tu correo antes de entrar al panel.'**
+  String get emailNotVerified;
+
+  /// No description provided for @tooManyRequests.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos. Espera unos minutos antes de volver a intentar.'**
+  String get tooManyRequests;
+
+  /// No description provided for @signOutFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar el cierre de sesión. Reintenta antes de dejar este equipo.'**
+  String get signOutFailed;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Olvidé mi contraseña'**
+  String get forgotPassword;
+
+  /// No description provided for @resetSent.
+  ///
+  /// In es, this message translates to:
+  /// **'Si el correo corresponde a una cuenta, recibirás instrucciones para recuperar el acceso.'**
+  String get resetSent;
+
+  /// No description provided for @developmentNotice.
+  ///
+  /// In es, this message translates to:
+  /// **'DESARROLLO · Módulos clínicos y financieros todavía no habilitados.'**
+  String get developmentNotice;
 }
 
 class _AppLocalizationsDelegate

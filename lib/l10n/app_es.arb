@@ -6,7 +6,7 @@
   "inboxSubtitle": "Organiza la recepción y revisa la documentación disponible.",
   "previewNotice": "EJEMPLO · Solo datos ficticios. No hay acceso a pacientes ni operaciones reales.",
   "scope": "Alcance de esta vista previa",
-  "scopeBody": "Puedes explorar solicitudes de ejemplo, filtrar y revisar sus metadatos. No se conecta a Firebase, no valida documentos, no asigna médicos ni envía mensajes. El acceso administrativo real requiere autenticación y permisos por rol/caso, todavía pendientes.",
+  "scopeBody": "El acceso usa Firebase Authentication y requiere permisos administrativos asignados desde un entorno confiable. No hay registro público ni creación automática de roles. Los módulos operativos y las altas internas están pendientes; no se accede a datos clínicos.",
   "close": "Entendido",
   "search": "Buscar por código",
   "reference": "Código",
@@ -25,7 +25,13 @@
   "status": "Estado de ejemplo",
   "documents": "Documentación disponible",
   "documentCount": "{count, plural, =1{1 archivo de ejemplo} other{{count} archivos de ejemplo}}",
-  "@documentCount": {"placeholders": {"count": {"type": "int"}}},
+  "@documentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "video": "Video explicativo opcional",
   "withVideo": "Incluido en este ejemplo",
   "withoutVideo": "No incluido · No es requisito",
@@ -43,7 +49,59 @@
   "previous": "Anterior",
   "next": "Siguiente",
   "pageSummary": "Página {page} · {total, plural, =1{1 resultado} other{{total} resultados}}",
-  "@pageSummary": {"placeholders": {"page": {"type": "int"}, "total": {"type": "int"}}},
+  "@pageSummary": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "footer": "2daOpinion · Desarrollo · Sin atención clínica",
-  "previewLabel": "Vista previa"
+  "previewLabel": "Vista previa",
+  "roleSuperadmin": "Superadmin",
+  "roleOperations": "Operación de país",
+  "roleMedical": "Dirección médica",
+  "roleFinance": "Finanzas de país",
+  "roleDoctor": "Médico",
+  "menuDashboard": "Resumen",
+  "menuDoctors": "Médicos y verificación",
+  "menuClinicalReview": "Revisión clínica",
+  "menuAssignments": "Asignaciones",
+  "menuMyCases": "Mis casos",
+  "menuAgenda": "Agenda",
+  "menuReports": "Informes",
+  "menuPrescriptions": "Recetas",
+  "menuPayments": "Cobros y devoluciones",
+  "menuPayouts": "Honorarios y liquidaciones",
+  "menuReconciliation": "Conciliación",
+  "menuPricing": "Catálogo y precios",
+  "menuUsers": "Usuarios",
+  "menuCountries": "Países y configuración",
+  "menuGateways": "Pasarelas de pago",
+  "menuAudit": "Auditoría",
+  "signOut": "Cerrar sesión",
+  "loginTitle": "Acceso al panel",
+  "internalAccounts": "Acceso solo para el equipo autorizado. Las cuentas se crean desde el panel, no hay registro público.",
+  "loginUnavailable": "No pudimos conectar con el servicio de acceso. Revisa tu conexión e inténtalo nuevamente.",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "signIn": "Ingresar",
+  "accessDenied": "Tu cuenta no tiene acceso a este panel o a esta sección.",
+  "accessDeniedHint": "Esta sección no está disponible para el rol y país seleccionados. Utiliza el menú para continuar.",
+  "modulePending": "Sección prevista para una próxima entrega. No realiza operaciones ni muestra datos reales.",
+  "dashboardHint": "El menú muestra las opciones de tu rol y país. Los módulos operativos se habilitarán en próximas entregas.",
+  "cancel": "Cancelar",
+  "confirm": "Confirmar",
+  "invalidLogin": "Introduce un correo válido y una contraseña (máximo 128 caracteres).",
+  "argentina": "Argentina",
+  "invalidCredentials": "No pudimos iniciar sesión con esas credenciales.",
+  "emailNotVerified": "Debes verificar tu correo antes de entrar al panel.",
+  "tooManyRequests": "Demasiados intentos. Espera unos minutos antes de volver a intentar.",
+  "signOutFailed": "No pudimos confirmar el cierre de sesión. Reintenta antes de dejar este equipo.",
+  "forgotPassword": "Olvidé mi contraseña",
+  "resetSent": "Si el correo corresponde a una cuenta, recibirás instrucciones para recuperar el acceso.",
+  "developmentNotice": "DESARROLLO · Módulos clínicos y financieros todavía no habilitados."
 }

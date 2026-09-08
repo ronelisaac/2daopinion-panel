@@ -1,8 +1,12 @@
 # 2daOpinion · Panel
 
-Base Flutter web para administración y portal médico, según el plan maestro. **Vista previa con datos ficticios; no es un panel clínico operativo.**
+Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
-## Estado vigente · E1-PANEL-01
+## Estado vigente · E1-PANEL-02
+
+Login Firebase con email/contraseña, recuperación, restauración/cierre de sesión y menú según roles por país. Sin registro público ni selector de rol simulado. El primer superadmin CL fue provisionado con autorización expresa de Ronel; debe definir personalmente su contraseña mediante el correo solicitado. Usuarios y los demás módulos siguen pendientes de conexión operativa. [Entrega, pruebas y límites](docs/E1-PANEL-02-LOGIN.md). Este estado prevalece sobre el historial siguiente.
+
+## Base · E1-PANEL-01
 
 Bandeja con búsqueda por código, filtros, paginación y detalle de metadatos. Tabla en escritorio y tarjetas en móvil, con el mismo logo, tema y tipografía de pacientes. No conecta a Firebase ni concede acceso administrativo. [Entrega, pruebas y pendientes](docs/E1-PANEL-01-BANDEJA.md). Este estado prevalece sobre las referencias históricas siguientes.
 

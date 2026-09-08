@@ -40,6 +40,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
   Widget build(BuildContext context) {
     final text = strings(context);
     return PanelShell(
+      preview: true,
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) => Column(

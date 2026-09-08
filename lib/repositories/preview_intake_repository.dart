@@ -33,6 +33,7 @@ class PreviewIntakeRepository implements IntakeRepository {
     final matching = _items
         .where(
           (item) =>
+              item.countryCode == query.countryCode &&
               (query.status == null || query.status == item.status) &&
               item.reference.toLowerCase().contains(search),
         )

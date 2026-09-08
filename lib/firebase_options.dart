@@ -1,0 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
+
+abstract final class PanelFirebaseOptions {
+  static const web = FirebaseOptions(
+    apiKey: 'AIzaSyAPtjO1yd3QtxnZJCU5wZhsY3Fkq8EGkDo',
+    appId: '1:638989286509:web:057061662b7467cdec5364',
+    messagingSenderId: '638989286509',
+    projectId: 'segundaopinion-ea0c8',
+    authDomain: 'segundaopinion-ea0c8.firebaseapp.com',
+    storageBucket: 'segundaopinion-ea0c8.firebasestorage.app',
+  );
+}

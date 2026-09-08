@@ -4,11 +4,18 @@ import '../core/localization.dart';
 import 'responsive_layout.dart';
 import 'responsive_content.dart';
 import 'preview_banner.dart';
+import 'panel_menu.dart';
 
 class PanelShell extends StatelessWidget {
-  const PanelShell({super.key, required this.child, this.detail = false});
+  const PanelShell({
+    super.key,
+    required this.child,
+    this.detail = false,
+    this.preview = false,
+  });
   final Widget child;
   final bool detail;
+  final bool preview;
 
   void _scope(BuildContext context) => showDialog<void>(
     context: context,
@@ -29,9 +36,10 @@ class PanelShell extends StatelessWidget {
     builder: (context, layout) {
       final text = strings(context);
       return Scaffold(
+        drawer: layout.isExpanded ? null : const Drawer(child: PanelMenu()),
         appBar: AppBar(
           title: Text(detail ? text.detail : text.workspace),
-          titleSpacing: detail ? 0 : 24,
+          titleSpacing: detail ? 0 : 16,
           leading: detail
               ? BackButton(
                   onPressed: () {
@@ -44,6 +52,16 @@ class PanelShell extends StatelessWidget {
                 )
               : null,
           actions: [
+            if (detail && !layout.isExpanded)
+              Builder(
+                builder: (context) => IconButton(
+                  tooltip: MaterialLocalizations.of(
+                    context,
+                  ).openAppDrawerTooltip,
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                  icon: const Icon(Icons.menu),
+                ),
+              ),
             IconButton(
               tooltip: text.scope,
               onPressed: () => _scope(context),
@@ -67,44 +85,11 @@ class PanelShell extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (layout.isExpanded)
-              SizedBox(
-                width: 224,
+              const SizedBox(
+                width: 272,
                 child: ColoredBox(
                   color: AppColors.pageBackground,
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Image.asset(
-                            'assets/images/logo.png',
-                            height: 76,
-                            semanticLabel: text.appTitle,
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            text.previewLabel,
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          const SizedBox(height: 24),
-                          ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: const Icon(Icons.inbox_outlined),
-                            title: Text(text.inbox),
-                            selected: !detail,
-                            onTap: detail
-                                ? () => Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    '/',
-                                    (_) => false,
-                                  )
-                                : null,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: PanelMenu(),
                 ),
               ),
             Expanded(
@@ -126,7 +111,10 @@ class PanelShell extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                         ],
-                        const PreviewBanner(),
+                        if (preview)
+                          const PreviewBanner()
+                        else
+                          Text(text.developmentNotice),
                         const SizedBox(height: 24),
                         child,
                       ],

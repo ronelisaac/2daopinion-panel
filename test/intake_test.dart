@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'fake_identity.dart';
+import 'package:segunda_opinion_panel/domain/panel_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:segunda_opinion_panel/app.dart';
@@ -134,7 +136,18 @@ void main() {
       tester.view.physicalSize = Size(width, 1000);
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(PanelApp(repository: PreviewIntakeRepository()));
+      await tester.pumpWidget(
+        PanelApp(
+          repository: PreviewIntakeRepository(),
+          identity: FakeIdentity(
+            current: PanelPrincipal(
+              id: 'test-operations',
+              roles: {PanelRole.operations},
+              countries: {'CL'},
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
       expect(find.textContaining('EJEMPLO ·'), findsOneWidget);
       await tester.enterText(find.byType(TextField), 'DEMO-0001');
@@ -168,7 +181,18 @@ void main() {
     });
   }
   testWidgets('pagination, state chips and scope are usable', (tester) async {
-    await tester.pumpWidget(PanelApp(repository: PreviewIntakeRepository()));
+    await tester.pumpWidget(
+      PanelApp(
+        repository: PreviewIntakeRepository(),
+        identity: FakeIdentity(
+          current: PanelPrincipal(
+            id: 'test-operations',
+            roles: {PanelRole.operations},
+            countries: {'CL'},
+          ),
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     await tapText(tester, 'Siguiente');
     expect(find.text('Página 2 · 18 resultados'), findsOneWidget);
@@ -179,7 +203,7 @@ void main() {
     expect(find.text('Página 1 · 6 resultados'), findsOneWidget);
     await tester.tap(find.byTooltip('Alcance de esta vista previa'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('No se conecta a Firebase'), findsOneWidget);
+    expect(find.textContaining('No hay registro público'), findsOneWidget);
     await tapText(tester, 'Entendido');
   });
   testWidgets('large text remains accessible on a narrow viewport', (
@@ -190,7 +214,18 @@ void main() {
     tester.platformDispatcher.textScaleFactorTestValue = 2;
     addTearDown(tester.view.reset);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-    await tester.pumpWidget(PanelApp(repository: PreviewIntakeRepository()));
+    await tester.pumpWidget(
+      PanelApp(
+        repository: PreviewIntakeRepository(),
+        identity: FakeIdentity(
+          current: PanelPrincipal(
+            id: 'test-operations',
+            roles: {PanelRole.operations},
+            countries: {'CL'},
+          ),
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
   });
