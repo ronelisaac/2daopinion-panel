@@ -1,5 +1,7 @@
 # Infraestructura Firebase compartida
 
+Actualización E2-05 (08/09/2026): `clinicalContext.birthDate` opcional, mapa cerrado de año/mes/día enteros. Fecha real entre 1900 y el día actual UTC, con rechazo de fechas futuras/imposibles. Mantiene compatibilidad con borradores anteriores y límites de 4000 por cadena. 71 pruebas de reglas aprobadas; despliegue exclusivo de reglas Firestore en `segundaopinion-ea0c8`. No se habilita Storage: la selección múltiple de archivos del paciente es solo en memoria. [Entrega de pacientes](../../2daopinion-app/docs/E2-05-CAMPOS-Y-DOCUMENTOS.md).
+
 Esta carpeta es la fuente de reglas e índices Firestore para pacientes y panel. No duplicarlos en el repositorio de pacientes. No contiene secretos ni datos de usuarios.
 
 ## Desarrollo

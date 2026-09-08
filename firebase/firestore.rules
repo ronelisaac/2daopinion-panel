@@ -39,10 +39,22 @@ service cloud.firestore {
       return owner(uid) && request.auth.token.email_verified == true
         && exists(/databases/$(database)/documents/profiles/$(uid));
     }
+    function validBirthDate(data) {
+      return data is map && data.keys().hasAll(['year', 'month', 'day'])
+        && data.keys().hasOnly(['year', 'month', 'day'])
+        && data.year is int && data.year >= 1900 && data.year <= request.time.year()
+        && data.month is int && data.month >= 1 && data.month <= 12
+        && data.day is int && data.day >= 1 && data.day <= 31
+        && timestamp.date(data.year, data.month, data.day).year() == data.year
+        && timestamp.date(data.year, data.month, data.day).month() == data.month
+        && timestamp.date(data.year, data.month, data.day).day() == data.day
+        && timestamp.date(data.year, data.month, data.day) <= request.time.date();
+    }
     function validClinicalContext(data) {
       return data is map
         && data.keys().hasAll(['schemaVersion', 'patientContext', 'knownDiagnosis', 'symptomEvolution', 'medicalHistory', 'allergies', 'questions', 'studySummary', 'specialty', 'modality'])
-        && data.keys().hasOnly(['schemaVersion', 'patientContext', 'knownDiagnosis', 'symptomEvolution', 'medicalHistory', 'allergies', 'questions', 'studySummary', 'specialty', 'modality'])
+        && data.keys().hasOnly(['schemaVersion', 'patientContext', 'knownDiagnosis', 'symptomEvolution', 'medicalHistory', 'allergies', 'questions', 'studySummary', 'specialty', 'modality', 'birthDate'])
+        && (!('birthDate' in data) || validBirthDate(data.birthDate))
         && data.schemaVersion == 1
         && data.patientContext is string && data.patientContext.size() <= 4000
         && data.knownDiagnosis is string && data.knownDiagnosis.size() <= 4000

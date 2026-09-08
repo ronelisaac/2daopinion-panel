@@ -8,6 +8,17 @@ const version = 'dev-draft-storage-2026-09-08';
 const draftId = 'DraftAbCdEfGhIjKl123';
 const patientId = 'AbCdEfGhIjKlMnOpQrSt';
 const clinical = {"schemaVersion":1,"patientContext":"","knownDiagnosis":"","symptomEvolution":"","medicalHistory":"","allergies":"","questions":"","studySummary":"","specialty":"","modality":""};
+test('birth date accepts a real leap date and preserves private draft permissions', async()=>{
+  await assertSucceeds(save(databaseFor(), {clinicalContext:{...clinical,birthDate:{year:2000,month:2,day:29}}}));
+  await assertFails(getDoc(doc(databaseFor('bob'),'consultationDrafts/alice')));
+});
+for (const [label,birthDate] of Object.entries({future:{year:2999,month:1,day:1},invalidDay:{year:2001,month:2,day:29},invalidMonth:{year:2000,month:13,day:1},ancient:{year:1899,month:1,day:1},wrongType:{year:'2000',month:1,day:1},extra:{year:2000,month:1,day:1,age:26},missing:{year:2000,month:1},nil:null})) {
+  test(`reject invalid birth date ${label}`,async()=>{await assertFails(save(databaseFor(),{clinicalContext:{...clinical,birthDate}}));});
+}
+test('text at exact limit allowed and combined unicode over limit denied', async()=>{
+  await assertSucceeds(save(databaseFor(), {medicines:'x'.repeat(4000)}));
+  await assertFails(updateDoc(doc(databaseFor(),'consultationDrafts/alice'), {medicines:'é'.repeat(4001),revision:2,updatedAt:serverTimestamp()}));
+});
 test('clinical context upgrades legacy drafts without changing ownership or submission state',async()=>{
   const database=databaseFor();
   await assertSucceeds(save(database));
