@@ -1,6 +1,21 @@
 # 2daOpinion · Panel
 
-Repositorio reservado para administración y portal médico, según el plan maestro.
+Base Flutter web para administración y portal médico, según el plan maestro. **Vista previa con datos ficticios; no es un panel clínico operativo.**
+
+## Estado vigente · E1-PANEL-01
+
+Bandeja con búsqueda por código, filtros, paginación y detalle de metadatos. Tabla en escritorio y tarjetas en móvil, con el mismo logo, tema y tipografía de pacientes. No conecta a Firebase ni concede acceso administrativo. [Entrega, pruebas y pendientes](docs/E1-PANEL-01-BANDEJA.md). Este estado prevalece sobre las referencias históricas siguientes.
+
+```sh
+flutter pub get
+flutter analyze
+flutter test
+flutter build web
+```
+
+Requiere Flutter 3.41.7 / Dart 3.11.5 compatibles con la app de pacientes. `flutter run -d chrome` inicia la vista previa. Para evitar telemetría en este equipo: `FLUTTER_SUPPRESS_ANALYTICS=true DART_SUPPRESS_ANALYTICS=true`. Las pruebas de reglas siguen separadas con `npm run test:rules`; los candidatos locales y su historial se describen en [firebase/README.md](firebase/README.md), sin autorizar su despliegue.
+
+## Historial previo a la base Flutter
 
 08/09/2026 · E1-04/E2-03: reglas de borradores ampliadas con contexto clínico versionado y compatibilidad de registros anteriores. Mantienen acceso exclusivo del propietario verificado, aceptación y revisión. El formulario público usa solo memoria de Flutter, no permisos anónimos. 61 pruebas de reglas aprobadas y publicadas en dev, únicamente Firestore Rules. Google permanece desactivado. Detalle en [la entrega de pacientes](../2daopinion-app/docs/E1-04-ACCESO-Y-FORMULARIO.md).
 
