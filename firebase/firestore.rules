@@ -35,6 +35,47 @@ service cloud.firestore {
           && getAfter(/databases/$(database)/documents/profiles/$(uid)).data.policyVersion == version;
       }
     }
+    function draftOwner(uid) {
+      return owner(uid) && request.auth.token.email_verified == true
+        && exists(/databases/$(database)/documents/profiles/$(uid));
+    }
+    function validDraft(data, uid) {
+      return data.keys().hasAll(['id', 'authUserId', 'patientId', 'countryCode', 'status', 'environment', 'policyVersion', 'reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'revision', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'authUserId', 'patientId', 'countryCode', 'status', 'environment', 'policyVersion', 'reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'revision', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id.matches('[a-zA-Z0-9]{20}')
+        && data.authUserId == uid
+        && data.patientId == get(/databases/$(database)/documents/profiles/$(uid)).data.id
+        && data.countryCode == get(/databases/$(database)/documents/profiles/$(uid)).data.countryCode
+        && data.countryCode == 'CL' && data.status == 'draft' && data.environment == 'development'
+        && data.policyVersion == 'dev-draft-storage-2026-09-08'
+        && data.reason is string && data.reason.size() <= 4000
+        && data.details is string && data.details.size() <= 4000
+        && data.medicines is string && data.medicines.size() <= 4000
+        && data.specialTreatments is string && data.specialTreatments.size() <= 4000
+        && data.previousProposals is string && data.previousProposals.size() <= 4000
+        && data.revision is int && data.revision > 0
+        && data.createdAt is timestamp && data.updatedAt == request.time;
+    }
+    match /consultationDrafts/{uid} {
+      allow get: if draftOwner(uid);
+      allow create: if draftOwner(uid) && validDraft(request.resource.data, uid)
+        && request.resource.data.revision == 1 && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/consultationDrafts/$(uid)/consents/dev-draft-storage-2026-09-08).data.acceptedAt == request.time;
+      allow update: if draftOwner(uid) && validDraft(request.resource.data, uid)
+        && request.resource.data.revision == resource.data.revision + 1
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reason', 'details', 'medicines', 'specialTreatments', 'previousProposals', 'revision', 'updatedAt']);
+      match /consents/{version} {
+        allow get: if draftOwner(uid);
+        allow create: if draftOwner(uid) && version == 'dev-draft-storage-2026-09-08'
+          && request.resource.data.keys().hasAll(['draftId', 'authUserId', 'policyVersion', 'context', 'accepted', 'acceptedAt'])
+          && request.resource.data.keys().hasOnly(['draftId', 'authUserId', 'policyVersion', 'context', 'accepted', 'acceptedAt'])
+          && request.resource.data.authUserId == uid && request.resource.data.policyVersion == version
+          && request.resource.data.context == 'development-draft-storage' && request.resource.data.accepted == true
+          && request.resource.data.acceptedAt == request.time
+          && getAfter(/databases/$(database)/documents/consultationDrafts/$(uid)).data.id == request.resource.data.draftId
+          && getAfter(/databases/$(database)/documents/consultationDrafts/$(uid)).data.policyVersion == version;
+      }
+    }
     match /{document=**} {
       allow read, write: if false;
     }

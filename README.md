@@ -18,6 +18,8 @@ Documentación central: `/Users/ronel/Documents/2daOpinion/docs`. No duplicar el
 
 ## Pruebas de permisos
 
+E2-01 agrega borradores privados: propietario con correo verificado/perfil, uno por cuenta, revisión incremental, aceptación de almacenamiento de desarrollo independiente e inmutable y creación atómica. Solo estado `draft`, país CL y campos de hasta 4.000 caracteres. Sin envío clínico ni permisos médicos. Suite actual: 50 pruebas (21 perfiles + 29 borradores), ejecutadas en serie porque comparten el emulador. `consultationDrafts` no es una colección de casos clínicos operativos.
+
 Requisitos: Node, Java 21+ y Firebase CLI. `npm ci` y `npm run test:rules` ejecutan 21 pruebas en Firestore emulado con `demo-2daopinion`, sin datos remotos. La suite comprueba aislamiento entre pacientes, anonimato, creación atómica de perfil/aceptación y prohibición de modificar campos sensibles o consentimientos.
 
 Para probar la app completa: `firebase emulators:start --only auth,firestore --project demo-2daopinion` aquí; iniciar pacientes en debug con `--web-hostname localhost --dart-define=USE_FIREBASE_EMULATORS=true`. Puertos locales 9099/8080. No exportar identidades de prueba ni usar datos clínicos. El SDK Auth web requiere debug/localhost para restaurar el emulador antes de recuperar sesión.
