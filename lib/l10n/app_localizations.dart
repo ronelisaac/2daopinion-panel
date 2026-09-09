@@ -1281,6 +1281,270 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.'**
   String get specialtyUnavailable;
+
+  /// No description provided for @menuClinics.
+  ///
+  /// In es, this message translates to:
+  /// **'Clínicas'**
+  String get menuClinics;
+
+  /// No description provided for @clinicsIntro.
+  ///
+  /// In es, this message translates to:
+  /// **'Registro administrativo de clínicas por país. Usa solo datos ficticios en desarrollo. Registrar o activar una clínica no acredita habilitación sanitaria ni crea convenios o acceso a pacientes.'**
+  String get clinicsIntro;
+
+  /// No description provided for @clinicReadOnly.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu rol puede consultar el catálogo. Solo superadmin administra las clínicas.'**
+  String get clinicReadOnly;
+
+  /// No description provided for @clinicCreate.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear clínica'**
+  String get clinicCreate;
+
+  /// No description provided for @clinicEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar clínica'**
+  String get clinicEdit;
+
+  /// No description provided for @clinicRefresh.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar clínicas'**
+  String get clinicRefresh;
+
+  /// No description provided for @clinicSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar clínica'**
+  String get clinicSave;
+
+  /// No description provided for @clinicSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Clínica e historial guardados en Firebase de desarrollo.'**
+  String get clinicSaved;
+
+  /// No description provided for @clinicRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Los campos con * son obligatorios. El código identifica la clínica dentro del país y no podrá cambiarse.'**
+  String get clinicRequired;
+
+  /// No description provided for @clinicCode.
+  ///
+  /// In es, this message translates to:
+  /// **'Código *'**
+  String get clinicCode;
+
+  /// No description provided for @clinicCodeHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'De 2 a 32 caracteres: letras sin tildes, números o guion bajo. Empieza con una letra. Se guarda en minúsculas.'**
+  String get clinicCodeHelp;
+
+  /// No description provided for @clinicCodeInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa de 2 a 32 letras, números o guion bajo, empezando con una letra sin tilde.'**
+  String get clinicCodeInvalid;
+
+  /// No description provided for @clinicName.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre *'**
+  String get clinicName;
+
+  /// No description provided for @clinicNameInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe entre 2 y 100 caracteres.'**
+  String get clinicNameInvalid;
+
+  /// No description provided for @clinicDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción (opcional)'**
+  String get clinicDescription;
+
+  /// No description provided for @clinicDescriptionInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'La descripción admite hasta 500 caracteres.'**
+  String get clinicDescriptionInvalid;
+
+  /// No description provided for @clinicActive.
+  ///
+  /// In es, this message translates to:
+  /// **'Activa'**
+  String get clinicActive;
+
+  /// No description provided for @clinicInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'Inactiva'**
+  String get clinicInactive;
+
+  /// No description provided for @clinicDeactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Desactivar clínica'**
+  String get clinicDeactivate;
+
+  /// No description provided for @clinicReactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Reactivar clínica'**
+  String get clinicReactivate;
+
+  /// No description provided for @clinicToggleConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cambiar el estado de «{name}»? Se conserva su código e historial. No modifica casos ni verificaciones existentes.'**
+  String clinicToggleConfirm(String name);
+
+  /// No description provided for @clinicConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar cambio'**
+  String get clinicConfirm;
+
+  /// No description provided for @clinicRevision.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión {revision} · Actualizada {date}'**
+  String clinicRevision(int revision, String date);
+
+  /// No description provided for @clinicLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando clínicas'**
+  String get clinicLoading;
+
+  /// No description provided for @clinicSaving.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando clínica'**
+  String get clinicSaving;
+
+  /// No description provided for @clinicEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay clínicas registradas para este país.'**
+  String get clinicEmpty;
+
+  /// No description provided for @clinicMore.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más clínicas'**
+  String get clinicMore;
+
+  /// No description provided for @clinicInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los datos y el estado de la clínica.'**
+  String get clinicInvalid;
+
+  /// No description provided for @clinicDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes para esta operación en el país seleccionado.'**
+  String get clinicDenied;
+
+  /// No description provided for @clinicDuplicate.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe ese código en el país, incluso si está inactivo. Consulta el registro existente.'**
+  String get clinicDuplicate;
+
+  /// No description provided for @clinicConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'La clínica cambió en otra sesión. Actualiza el listado antes de reintentar.'**
+  String get clinicConflict;
+
+  /// No description provided for @clinicUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.'**
+  String get clinicUnavailable;
+
+  /// No description provided for @clinicCity.
+  ///
+  /// In es, this message translates to:
+  /// **'Ciudad *'**
+  String get clinicCity;
+
+  /// No description provided for @clinicCityInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe una ciudad de entre 2 y 100 caracteres.'**
+  String get clinicCityInvalid;
+
+  /// No description provided for @clinicAddress.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección *'**
+  String get clinicAddress;
+
+  /// No description provided for @clinicAddressInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe una dirección de entre 5 y 200 caracteres.'**
+  String get clinicAddressInvalid;
+
+  /// No description provided for @clinicEmail.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo de contacto (opcional)'**
+  String get clinicEmail;
+
+  /// No description provided for @clinicEmailInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Introduce un correo válido, de hasta 254 caracteres.'**
+  String get clinicEmailInvalid;
+
+  /// No description provided for @clinicPhone.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono de contacto (opcional)'**
+  String get clinicPhone;
+
+  /// No description provided for @clinicPhoneHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa + y el código de país, sin espacios ni guiones. Entre 8 y 15 dígitos.'**
+  String get clinicPhoneHelp;
+
+  /// No description provided for @clinicPhoneInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa + seguido de 8 a 15 dígitos; el primero no puede ser cero.'**
+  String get clinicPhoneInvalid;
+
+  /// No description provided for @clinicLocation.
+  ///
+  /// In es, this message translates to:
+  /// **'{city} · {address}'**
+  String clinicLocation(String city, String address);
+
+  /// No description provided for @clinicEmailValue.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo: {email}'**
+  String clinicEmailValue(String email);
+
+  /// No description provided for @clinicPhoneValue.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono: {phone}'**
+  String clinicPhoneValue(String phone);
 }
 
 class _AppLocalizationsDelegate

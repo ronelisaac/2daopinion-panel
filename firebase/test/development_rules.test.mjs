@@ -18,6 +18,10 @@ test('development configuration excludes unapproved notices and unrelated servic
   assert.ok(!rules.includes('match /doctorRecords'));
   assert.ok(developmentRules(source).includes('match /doctorRecords'));
   assert.ok(developmentRules(source).includes('match /specialties'));
+  assert.ok(developmentRules(source).includes('match /clinics'));
+  assert.ok(!developmentRules(source, {includeClinics: false}).includes('match /clinics'));
+  assert.ok(developmentRules(source, {includeClinics: false}).includes('match /specialties'));
+  assert.throws(()=>developmentRules(source.replace('function clinicRole(country, role)', 'function changedClinicBoundary(country, role)'), {includeClinics: false}));
   assert.ok(developmentRules(source, {includeSpecialties: true}).includes('match /specialties'));
   assert.ok(!developmentRules(source, {includeSpecialties: true}).includes('match /patientNotices'));
   assert.throws(()=>developmentRules(source.replace('function specialtyRole(country, role)', 'function changedSpecialtyBoundary(country, role)'), {includeSpecialties: false}));

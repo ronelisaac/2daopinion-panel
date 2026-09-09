@@ -1,5 +1,9 @@
 # Infraestructura Firebase compartida
 
+## Estado vigente · E2-18 clínicas
+
+`clinics` y auditoría publicados y verificados en Firebase dev; datos tipados y acotados, baja lógica, superadmin administra y operations/medicalDirector leen por país/estado canónico. Generador incluye clínicas por defecto; `--exclude-clinics` solo para reversión deliberada. Conserva los módulos activos y avisos incompletos cerrados. [Contrato, despliegue y pruebas](../docs/E2-18-CLINICAS-FIREBASE.md).
+
 ## Estado vigente · E2-17 especialidades
 
 Reglas de `specialties` y auditoría transaccional publicadas y comprobadas en Firebase dev: superadmin administra; operations/medicalDirector leen; país y personal canónico obligatorios. Desactivar/reactivar sin borrar registros ni historial. El generador incluye especialidades por defecto, conserva E2-15 y mantiene avisos cerrados. `--exclude-specialties` es una reversión deliberada. [Activación, pruebas y alcance](../docs/E2-17-ESPECIALIDADES-FIREBASE.md). Secciones verificadas se publican bajo la política vigente, no todos los candidatos incompletos.

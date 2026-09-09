@@ -1,7 +1,15 @@
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 
-export function developmentRules(source, {includeDoctors = true, includeSpecialties = true} = {}) {
+export function developmentRules(source, {includeDoctors = true, includeSpecialties = true, includeClinics = true} = {}) {
+  if (!includeClinics) {
+    const start = source.indexOf('    function clinicRole(country, role) {');
+    const end = source.indexOf('    function specialtyRole(country, role) {');
+    if (start < 0 || end <= start || source.slice(start, end).includes('    function owner(')) {
+      throw new Error('Review the clinic boundary before preparing development.');
+    }
+    source = source.slice(0, start) + source.slice(end);
+  }
   if (!includeSpecialties) {
     const start = source.indexOf('    function specialtyRole(country, role) {');
     const end = source.indexOf('    function doctorRole(country, role) {');
@@ -36,6 +44,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   await mkdir('.firebase/development', {recursive:true});
   const includeDoctors = !process.argv.includes('--exclude-doctors');
   const includeSpecialties = !process.argv.includes('--exclude-specialties');
-  await writeFile('.firebase/development/firestore.rules', developmentRules(source, {includeDoctors, includeSpecialties}));
-  console.log(`Development rules prepared; doctors ${includeDoctors ? 'included' : 'excluded'}, specialties ${includeSpecialties ? 'included' : 'excluded'}, notices denied. Nothing deployed.`);
+  const includeClinics = !process.argv.includes('--exclude-clinics');
+  await writeFile('.firebase/development/firestore.rules', developmentRules(source, {includeDoctors, includeSpecialties, includeClinics}));
+  console.log(`Development rules prepared; doctors ${includeDoctors ? 'included' : 'excluded'}, specialties ${includeSpecialties ? 'included' : 'excluded'}, clinics ${includeClinics ? 'included' : 'excluded'}, notices denied. Nothing deployed.`);
 }

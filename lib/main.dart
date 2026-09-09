@@ -11,6 +11,7 @@ import 'repositories/firebase_panel_identity_repository.dart';
 import 'repositories/firebase_panel_staff_repository.dart';
 import 'repositories/firebase_doctor_repository.dart';
 import 'repositories/firebase_specialty_repository.dart';
+import 'repositories/firebase_clinic_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +54,11 @@ void main() {
   })();
   runApp(
     PanelApp(
+      clinicRepository: FirebaseClinicRepository(
+        database: () => FirebaseFirestore.instance,
+        auth: () => FirebaseAuth.instance,
+        initialize: initialize,
+      ),
       specialtyRepository: FirebaseSpecialtyRepository(
         database: () => FirebaseFirestore.instance,
         auth: () => FirebaseAuth.instance,

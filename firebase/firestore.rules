@@ -228,6 +228,71 @@ service cloud.firestore {
           && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.updatedAt == request.time;
       }
     }
+    function clinicRole(country, role) {
+      let staff = get(/databases/$(database)/documents/panelStaff/$(request.auth.uid)).data;
+      let access = request.auth.token.panelAccess;
+      return request.auth != null && request.auth.token.email_verified == true && country == 'CL'
+        && access.version == 1 && access.active == true && role in access.memberships.get(country, [])
+        && staff.active == true && staff.provisioning == 'ready' && role in staff.memberships.get(country, []);
+    }
+    function clinicReader(country) {
+      return clinicRole(country, 'superadmin') || clinicRole(country, 'operations') || clinicRole(country, 'medicalDirector');
+    }
+    function clinicText(value, minimum, maximum) {
+      return value is string && value.size() >= minimum && value.size() <= maximum
+        && (value == '' || value.matches('[^\\s]([\\s\\S]*[^\\s])?'));
+    }
+    function clinicShape(data, id) {
+      return data.keys().hasAll(['id', 'countryCode', 'schemaVersion', 'environment', 'code', 'name', 'description', 'city', 'address', 'email', 'phone', 'active', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'countryCode', 'schemaVersion', 'environment', 'code', 'name', 'description', 'city', 'address', 'email', 'phone', 'active', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
+        && data.countryCode == 'CL' && data.schemaVersion == 1 && data.environment == 'development'
+        && data.code is string && data.code.matches('[a-z][a-z0-9_]{1,31}')
+        && data.id == id && id == 'CL_' + data.code
+        && clinicText(data.name, 2, 100) && clinicText(data.description, 0, 500)
+        && clinicText(data.city, 2, 100) && clinicText(data.address, 5, 200)
+        && clinicText(data.email, 0, 254) && (data.email == '' || data.email.matches('[A-Za-z0-9_%+-]+([.][A-Za-z0-9_%+-]+)*@[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?([.][A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?)*[.][A-Za-z]{2,63}'))
+        && data.phone is string && (data.phone == '' || data.phone.matches('[+][1-9][0-9]{7,14}'))
+        && data.active is bool && data.revision is int && data.revision > 0
+        && data.updatedBy == request.auth.uid && data.updatedAt == request.time;
+    }
+    function clinicAction(data, id) {
+      return !exists(/databases/$(database)/documents/clinics/$(id)) ? 'create'
+        : data.active == get(/databases/$(database)/documents/clinics/$(id)).data.active ? 'edit'
+        : data.active ? 'reactivate' : 'deactivate';
+    }
+    function clinicAudit(data, id) {
+      let event = getAfter(/databases/$(database)/documents/clinics/$(id)/events/$(string(data.revision))).data;
+      return event.keys().hasAll(['revision', 'actorId', 'countryCode', 'action', 'recordedAt', 'snapshot'])
+        && event.keys().hasOnly(['revision', 'actorId', 'countryCode', 'action', 'recordedAt', 'snapshot'])
+        && event.revision == data.revision && event.actorId == request.auth.uid
+        && event.countryCode == data.countryCode && event.recordedAt == request.time
+        && event.action == clinicAction(data, id) && event.snapshot == data;
+    }
+    match /clinics/{id} {
+      allow get: if (exists(/databases/$(database)/documents/clinics/$(id)) && clinicReader(resource.data.countryCode))
+        || (!exists(/databases/$(database)/documents/clinics/$(id)) && id.matches('CL_[a-z][a-z0-9_]{1,31}') && clinicReader('CL'));
+      allow list: if request.query.limit != null && request.query.limit <= 21 && clinicReader(resource.data.countryCode);
+      allow create: if clinicRole(request.resource.data.countryCode, 'superadmin')
+        && clinicShape(request.resource.data, id) && request.resource.data.revision == 1
+        && request.resource.data.active == true && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdAt == request.time && clinicAudit(request.resource.data, id);
+      allow update: if clinicRole(resource.data.countryCode, 'superadmin') && clinicShape(request.resource.data, id)
+        && request.resource.data.revision == resource.data.revision + 1
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'description', 'city', 'address', 'email', 'phone', 'active', 'revision', 'updatedBy', 'updatedAt'])
+        && (request.resource.data.active == resource.data.active
+          || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['active', 'revision', 'updatedBy', 'updatedAt']))
+        && clinicAudit(request.resource.data, id);
+      match /events/{revision} {
+        allow get: if clinicReader(get(/databases/$(database)/documents/clinics/$(id)).data.countryCode);
+        allow list: if request.query.limit != null && request.query.limit <= 50
+          && clinicReader(get(/databases/$(database)/documents/clinics/$(id)).data.countryCode);
+        allow create: if clinicRole(request.resource.data.countryCode, 'superadmin')
+          && revision == string(request.resource.data.revision)
+          && request.resource.data.revision == (!exists(/databases/$(database)/documents/clinics/$(id)) ? 1
+            : get(/databases/$(database)/documents/clinics/$(id)).data.revision + 1)
+          && clinicAudit(getAfter(/databases/$(database)/documents/clinics/$(id)).data, id);
+      }
+    }
     function specialtyRole(country, role) {
       let staff = get(/databases/$(database)/documents/panelStaff/$(request.auth.uid)).data;
       let access = request.auth.token.panelAccess;

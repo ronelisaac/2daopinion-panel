@@ -2,6 +2,10 @@
 
 Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
+## Clínicas · E2-18 · Firebase de desarrollo
+
+CRUD operativo: código, nombre, ciudad, dirección, contacto y descripción; alta, edición, baja/reactivación y auditoría. Superadmin administra; Operaciones y Dirección médica consultan. Campos validados en formulario/dominio/reglas, recuperación de sesión/datos probada y revisión visual responsiva. No acredita instituciones ni crea convenios o afiliaciones médicas. [Entrega, pruebas y límites](docs/E2-18-CLINICAS-FIREBASE.md).
+
 ## Especialidades · E2-17 · Firebase de desarrollo
 
 CRUD con código estable, nombre, descripción, baja/reactivación, validaciones y auditoría, **publicado y verificado en Firebase de desarrollo**. Superadmin administra; Operaciones y Dirección médica consultan. Sesión y datos recuperados tras recarga en los tres roles. Adaptador normal activo; generador conserva especialidades en próximos despliegues. No cambia los médicos existentes ni publica el catálogo al paciente. [Activación y pruebas](docs/E2-17-ESPECIALIDADES-FIREBASE.md).

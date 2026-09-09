@@ -5,6 +5,7 @@ enum PanelModule {
   requests,
   doctors,
   specialties,
+  clinics,
   clinicalReview,
   assignments,
   myCases,
@@ -50,6 +51,7 @@ class PanelPrincipal {
 class PanelAccess {
   static const modules = {
     PanelRole.superadmin: {
+      PanelModule.clinics,
       PanelModule.specialties,
       PanelModule.dashboard,
       PanelModule.users,
@@ -59,6 +61,7 @@ class PanelAccess {
       PanelModule.audit,
     },
     PanelRole.operations: {
+      PanelModule.clinics,
       PanelModule.specialties,
       PanelModule.dashboard,
       PanelModule.requests,
@@ -67,6 +70,7 @@ class PanelAccess {
       PanelModule.agenda,
     },
     PanelRole.medicalDirector: {
+      PanelModule.clinics,
       PanelModule.specialties,
       PanelModule.dashboard,
       PanelModule.doctors,

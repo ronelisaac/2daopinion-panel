@@ -691,4 +691,163 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get specialtyUnavailable =>
       'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.';
+
+  @override
+  String get menuClinics => 'Clínicas';
+
+  @override
+  String get clinicsIntro =>
+      'Registro administrativo de clínicas por país. Usa solo datos ficticios en desarrollo. Registrar o activar una clínica no acredita habilitación sanitaria ni crea convenios o acceso a pacientes.';
+
+  @override
+  String get clinicReadOnly =>
+      'Tu rol puede consultar el catálogo. Solo superadmin administra las clínicas.';
+
+  @override
+  String get clinicCreate => 'Crear clínica';
+
+  @override
+  String get clinicEdit => 'Editar clínica';
+
+  @override
+  String get clinicRefresh => 'Actualizar clínicas';
+
+  @override
+  String get clinicSave => 'Guardar clínica';
+
+  @override
+  String get clinicSaved =>
+      'Clínica e historial guardados en Firebase de desarrollo.';
+
+  @override
+  String get clinicRequired =>
+      'Los campos con * son obligatorios. El código identifica la clínica dentro del país y no podrá cambiarse.';
+
+  @override
+  String get clinicCode => 'Código *';
+
+  @override
+  String get clinicCodeHelp =>
+      'De 2 a 32 caracteres: letras sin tildes, números o guion bajo. Empieza con una letra. Se guarda en minúsculas.';
+
+  @override
+  String get clinicCodeInvalid =>
+      'Usa de 2 a 32 letras, números o guion bajo, empezando con una letra sin tilde.';
+
+  @override
+  String get clinicName => 'Nombre *';
+
+  @override
+  String get clinicNameInvalid => 'Escribe entre 2 y 100 caracteres.';
+
+  @override
+  String get clinicDescription => 'Descripción (opcional)';
+
+  @override
+  String get clinicDescriptionInvalid =>
+      'La descripción admite hasta 500 caracteres.';
+
+  @override
+  String get clinicActive => 'Activa';
+
+  @override
+  String get clinicInactive => 'Inactiva';
+
+  @override
+  String get clinicDeactivate => 'Desactivar clínica';
+
+  @override
+  String get clinicReactivate => 'Reactivar clínica';
+
+  @override
+  String clinicToggleConfirm(String name) {
+    return '¿Cambiar el estado de «$name»? Se conserva su código e historial. No modifica casos ni verificaciones existentes.';
+  }
+
+  @override
+  String get clinicConfirm => 'Confirmar cambio';
+
+  @override
+  String clinicRevision(int revision, String date) {
+    return 'Revisión $revision · Actualizada $date';
+  }
+
+  @override
+  String get clinicLoading => 'Cargando clínicas';
+
+  @override
+  String get clinicSaving => 'Guardando clínica';
+
+  @override
+  String get clinicEmpty =>
+      'Todavía no hay clínicas registradas para este país.';
+
+  @override
+  String get clinicMore => 'Cargar más clínicas';
+
+  @override
+  String get clinicInvalid => 'Revisa los datos y el estado de la clínica.';
+
+  @override
+  String get clinicDenied =>
+      'No tienes permisos vigentes para esta operación en el país seleccionado.';
+
+  @override
+  String get clinicDuplicate =>
+      'Ya existe ese código en el país, incluso si está inactivo. Consulta el registro existente.';
+
+  @override
+  String get clinicConflict =>
+      'La clínica cambió en otra sesión. Actualiza el listado antes de reintentar.';
+
+  @override
+  String get clinicUnavailable =>
+      'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.';
+
+  @override
+  String get clinicCity => 'Ciudad *';
+
+  @override
+  String get clinicCityInvalid =>
+      'Escribe una ciudad de entre 2 y 100 caracteres.';
+
+  @override
+  String get clinicAddress => 'Dirección *';
+
+  @override
+  String get clinicAddressInvalid =>
+      'Escribe una dirección de entre 5 y 200 caracteres.';
+
+  @override
+  String get clinicEmail => 'Correo de contacto (opcional)';
+
+  @override
+  String get clinicEmailInvalid =>
+      'Introduce un correo válido, de hasta 254 caracteres.';
+
+  @override
+  String get clinicPhone => 'Teléfono de contacto (opcional)';
+
+  @override
+  String get clinicPhoneHelp =>
+      'Usa + y el código de país, sin espacios ni guiones. Entre 8 y 15 dígitos.';
+
+  @override
+  String get clinicPhoneInvalid =>
+      'Usa + seguido de 8 a 15 dígitos; el primero no puede ser cero.';
+
+  @override
+  String clinicLocation(String city, String address) {
+    return '$city · $address';
+  }
+
+  @override
+  String clinicEmailValue(String email) {
+    return 'Correo: $email';
+  }
+
+  @override
+  String clinicPhoneValue(String phone) {
+    return 'Teléfono: $phone';
+  }
 }

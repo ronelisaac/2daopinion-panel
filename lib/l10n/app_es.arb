@@ -220,5 +220,90 @@
   "specialtyDenied": "No tienes permisos vigentes para esta operación en el país seleccionado.",
   "specialtyDuplicate": "Ya existe ese código en el país, incluso si está inactivo. Consulta el registro existente.",
   "specialtyConflict": "La especialidad cambió en otra sesión. Actualiza el listado antes de reintentar.",
-  "specialtyUnavailable": "No pudimos confirmar la operación. Actualiza el listado antes de reintentar."
+  "specialtyUnavailable": "No pudimos confirmar la operación. Actualiza el listado antes de reintentar.",
+  "menuClinics": "Clínicas",
+  "clinicsIntro": "Registro administrativo de clínicas por país. Usa solo datos ficticios en desarrollo. Registrar o activar una clínica no acredita habilitación sanitaria ni crea convenios o acceso a pacientes.",
+  "clinicReadOnly": "Tu rol puede consultar el catálogo. Solo superadmin administra las clínicas.",
+  "clinicCreate": "Crear clínica",
+  "clinicEdit": "Editar clínica",
+  "clinicRefresh": "Actualizar clínicas",
+  "clinicSave": "Guardar clínica",
+  "clinicSaved": "Clínica e historial guardados en Firebase de desarrollo.",
+  "clinicRequired": "Los campos con * son obligatorios. El código identifica la clínica dentro del país y no podrá cambiarse.",
+  "clinicCode": "Código *",
+  "clinicCodeHelp": "De 2 a 32 caracteres: letras sin tildes, números o guion bajo. Empieza con una letra. Se guarda en minúsculas.",
+  "clinicCodeInvalid": "Usa de 2 a 32 letras, números o guion bajo, empezando con una letra sin tilde.",
+  "clinicName": "Nombre *",
+  "clinicNameInvalid": "Escribe entre 2 y 100 caracteres.",
+  "clinicDescription": "Descripción (opcional)",
+  "clinicDescriptionInvalid": "La descripción admite hasta 500 caracteres.",
+  "clinicActive": "Activa",
+  "clinicInactive": "Inactiva",
+  "clinicDeactivate": "Desactivar clínica",
+  "clinicReactivate": "Reactivar clínica",
+  "clinicToggleConfirm": "¿Cambiar el estado de «{name}»? Se conserva su código e historial. No modifica casos ni verificaciones existentes.",
+  "@clinicToggleConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicConfirm": "Confirmar cambio",
+  "clinicRevision": "Revisión {revision} · Actualizada {date}",
+  "@clinicRevision": {
+    "placeholders": {
+      "revision": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicLoading": "Cargando clínicas",
+  "clinicSaving": "Guardando clínica",
+  "clinicEmpty": "Todavía no hay clínicas registradas para este país.",
+  "clinicMore": "Cargar más clínicas",
+  "clinicInvalid": "Revisa los datos y el estado de la clínica.",
+  "clinicDenied": "No tienes permisos vigentes para esta operación en el país seleccionado.",
+  "clinicDuplicate": "Ya existe ese código en el país, incluso si está inactivo. Consulta el registro existente.",
+  "clinicConflict": "La clínica cambió en otra sesión. Actualiza el listado antes de reintentar.",
+  "clinicUnavailable": "No pudimos confirmar la operación. Actualiza el listado antes de reintentar.",
+  "clinicCity": "Ciudad *",
+  "clinicCityInvalid": "Escribe una ciudad de entre 2 y 100 caracteres.",
+  "clinicAddress": "Dirección *",
+  "clinicAddressInvalid": "Escribe una dirección de entre 5 y 200 caracteres.",
+  "clinicEmail": "Correo de contacto (opcional)",
+  "clinicEmailInvalid": "Introduce un correo válido, de hasta 254 caracteres.",
+  "clinicPhone": "Teléfono de contacto (opcional)",
+  "clinicPhoneHelp": "Usa + y el código de país, sin espacios ni guiones. Entre 8 y 15 dígitos.",
+  "clinicPhoneInvalid": "Usa + seguido de 8 a 15 dígitos; el primero no puede ser cero.",
+  "clinicLocation": "{city} · {address}",
+  "@clinicLocation": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      },
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicEmailValue": "Correo: {email}",
+  "@clinicEmailValue": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "clinicPhoneValue": "Teléfono: {phone}",
+  "@clinicPhoneValue": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  }
 }
