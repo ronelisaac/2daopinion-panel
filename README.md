@@ -4,7 +4,7 @@ Base Flutter web para administración y portal médico. Login Firebase conectado
 
 ## Estado vigente · E1-PANEL-03
 
-CRUD real implementado con una función Firebase y pruebas completas en emuladores: altas por correo, roles por país, edición, baja reversible y reenvío. **Activación remota pendiente de aprobación IAM específica; no hay simulador ni se ha desplegado la función.** [Entrega, seguridad y bloqueo](docs/E1-PANEL-03-USUARIOS.md).
+CRUD real implementado con una función Firebase y pruebas completas en emuladores: altas por correo, roles por país, edición, baja reversible y reenvío. **Función desplegada en desarrollo tras autorización IAM específica; sin simulador.** Mínimo cero/máximo una instancia y limpieza de imágenes de compilación a un día; USD 10 sigue siendo una alerta, no un corte. [Entrega, seguridad y verificación](docs/E1-PANEL-03-USUARIOS.md).
 
 ## Login · E1-PANEL-02
 
@@ -20,6 +20,8 @@ flutter analyze
 flutter test
 flutter build web
 ```
+
+Después de agregar plugins, ejecutar flutter pub get. Si persiste un registro de plugins antiguo, ejecutar flutter clean y flutter build web: una compilación incremental puede finalizar correctamente sin incluir el plugin nuevo. Para desplegar únicamente la función y preparar su parámetro público, ver la entrega E1-PANEL-03.
 
 Requiere Flutter 3.41.7 / Dart 3.11.5 compatibles con la app de pacientes. `flutter run -d chrome` inicia la vista previa. Para evitar telemetría en este equipo: `FLUTTER_SUPPRESS_ANALYTICS=true DART_SUPPRESS_ANALYTICS=true`. Las pruebas de reglas siguen separadas con `npm run test:rules`; los candidatos locales y su historial se describen en [firebase/README.md](firebase/README.md), sin autorizar su despliegue.
 

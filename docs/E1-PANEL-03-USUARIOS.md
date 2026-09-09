@@ -1,6 +1,6 @@
 # E1-PANEL-03 · Usuarios reales
 
-8 de septiembre de 2026 · Implementado y probado con Firebase emulado. Activación remota pendiente de autorización IAM específica.
+8 de septiembre de 2026 · Implementado, probado con Firebase emulado y desplegado en desarrollo con autorización IAM específica.
 
 ## Alcance
 
@@ -50,16 +50,21 @@ Estos controles no garantizan un gasto máximo de USD 10 ni cubren todos los cos
 - 12 pruebas Node con Auth y Firestore emulados: aislamiento territorial, denegación de pacientes, altas/edición/baja/reactivación, idempotencia, auditoría, entrega fallida, recuperación parcial, paginación, acceso directo denegado, concurrencia y límite diario.
 - 1 integración Flutter web → callable real en emuladores → Auth/Firestore: listado, alta, edición, baja y denegación sin sesión.
 - Análisis sin incidencias y build web correcto. No se crearon cuentas ficticias remotas.
+- Prueba remota posterior al despliegue: sesión existente de Ronel restaurada, listado de Usuarios en CL con su cuenta superadmin protegida y botón Crear usuario habilitado. Formulario de nombre, correo y roles inspeccionado y cancelado sin enviar correos ni crear cuentas. Altas/edición/baja e invitaciones siguen verificadas en emuladores, no mediante operaciones ficticias remotas.
 - Pruebas ejecutadas con Node 26 disponible localmente; runtime de despliegue declarado Node 22.
 - npm audit reportó siete advertencias moderadas transitivas ligadas a uuid, cero altas/críticas. Se mantienen SDK oficiales actuales; no se forzó el downgrade incompatible propuesto por audit. Seguimiento antes de producción.
 
-## Activación y bloqueo actual
+## Activación autorizada en desarrollo
 
-Ronel autorizó habilitar la función de desarrollo con minInstances 0/maxInstances 1. El control de seguridad rechazó crear la cuenta técnica y modificar IAM porque esa autorización no era suficientemente específica para privilegios de proyecto.
+La autorización inicial para habilitar la función no era suficientemente específica para modificar IAM. Se detuvo esa operación y Ronel posteriormente confirmó expresamente la creación de la identidad técnica y los dos roles detallados, mediante «si autorizo».
 
-Se solicitó autorización adicional para crear panel-users-runtime@segundaopinion-ea0c8.iam.gserviceaccount.com y asignar roles/firebaseauth.admin y roles/datastore.user. No Owner/Editor, no claves descargadas. Son permisos de alcance proyecto, aunque el código opere solo sobre las colecciones de personal. **Mientras esa autorización esté pendiente no se crea la cuenta técnica, no se cambia IAM ni se despliega usando otra identidad como sustituto.**
+Se creó panel-users-runtime@segundaopinion-ea0c8.iam.gserviceaccount.com y se verificaron sus dos asignaciones de proyecto: roles/firebaseauth.admin y roles/datastore.user. No Owner/Editor ni claves descargadas. Son permisos de alcance proyecto, aunque el código opere solo sobre las colecciones de personal.
 
-Despliegue, después de resolver IAM y comprobar pruebas:
+managePanelUsers figura ACTIVE en segundaopinion-ea0c8. Configuración remota comprobada: Node 22, southamerica-west1, mínimo 0/máximo 1 instancia, concurrencia 1, memoria 256 MiB, CPU fraccional 0.1666, timeout 60 s e identidad técnica indicada. Solicitud anónima al endpoint real: HTTP 401/UNAUTHENTICATED.
+
+El despliegue habilitó las dependencias de Cloud Functions, Cloud Build, Artifact Registry, Cloud Run y Eventarc, con sus identidades de servicio requeridas. La infraestructura de compilación puede usar buckets; esto no habilita la carga clínica de documentos. No se desplegaron reglas Firestore/Storage ni Hosting. Se configuró limpieza de imágenes de gcf-artifacts en southamerica-west1 al superar un día para reducir acumulación de costos; no es un tope de facturación.
+
+Despliegue reproducible, después de comprobar pruebas:
 
 ```sh
 firebase deploy --only functions:panel-users:managePanelUsers --project segundaopinion-ea0c8
@@ -78,6 +83,8 @@ firebase emulators:exec --only auth,firestore,functions --project demo-2daopinio
 flutter build web
 ```
 
-Requiere Java compatible con el emulador. functions/.env.local y registros de emulador se excluyen de Git/despliegue. La configuración de API key web es pública; no sustituye autenticación.
+Requiere Java compatible con el emulador. Tras agregar cloud_functions, la compilación incremental conservó un web_plugin_registrant.dart sin FirebaseFunctionsWeb y falló antes de contactar al servidor. flutter pub get y recompilar no bastaron: flutter clean seguido de flutter build web regeneró el registro incluyendo FirebaseFunctionsWeb. Usar esta recuperación si un plugin recién añadido no se registra; no editar archivos generados ni registrar plugins manualmente en main.
+
+functions/.env.local y registros de emulador se excluyen de Git/despliegue. El despliegue no interactivo requirió PANEL_WEB_API_KEY en functions/.env.segundaopinion-ea0c8 (ignorado por Git), usando la configuración web pública existente. No sustituye autenticación ni contiene credenciales administrativas.
 
 Referencias oficiales: [callables](https://firebase.google.com/docs/functions/callable), [administración de usuarios](https://firebase.google.com/docs/auth/admin/manage-users), [opciones de ejecución](https://firebase.google.com/docs/functions/manage-functions).
