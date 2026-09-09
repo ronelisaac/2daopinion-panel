@@ -13,6 +13,7 @@ import 'repositories/firebase_doctor_repository.dart';
 import 'repositories/firebase_specialty_repository.dart';
 import 'repositories/firebase_clinic_repository.dart';
 import 'repositories/firebase_doctor_workspace_repository.dart';
+import 'repositories/firebase_doctor_administration_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +56,11 @@ void main() {
   })();
   runApp(
     PanelApp(
+      administrationRepository: FirebaseDoctorAdministrationRepository(
+        functions: () =>
+            FirebaseFunctions.instanceFor(region: 'southamerica-west1'),
+        initialize: initialize,
+      ),
       workspaceRepository: FirebaseDoctorWorkspaceRepository(
         functions: () =>
             FirebaseFunctions.instanceFor(region: 'southamerica-west1'),

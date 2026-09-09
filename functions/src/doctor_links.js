@@ -1,4 +1,5 @@
 const {FieldValue} = require("firebase-admin/firestore");
+const {administrationEnabled} = require("./doctor_administration");
 const {fail, canManage} = require("./policy");
 
 function targetAllowed(actor, target, country, linking) {
@@ -27,12 +28,13 @@ function createDoctorLinks({auth, database}) {
   }
   async function preview(actor, input) {
     const id = input.country + "_" + input.registry;
-    const [targetSnapshot, doctorSnapshot, link] = await database.getAll(
+    const [targetSnapshot, doctorSnapshot, link, administration] = await database.getAll(
       database.doc("panelStaff/" + input.uid), database.doc("doctorRecords/" + id),
-      database.doc("doctorAccountLinks/" + id));
+      database.doc("doctorAccountLinks/" + id), database.doc("doctorAdministration/" + id));
     const target = targetSnapshot.data(), doctor = doctorSnapshot.data();
     targetAllowed(actor, target, input.country, true);
     await identity(target);
+    if (!administrationEnabled(administration.data())) fail("failed-precondition", "doctor-unavailable");
     const specialty = (await specialtyRef(doctor, input.country).get()).data();
     eligible(doctor, specialty, input.country);
     if (link.exists || target.doctorLinks?.[input.country]) fail("already-exists", "doctor-linked");
@@ -50,14 +52,15 @@ function createDoctorLinks({auth, database}) {
       await identity(target);
     }
     return database.runTransaction(async (transaction) => {
-      const [actorSnapshot, targetSnapshot, link, doctorSnapshot] = await transaction.getAll(
-        database.doc("panelStaff/" + actor.uid), targetRef, linkRef, doctorRef);
+      const [actorSnapshot, targetSnapshot, link, doctorSnapshot, administration] = await transaction.getAll(
+        database.doc("panelStaff/" + actor.uid), targetRef, linkRef, doctorRef, database.doc("doctorAdministration/" + id));
       const currentActor = actorSnapshot.data(), before = targetSnapshot.data();
       if (!currentActor || !canManage(currentActor, [input.country])) fail("permission-denied", "denied");
       targetAllowed(currentActor, before, input.country, linking);
       if (before.revision !== input.revision) fail("aborted", "conflict");
       const links = {...before.doctorLinks};
       if (linking) {
+        if (!administrationEnabled(administration.data())) fail("failed-precondition", "doctor-unavailable");
         const doctor = doctorSnapshot.data();
         const specialty = (await transaction.get(specialtyRef(doctor, input.country))).data();
         eligible(doctor, specialty, input.country);

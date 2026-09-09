@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../controllers/doctor_controller.dart';
+import '../controllers/doctor_administration_controller.dart';
+import '../widgets/doctor_administration_editor.dart';
 import '../core/doctor_messages.dart';
 import '../core/localization.dart';
 import '../domain/doctor_record.dart';
@@ -37,6 +39,29 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
       ).showSnackBar(SnackBar(content: Text(strings(context).doctorSaved)));
       await controller.load();
     }
+  }
+
+  Future<void> _administration(DoctorRecord record) async {
+    final saved = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => DoctorAdministrationEditor(
+        name: record.input.name,
+        createController: () => DoctorAdministrationController(
+          controller.administrationRepository!,
+          controller.principal,
+          controller.country,
+          controller.administration[record.id]!,
+        ),
+      ),
+    );
+    if (!mounted) return;
+    if (saved == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(strings(context).doctorAdminSaved)),
+      );
+    }
+    await controller.load();
   }
 
   @override
@@ -91,6 +116,14 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
             for (final record in controller.records)
               DoctorRecordCard(
                 record: record,
+                administration: controller.administration[record.id],
+                onAdministration:
+                    !controller.busy &&
+                        controller.issue == null &&
+                        controller.canRegister &&
+                        controller.administration.containsKey(record.id)
+                    ? () => _administration(record)
+                    : null,
                 onEdit:
                     !controller.busy &&
                         controller.issue == null &&

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../core/doctor_messages.dart';
 import '../core/localization.dart';
 import '../domain/doctor_record.dart';
+import '../domain/doctor_administration.dart';
 
 class DoctorRecordCard extends StatelessWidget {
   const DoctorRecordCard({
@@ -10,10 +11,14 @@ class DoctorRecordCard extends StatelessWidget {
     required this.record,
     this.onEdit,
     this.onReview,
+    this.administration,
+    this.onAdministration,
   });
   final DoctorRecord record;
   final VoidCallback? onEdit;
   final VoidCallback? onReview;
+  final DoctorAdministration? administration;
+  final VoidCallback? onAdministration;
   @override
   Widget build(BuildContext context) {
     final text = strings(context);
@@ -35,6 +40,19 @@ class DoctorRecordCard extends StatelessWidget {
               doctorStatusLabel(context, record.status),
               style: Theme.of(context).textTheme.titleSmall,
             ),
+            if (administration != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                administration!.active
+                    ? text.doctorAdminActive
+                    : text.doctorAdminInactive,
+                style: TextStyle(
+                  color: administration!.active
+                      ? null
+                      : Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ],
             const SizedBox(height: 8),
             Text(
               text.doctorRegistrySummary(record.country, record.input.registry),
@@ -62,6 +80,20 @@ class DoctorRecordCard extends StatelessWidget {
               spacing: 12,
               runSpacing: 8,
               children: [
+                if (onAdministration != null)
+                  OutlinedButton.icon(
+                    onPressed: onAdministration,
+                    icon: Icon(
+                      administration!.active
+                          ? Icons.pause_circle_outline
+                          : Icons.play_circle_outline,
+                    ),
+                    label: Text(
+                      administration!.active
+                          ? text.doctorAdminPause
+                          : text.doctorAdminActivate,
+                    ),
+                  ),
                 if (onEdit != null)
                   OutlinedButton.icon(
                     onPressed: onEdit,

@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../domain/doctor_record.dart';
+import '../domain/doctor_administration.dart';
+import '../domain/repositories/doctor_administration_repository.dart';
 import '../domain/panel_access.dart';
 import '../domain/specialty.dart';
 import '../domain/repositories/specialty_repository.dart';
@@ -11,8 +13,11 @@ class DoctorController extends ChangeNotifier {
     this.principal,
     this.country, {
     this.specialtyRepository,
+    this.administrationRepository,
   });
   final SpecialtyRepository? specialtyRepository;
+  final DoctorAdministrationRepository? administrationRepository;
+  Map<String, DoctorAdministration> administration = {};
   List<Specialty> specialties = [];
   String? specialtyCursor;
   bool catalogBusy = false;
@@ -83,7 +88,17 @@ class DoctorController extends ChangeNotifier {
         country,
         cursor: more ? nextCursor : null,
       );
+      final states = administrationRepository == null
+          ? <DoctorAdministration>[]
+          : await administrationRepository!.list(
+              country,
+              page.items.map((record) => record.id).toList(),
+            );
       if (!_disposed) {
+        administration = {
+          ...(more ? administration : <String, DoctorAdministration>{}),
+          for (final state in states) state.id: state,
+        };
         records = more ? [...records, ...page.items] : page.items;
         nextCursor = page.nextCursor;
       }
@@ -130,9 +145,15 @@ class DoctorController extends ChangeNotifier {
       return !_disposed;
     } catch (error) {
       if (!_disposed) {
-        issue = error is DoctorFailure ? error.issue : DoctorIssue.unavailable;
+        issue = error is DoctorFailure
+            ? error.issue
+            : error is DoctorAdministrationFailure &&
+                  error.issue == DoctorAdministrationIssue.denied
+            ? DoctorIssue.denied
+            : DoctorIssue.unavailable;
         if (clearOnError) {
           records = [];
+          administration = {};
           nextCursor = null;
         }
       }
@@ -149,6 +170,7 @@ class DoctorController extends ChangeNotifier {
   void dispose() {
     _disposed = true;
     records = [];
+    administration = {};
     specialties = [];
     super.dispose();
   }

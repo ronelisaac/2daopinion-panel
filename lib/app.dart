@@ -27,6 +27,7 @@ import 'controllers/clinic_controller.dart';
 import 'domain/repositories/clinic_repository.dart';
 import 'views/clinics_screen.dart';
 import 'domain/repositories/doctor_workspace_repository.dart';
+import 'domain/repositories/doctor_administration_repository.dart';
 import 'controllers/doctor_workspace_controller.dart';
 import 'views/doctor_workspace_screen.dart';
 
@@ -40,6 +41,7 @@ class PanelApp extends StatefulWidget {
     this.specialtyRepository,
     this.clinicRepository,
     this.workspaceRepository,
+    this.administrationRepository,
   });
   final PanelIdentityRepository identity;
   final IntakeRepository? repository;
@@ -48,6 +50,7 @@ class PanelApp extends StatefulWidget {
   final SpecialtyRepository? specialtyRepository;
   final ClinicRepository? clinicRepository;
   final DoctorWorkspaceRepository? workspaceRepository;
+  final DoctorAdministrationRepository? administrationRepository;
   @override
   State<PanelApp> createState() => _PanelAppState();
 }
@@ -127,6 +130,7 @@ class _PanelAppState extends State<PanelApp> {
           principal,
           country,
           specialtyRepository: widget.specialtyRepository,
+          administrationRepository: widget.administrationRepository,
         ),
       );
     }

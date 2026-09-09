@@ -1,5 +1,6 @@
 const {createHash} = require("node:crypto");
 const {FieldValue} = require("firebase-admin/firestore");
+const {administrationEnabled} = require("./doctor_administration");
 const {fail} = require("./policy");
 const hash = value => createHash("sha256").update(value).digest("hex");
 
@@ -19,7 +20,8 @@ function createDoctorWorkspace({database, now}) {
         return empty;
       }
       if (typeof doctorId !== "string" || !/^CL_[1-9][0-9]{0,9}$/.test(doctorId)) fail("permission-denied", "denied");
-      const [linkSnapshot, doctorSnapshot] = await transaction.getAll(database.doc("doctorAccountLinks/" + doctorId), database.doc("doctorRecords/" + doctorId));
+      const [linkSnapshot, doctorSnapshot, administrativeSnapshot] = await transaction.getAll(database.doc("doctorAccountLinks/" + doctorId), database.doc("doctorRecords/" + doctorId), database.doc("doctorAdministration/" + doctorId));
+      const administration = administrativeSnapshot.data();
       const link = linkSnapshot.data(), doctor = doctorSnapshot.data();
       if (!link || link.uid !== actor.uid || link.countryCode !== input.country ||
           link.doctorId !== doctorId || !link.createdAt?.toMillis) fail("permission-denied", "denied");
@@ -28,9 +30,9 @@ function createDoctorWorkspace({database, now}) {
       if (typeof doctor.specialtyId === "string" && /^CL_[a-z][a-z0-9_]{1,31}$/.test(doctor.specialtyId)) {
         specialty = (await transaction.get(database.doc("specialties/" + doctor.specialtyId))).data();
       }
-      const ready = doctor.environment === "development" && doctor.schemaVersion === 2 && doctor.status === "verified" &&
+      const ready = administrationEnabled(administration) && doctor.environment === "development" && doctor.schemaVersion === 2 && doctor.status === "verified" &&
         specialty?.countryCode === input.country && specialty.active === true;
-      const workspaceToken = hash(JSON.stringify([actor.uid, input.country, doctorId, link.createdAt.toMillis(), doctor.revision]));
+      const workspaceToken = hash(JSON.stringify([actor.uid, input.country, doctorId, link.createdAt.toMillis(), doctor.revision, ...(administration?.revision ? [administration.revision] : [])]));
       const matching = preference?.workspaceToken === workspaceToken;
       const view = {state: ready ? "ready" : "blocked",
         doctor: {id: doctorId, name: doctor.name, registry: doctor.registryNumber, specialty: doctor.specialty},

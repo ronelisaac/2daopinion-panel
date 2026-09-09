@@ -21,10 +21,12 @@ function memberships(value) {
 function validate(data) {
   if (!data || typeof data !== "object" || Array.isArray(data) ||
       Buffer.byteLength(JSON.stringify(data)) > 4096) fail("invalid-argument", "invalid");
-  if (!["list", "create", "update", "setActive", "invite", "resume", "doctorPreview", "linkDoctor", "unlinkDoctor", "myWorkspace", "setAvailability"].includes(data.action) ||
+  if (!["list", "create", "update", "setActive", "invite", "resume", "doctorPreview", "linkDoctor", "unlinkDoctor", "myWorkspace", "setAvailability", "doctorAdminList", "doctorAdminSetActive"].includes(data.action) ||
       typeof data.country !== "string" || !/^[A-Z]{2}$/.test(data.country)) fail("invalid-argument", "invalid");
   const allowed = {
     list: ["action", "country", "cursor"],
+    doctorAdminList: ["action", "country", "ids"],
+    doctorAdminSetActive: ["action", "country", "id", "active", "revision", "reason", "requestId"],
     myWorkspace: ["action", "country"],
     setAvailability: ["action", "country", "requestId", "revision", "workspaceToken", "accepting"],
     doctorPreview: ["action", "country", "uid", "registry"],
@@ -37,6 +39,20 @@ function validate(data) {
     invite: ["action", "country", "requestId", "uid", "revision"],
   }[data.action];
   if (Object.keys(data).some((key) => !allowed.includes(key))) fail("invalid-argument", "invalid");
+  if (["doctorAdminList", "doctorAdminSetActive"].includes(data.action)) {
+    if (data.country !== "CL") fail("invalid-argument", "invalid");
+    const validId = value => typeof value === "string" && /^CL_[1-9][0-9]{0,9}$/.test(value);
+    if (data.action === "doctorAdminList") {
+      if (!Array.isArray(data.ids) || data.ids.length < 1 || data.ids.length > 20 ||
+          new Set(data.ids).size !== data.ids.length || !data.ids.every(validId)) fail("invalid-argument", "invalid");
+      return data;
+    }
+    if (!validId(data.id) || typeof data.active !== "boolean" ||
+        !Number.isSafeInteger(data.revision) || data.revision < 0 || data.revision >= Number.MAX_SAFE_INTEGER ||
+        typeof data.reason !== "string" || Array.from(data.reason.trim()).length < 10 || Array.from(data.reason.trim()).length > 500 ||
+        typeof data.requestId !== "string" || !/^[a-f0-9]{32}$/.test(data.requestId)) fail("invalid-argument", "invalid");
+    return {...data, reason: data.reason.trim()};
+  }
   if (["myWorkspace", "setAvailability"].includes(data.action)) {
     if (data.country !== "CL") fail("invalid-argument", "invalid");
     if (data.action === "setAvailability" && (typeof data.accepting !== "boolean" ||

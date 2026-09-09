@@ -1693,7 +1693,7 @@ abstract class AppLocalizations {
   /// No description provided for @workspaceBlocked.
   ///
   /// In es, this message translates to:
-  /// **'La ficha o su especialidad no está habilitada en desarrollo. La recepción permanece pausada; contacta al equipo para revisar tu situación.'**
+  /// **'La ficha, su estado administrativo o su especialidad no está habilitada en desarrollo. La recepción permanece pausada; contacta al equipo para revisar tu situación.'**
   String get workspaceBlocked;
 
   /// No description provided for @workspaceReady.
@@ -1729,7 +1729,7 @@ abstract class AppLocalizations {
   /// No description provided for @workspaceAvailabilityHelp.
   ///
   /// In es, this message translates to:
-  /// **'Esta preferencia no crea citas ni asignaciones automáticas. Pausar no cancela casos existentes. Al cambiar el vínculo o la revisión profesional, deberás confirmar nuevamente tu disponibilidad.'**
+  /// **'Esta preferencia no crea citas ni asignaciones automáticas. Pausar no cancela casos existentes. Al cambiar el vínculo, la revisión profesional o el estado administrativo, deberás confirmar nuevamente tu disponibilidad.'**
   String get workspaceAvailabilityHelp;
 
   /// No description provided for @workspaceSave.
@@ -1797,6 +1797,96 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Último cambio: {date}'**
   String workspaceUpdated(String date);
+
+  /// No description provided for @doctorAdminActive.
+  ///
+  /// In es, this message translates to:
+  /// **'Administración: activa'**
+  String get doctorAdminActive;
+
+  /// No description provided for @doctorAdminInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'Administración: pausada'**
+  String get doctorAdminInactive;
+
+  /// No description provided for @doctorAdminPause.
+  ///
+  /// In es, this message translates to:
+  /// **'Pausar ficha'**
+  String get doctorAdminPause;
+
+  /// No description provided for @doctorAdminActivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Reactivar ficha'**
+  String get doctorAdminActivate;
+
+  /// No description provided for @doctorAdminConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar cambio'**
+  String get doctorAdminConfirm;
+
+  /// No description provided for @doctorAdminReason.
+  ///
+  /// In es, this message translates to:
+  /// **'Motivo administrativo *'**
+  String get doctorAdminReason;
+
+  /// No description provided for @doctorAdminReasonHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Obligatorio: 10 a 500 caracteres. No incluyas datos clínicos.'**
+  String get doctorAdminReasonHelp;
+
+  /// No description provided for @doctorAdminInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un motivo de 10 a 500 caracteres, sin contar espacios al inicio o al final.'**
+  String get doctorAdminInvalid;
+
+  /// No description provided for @doctorAdminHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Pausar impide nuevas vinculaciones y disponibilidad. No borra la ficha, la cuenta ni casos existentes, y no cambia la revisión profesional. Reactivar no aprueba al médico: deberá volver a confirmar su disponibilidad.'**
+  String get doctorAdminHelp;
+
+  /// No description provided for @doctorAdminPreviousReason.
+  ///
+  /// In es, this message translates to:
+  /// **'Último motivo registrado: {reason}'**
+  String doctorAdminPreviousReason(String reason);
+
+  /// No description provided for @doctorAdminSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado administrativo guardado en Firebase de desarrollo.'**
+  String get doctorAdminSaved;
+
+  /// No description provided for @doctorAdminDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes. Cierra y actualiza el listado.'**
+  String get doctorAdminDenied;
+
+  /// No description provided for @doctorAdminConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'El estado cambió. Cierra y actualiza el listado antes de intentarlo nuevamente.'**
+  String get doctorAdminConflict;
+
+  /// No description provided for @doctorAdminLimit.
+  ///
+  /// In es, this message translates to:
+  /// **'Alcanzaste el límite de 20 cambios administrativos de hoy. Inténtalo mañana.'**
+  String get doctorAdminLimit;
+
+  /// No description provided for @doctorAdminUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar el cambio. Reintenta sin cambiar el motivo o cierra y actualiza para consultar el estado real.'**
+  String get doctorAdminUnavailable;
 }
 
 class _AppLocalizationsDelegate

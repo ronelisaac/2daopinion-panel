@@ -25,7 +25,7 @@ Ronel prioriza médicos como profesionales independientes aunque el CRUD de clí
 ## Estado y siguiente orden propuesto
 
 1. Especialidad principal del médico vinculada al catálogo activo: E2-19; fichas antiguas se actualizan explícitamente, nunca por coincidencia de nombre.
-2. E2-20 vincula/desvincula la cuenta desde Usuarios con confirmación explícita, unicidad y auditoría. E2-21 añade espacio propio y preferencia de disponibilidad con Firebase; siguiente: baja administrativa de ficha y consulta de disponibilidad por Operaciones, conservando la revisión profesional separada.
+2. E2-20 vincula/desvincula la cuenta desde Usuarios con confirmación explícita, unicidad y auditoría. E2-21 añade espacio propio y preferencia de disponibilidad con Firebase; E2-22 entrega baja/reactivación administrativa con motivo y auditoría, conservando la revisión profesional separada. Siguiente: consulta de disponibilidad por Operaciones y asignación manual.
 3. Asignación manual por país/especialidad con permisos por caso; no depende de una clínica.
 4. Afiliaciones opcionales a clínicas más adelante; sin forzar exclusividad ni convenios.
 

@@ -939,7 +939,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get workspaceBlocked =>
-      'La ficha o su especialidad no está habilitada en desarrollo. La recepción permanece pausada; contacta al equipo para revisar tu situación.';
+      'La ficha, su estado administrativo o su especialidad no está habilitada en desarrollo. La recepción permanece pausada; contacta al equipo para revisar tu situación.';
 
   @override
   String get workspaceReady =>
@@ -960,7 +960,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get workspaceAvailabilityHelp =>
-      'Esta preferencia no crea citas ni asignaciones automáticas. Pausar no cancela casos existentes. Al cambiar el vínculo o la revisión profesional, deberás confirmar nuevamente tu disponibilidad.';
+      'Esta preferencia no crea citas ni asignaciones automáticas. Pausar no cancela casos existentes. Al cambiar el vínculo, la revisión profesional o el estado administrativo, deberás confirmar nuevamente tu disponibilidad.';
 
   @override
   String get workspaceSave => 'Guardar disponibilidad';
@@ -1003,4 +1003,59 @@ class AppLocalizationsEs extends AppLocalizations {
   String workspaceUpdated(String date) {
     return 'Último cambio: $date';
   }
+
+  @override
+  String get doctorAdminActive => 'Administración: activa';
+
+  @override
+  String get doctorAdminInactive => 'Administración: pausada';
+
+  @override
+  String get doctorAdminPause => 'Pausar ficha';
+
+  @override
+  String get doctorAdminActivate => 'Reactivar ficha';
+
+  @override
+  String get doctorAdminConfirm => 'Confirmar cambio';
+
+  @override
+  String get doctorAdminReason => 'Motivo administrativo *';
+
+  @override
+  String get doctorAdminReasonHelp =>
+      'Obligatorio: 10 a 500 caracteres. No incluyas datos clínicos.';
+
+  @override
+  String get doctorAdminInvalid =>
+      'Escribe un motivo de 10 a 500 caracteres, sin contar espacios al inicio o al final.';
+
+  @override
+  String get doctorAdminHelp =>
+      'Pausar impide nuevas vinculaciones y disponibilidad. No borra la ficha, la cuenta ni casos existentes, y no cambia la revisión profesional. Reactivar no aprueba al médico: deberá volver a confirmar su disponibilidad.';
+
+  @override
+  String doctorAdminPreviousReason(String reason) {
+    return 'Último motivo registrado: $reason';
+  }
+
+  @override
+  String get doctorAdminSaved =>
+      'Estado administrativo guardado en Firebase de desarrollo.';
+
+  @override
+  String get doctorAdminDenied =>
+      'No tienes permisos vigentes. Cierra y actualiza el listado.';
+
+  @override
+  String get doctorAdminConflict =>
+      'El estado cambió. Cierra y actualiza el listado antes de intentarlo nuevamente.';
+
+  @override
+  String get doctorAdminLimit =>
+      'Alcanzaste el límite de 20 cambios administrativos de hoy. Inténtalo mañana.';
+
+  @override
+  String get doctorAdminUnavailable =>
+      'No pudimos confirmar el cambio. Reintenta sin cambiar el motivo o cierra y actualiza para consultar el estado real.';
 }
