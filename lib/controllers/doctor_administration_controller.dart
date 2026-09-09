@@ -23,7 +23,7 @@ class DoctorAdministrationController extends ChangeNotifier {
   bool get allowed =>
       country == 'CL' &&
       PanelAccess.allows(principal, country, PanelModule.doctors) &&
-      principal.rolesFor(country).contains(PanelRole.operations);
+      PanelAccess.hasRole(principal, country, PanelRole.operations);
   bool get canSave =>
       !_disposed &&
       !busy &&

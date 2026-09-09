@@ -67,8 +67,8 @@ void main() {
         expect(find.text('Clasificación por especialidad'), findsOneWidget);
         expect(find.text('Asignación manual'), findsOneWidget);
         if (role == PanelRole.superadmin) {
-          expect(find.text('Elegir médico'), findsNothing);
-          expect(find.text('Clasificar solicitud'), findsNothing);
+          expect(find.text('Elegir médico'), findsOneWidget);
+          expect(find.text('Clasificar solicitud'), findsOneWidget);
         }
         expect(tester.takeException(), isNull);
       });

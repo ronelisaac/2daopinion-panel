@@ -3,19 +3,19 @@ const {FieldValue, FieldPath} = require("firebase-admin/firestore");
 const {readOperationalAvailability} = require("./doctor_availability");
 const {fail} = require("./policy");
 function createIntakeAssignment({database, auth, now}) {
-  function allowed(actor, country, read) {
+  function allowed(actor, country) {
     if (!actor || actor.active !== true || actor.provisioning !== "ready" ||
-        !(actor.memberships?.[country]?.includes("operations") || (read && actor.memberships?.[country]?.includes("superadmin")))) fail("permission-denied", "denied");
+        !(actor.memberships?.[country]?.includes("operations") || actor.memberships?.[country]?.includes("superadmin"))) fail("permission-denied", "denied");
   }
   return async function assign(actor, input) {
-    allowed(actor, input.country, input.action === "intakeAssignmentGet");
+    allowed(actor, input.country);
     return database.runTransaction(async transaction => {
       const reference = database.doc("intakeAssignments/" + input.id);
       const [canonical, intake, classification, existing] = await transaction.getAll(
         database.doc("panelStaff/" + actor.uid), database.doc("intakeRequests/" + input.id),
         database.doc("intakeClassifications/" + input.id), reference);
-      allowed(canonical.data(), input.country, input.action === "intakeAssignmentGet");
-      const operator = canonical.data().memberships[input.country].includes("operations");
+      allowed(canonical.data(), input.country);
+      const operator = canonical.data().memberships[input.country].some(role => ["operations", "superadmin"].includes(role));
       const request = intake.data(), route = classification.data(), previous = existing.data();
       if (!request || request.id !== input.id || request.countryCode !== input.country ||
           request.environment !== "development") fail("permission-denied", "denied");

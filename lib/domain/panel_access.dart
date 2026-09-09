@@ -97,6 +97,15 @@ class PanelAccess {
       PanelModule.payouts,
     },
   };
+  static bool hasRole(
+    PanelPrincipal principal,
+    String country,
+    PanelRole role,
+  ) =>
+      principal.active &&
+      principal.countries.contains(country) &&
+      (principal.rolesFor(country).contains(PanelRole.superadmin) ||
+          principal.rolesFor(country).contains(role));
   static bool visible(
     PanelPrincipal principal,
     String country,

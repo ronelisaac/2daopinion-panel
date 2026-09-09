@@ -73,12 +73,13 @@ class DoctorController extends ChangeNotifier {
       country == 'CL' &&
       PanelAccess.allows(principal, country, PanelModule.doctors);
   bool get canRegister =>
-      allowed && principal.rolesFor(country).contains(PanelRole.operations);
+      allowed && PanelAccess.hasRole(principal, country, PanelRole.operations);
   bool canReview(DoctorRecord record) =>
       allowed &&
       record.country == country &&
-      record.createdBy != principal.id &&
-      principal.rolesFor(country).contains(PanelRole.medicalDirector);
+      (principal.rolesFor(country).contains(PanelRole.superadmin) ||
+          (record.createdBy != principal.id &&
+              principal.rolesFor(country).contains(PanelRole.medicalDirector)));
 
   Future<void> load({bool more = false}) async {
     if (busy || _disposed || (more && nextCursor == null)) return;

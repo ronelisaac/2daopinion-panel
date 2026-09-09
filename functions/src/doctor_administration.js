@@ -10,7 +10,7 @@ function createDoctorAdministration({database, auth, now}) {
   function allowed(actor, country, write) {
     const roles = actor?.memberships?.[country] || [];
     if (!actor || actor.active !== true || actor.provisioning !== "ready" ||
-        !(roles.includes("operations") || (!write && (roles.includes("medicalDirector") || roles.includes("superadmin"))))) fail("permission-denied", "denied");
+        !(roles.includes("operations") || roles.includes("superadmin") || (!write && roles.includes("medicalDirector")))) fail("permission-denied", "denied");
   }
   function requireDoctor(doctor, country, id) {
     if (!doctor || doctor.id !== id || doctor.countryCode !== country || doctor.environment !== "development") fail("permission-denied", "denied");

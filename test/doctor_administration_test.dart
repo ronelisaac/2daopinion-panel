@@ -96,10 +96,10 @@ void main() {
     }
   });
   test(
-    'only operations in CL can change administration, never professional review',
+    'operations and superadmin in CL can change administration, never professional review',
     () async {
       for (final role in PanelRole.values.where(
-        (role) => role != PanelRole.operations,
+        (role) => role != PanelRole.operations && role != PanelRole.superadmin,
       )) {
         final repository = Administration();
         final controller = DoctorAdministrationController(

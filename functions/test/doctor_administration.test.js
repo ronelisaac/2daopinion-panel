@@ -65,14 +65,15 @@ test("default state, pause and reactivation preserve medical review, account and
   assert.equal((await database.collection("doctorAdministration/" + data.id + "/events").get()).size, 2);
   assert.deepEqual(await Promise.all(references.map(async path => (await database.doc(path).get()).data())), before);
 });
-test("only operations write; director and superadmin supervise without write inheritance", async () => {
+test("operations and superadmin write; director only reads", async () => {
   const data = await fixture();
   const director = await account("medicalDirector");
   assert.equal((await service(context(director), {action: "doctorAdminList", country: "CL", ids: [data.id]})).items.length, 1);
   await assert.rejects(service(context(director), command(data)), code("permission-denied"));
   for (const role of ["superadmin", "doctor", "finance"]) {
     const uid = await account(role);
-    await assert.rejects(service(context(uid), command(data)), code("permission-denied"));
+    if (role === "superadmin") await service(context(uid), command(data));
+    else await assert.rejects(service(context(uid), command(data)), code("permission-denied"));
     if (role === "superadmin") assert.equal((await service(context(uid), {action: "doctorAdminList", country: "CL", ids: [data.id]})).items.length, 1);
     else await assert.rejects(service(context(uid), {action: "doctorAdminList", country: "CL", ids: [data.id]}), code("permission-denied"));
   }

@@ -30,7 +30,7 @@ class IntakeClassificationController extends ChangeNotifier {
       country == 'CL' &&
       PanelAccess.allows(principal, country, PanelModule.requests);
   bool get canEdit =>
-      allowed && principal.rolesFor(country).contains(PanelRole.operations);
+      allowed && PanelAccess.hasRole(principal, country, PanelRole.operations);
   bool get canSave =>
       !_disposed &&
       !busy &&

@@ -364,6 +364,9 @@ service cloud.firestore {
         && staff.active == true && staff.provisioning == 'ready'
         && role in staff.memberships.get(country, []);
     }
+    function doctorWriter(country) {
+      return doctorRole(country, 'operations') || doctorRole(country, 'superadmin');
+    }
     function doctorReader(country) {
       return doctorRole(country, 'operations') || doctorRole(country, 'medicalDirector') || doctorRole(country, 'superadmin');
     }
@@ -401,7 +404,7 @@ service cloud.firestore {
     }
     function doctorReview(data, previous) {
       let review = data.review;
-      return doctorRole(data.countryCode, 'medicalDirector') && request.auth.uid != data.createdBy
+      return (doctorRole(data.countryCode, 'superadmin') || (doctorRole(data.countryCode, 'medicalDirector') && request.auth.uid != data.createdBy))
         && ((previous.status == 'pending' && data.status in ['verified', 'rejected'])
           || (previous.status == 'verified' && data.status == 'suspended')
           || (previous.status == 'suspended' && data.status in ['verified', 'rejected']))
@@ -417,7 +420,7 @@ service cloud.firestore {
       allow get: if (exists(/databases/$(database)/documents/doctorRecords/$(id)) && doctorReader(resource.data.countryCode))
         || (!exists(/databases/$(database)/documents/doctorRecords/$(id)) && id.matches('CL_[1-9][0-9]{0,9}') && doctorReader('CL'));
       allow list: if request.query.limit != null && request.query.limit <= 21 && doctorReader(resource.data.countryCode);
-      allow create: if doctorRole(request.resource.data.countryCode, 'operations')
+      allow create: if doctorWriter(request.resource.data.countryCode)
         && doctorShape(request.resource.data, id) && doctorSpecialty(request.resource.data, true) && request.resource.data.revision == 1
         && request.resource.data.createdBy == request.auth.uid && request.resource.data.createdAt == request.time
         && request.resource.data.status == 'pending' && request.resource.data.review == {}
@@ -427,14 +430,14 @@ service cloud.firestore {
         && request.resource.data.createdBy == resource.data.createdBy && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.registryNumber == resource.data.registryNumber
         && doctorAudit(request.resource.data, id)
-        && ((doctorRole(resource.data.countryCode, 'operations')
+        && ((doctorWriter(resource.data.countryCode)
             && resource.data.status in ['pending', 'rejected'] && request.resource.data.status == 'pending'
             && request.resource.data.review == {} && doctorSpecialty(request.resource.data, true)) || doctorReview(request.resource.data, resource.data));
       match /events/{revision} {
         allow get: if doctorReader(get(/databases/$(database)/documents/doctorRecords/$(id)).data.countryCode);
         allow list: if request.query.limit != null && request.query.limit <= 50
           && doctorReader(get(/databases/$(database)/documents/doctorRecords/$(id)).data.countryCode);
-        allow create: if (doctorRole(request.resource.data.countryCode, 'operations') || doctorRole(request.resource.data.countryCode, 'medicalDirector'))
+        allow create: if (doctorWriter(request.resource.data.countryCode) || doctorRole(request.resource.data.countryCode, 'medicalDirector'))
           && revision == string(request.resource.data.revision)
           && (!exists(/databases/$(database)/documents/doctorRecords/$(id))
             || request.resource.data.revision == get(/databases/$(database)/documents/doctorRecords/$(id)).data.revision + 1)

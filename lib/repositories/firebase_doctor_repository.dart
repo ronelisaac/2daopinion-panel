@@ -167,9 +167,7 @@ class FirebaseDoctorRepository implements DoctorRepository {
     DoctorReview review,
   ) => _guard(() async {
     final actor = _actor();
-    if (!review.valid ||
-        !previous.permits(review.status) ||
-        actor == previous.createdBy) {
+    if (!review.valid || !previous.permits(review.status)) {
       throw const DoctorFailure(DoctorIssue.invalid);
     }
     final reference = database().collection('doctorRecords').doc(previous.id);

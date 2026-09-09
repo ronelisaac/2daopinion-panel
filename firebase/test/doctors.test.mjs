@@ -157,14 +157,26 @@ test('legacy pending needs explicit operations mapping; existing verified can st
   await assertSucceeds(write(client('director', ['medicalDirector']), reviewed(verified, 'suspended'), 'review'));
 });
 
-test('superadmin reads registry and audit without writes, scoped and revocable', async () => {
+test('superadmin edits registry with audit, scoped and revocable', async () => {
   const previous = await create(), database = client('admin', ['superadmin']);
   await assertSucceeds(getDoc(doc(database, 'doctorRecords', recordId)));
   await assertSucceeds(getDoc(doc(database, 'doctorRecords', recordId, 'events', '1')));
-  await assertFails(write(database, {...previous, revision: 2, updatedBy: 'admin', updatedAt: serverTimestamp()}, 'edit'));
+  await assertSucceeds(write(database, {...previous, revision: 2, updatedBy: 'admin', updatedAt: serverTimestamp()}, 'edit'));
   await assertFails(write(database, reviewed(previous), 'review'));
   await assertFails(deleteDoc(doc(database, 'doctorRecords', recordId)));
   await assertFails(getDoc(doc(environment.authenticatedContext('admin', {email_verified: true, panelAccess: {version: 1, active: true, memberships: {AR: ['superadmin']}}}).firestore(), 'doctorRecords', recordId)));
   await environment.withSecurityRulesDisabled(context => updateDoc(doc(context.firestore(), 'panelStaff', 'admin'), {active: false}));
   await assertFails(getDoc(doc(database, 'doctorRecords', recordId)));
+});
+
+test('superadmin registers then reviews own administrative entry, without skipping validation or audit',async()=>{
+ const database=client('admin',['superadmin']);
+ const initialRecord={...initial(),createdBy:'admin',updatedBy:'admin'};
+ await assertFails(write(database,initialRecord,'create',false));
+ await assertSucceeds(write(database,initialRecord));
+ const previous=(await getDoc(doc(database,'doctorRecords',recordId))).data();
+ const approval={...reviewed(previous),updatedBy:'admin',review:{...reviewed(previous).review,actorId:'admin'}};
+ await assertFails(write(database,{...approval,review:{...approval.review,identityChecked:false}},'review'));
+ await assertSucceeds(write(database,approval,'review'));
+ assert.equal((await getDoc(doc(database,'doctorRecords',recordId,'events','2'))).data().actorId,'admin');
 });

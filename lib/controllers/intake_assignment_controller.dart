@@ -24,7 +24,7 @@ class IntakeAssignmentController extends ChangeNotifier {
       country == 'CL' &&
       PanelAccess.allows(principal, country, PanelModule.requests);
   bool get canOperate =>
-      allowed && principal.rolesFor(country).contains(PanelRole.operations);
+      allowed && PanelAccess.hasRole(principal, country, PanelRole.operations);
   bool get canEdit =>
       !_disposed &&
       !busy &&

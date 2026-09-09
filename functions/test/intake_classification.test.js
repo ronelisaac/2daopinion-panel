@@ -57,13 +57,14 @@ test("pending, classify, replay, correction and clearing are audited without tou
   assert.equal(events.size, 3); assert.deepEqual((await intake.get()).data(), before);
   assert.equal((await database.doc("intakeClassificationLimits/" + data.uid).get()).data().count, 3);
 });
-test("only canonical country operations; revoked, disabled and unverified actors denied", async () => {
+test("canonical operations and superadmin; revoked, disabled and unverified actors denied", async () => {
   const data = await fixture();
   for (const role of ["medicalDirector", "superadmin", "doctor", "finance"]) {
     const uid = await account(role);
-    if (role === "superadmin") assert.equal((await read({...data, uid})).editable, false);
+    if (role === "superadmin") assert.equal((await read({...data, uid})).editable, true);
     else await assert.rejects(read({...data, uid}), code("permission-denied"));
-    await assert.rejects(service(context(uid), input(data)), code("permission-denied"));
+    if (role === "superadmin") await service(context(uid), input(data));
+    else await assert.rejects(service(context(uid), input(data)), code("permission-denied"));
   }
   await assert.rejects(service(null, input(data)), code("unauthenticated"));
   await database.doc("panelStaff/" + data.uid).update({memberships: {AR: ["operations"]}});
@@ -113,10 +114,10 @@ test("specialty deactivation is shown, unchanged input rejected and daily bound 
   assert.equal((await read(data)).revision, 1);
 });
 
-test("superadmin reads saved classification without edit rights and canonical scope remains authoritative",async()=>{
+test("superadmin reads saved classification with edit rights and canonical scope remains authoritative",async()=>{
  const data=await fixture(),uid=await account("superadmin");
  await service(context(data.uid),input(data));
- const view=await read({...data,uid});assert.equal(view.editable,false);assert.ok(view.specialtyId);
+ const view=await read({...data,uid});assert.equal(view.editable,true);assert.ok(view.specialtyId);
  await database.doc("panelStaff/"+uid).update({memberships:{AR:["superadmin"]}});
  await assert.rejects(read({...data,uid}),code("permission-denied"));
  await database.doc("panelStaff/"+uid).update({memberships:{CL:["superadmin"]},active:false});

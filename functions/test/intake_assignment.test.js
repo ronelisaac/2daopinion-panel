@@ -92,13 +92,14 @@ test("all reliable physician blocks, foreign specialty and stale classification 
  await database.doc("doctorRecords/"+data.doctorId).update({specialtyId:"CL_foreign"});
  await assert.rejects(service(context(data.uid),input(data)),code("failed-precondition"));
 });
-test("canonical operations only, no inheritance, revocation and country isolation",async()=>{
+test("operations and superadmin manage; other roles, revocation and country isolation enforced",async()=>{
  const data=await fixture();
  for(const role of ["superadmin","medicalDirector","doctor","finance"]){
  const uid=await account(role);
- if(role === "superadmin") { const result=await read({...data,uid}); assert.equal(result.canAssign,false); assert.equal(result.canRelease,false); }
+ if(role === "superadmin") { const result=await read({...data,uid}); assert.equal(result.canAssign,true); assert.equal(result.canRelease,false); }
  else await assert.rejects(read({...data,uid}),code("permission-denied"));
- await assert.rejects(service(context(uid),input(data)),code("permission-denied"));
+ if(role === "superadmin") await service(context(uid),input(data));
+ else await assert.rejects(service(context(uid),input(data)),code("permission-denied"));
  }
  await database.doc("panelStaff/"+data.uid).update({active:false});
  await assert.rejects(read(data),code("permission-denied"));
@@ -128,13 +129,13 @@ test("classification racing with assignment cannot leave an active stale classif
  assert.ok(!assignment || (route.revision===assignment.classificationRevision && route.source!=="unconfirmed"));
 });
 
-test("superadmin supervises active assignment but cannot release, select or bypass revocation",async()=>{
+test("superadmin supervises active assignment can release and select, but cannot bypass revocation",async()=>{
  const data=await fixture(),uid=await account("superadmin");
  await service(context(data.uid),input(data));
  const view=await read({...data,uid});
- assert.equal(view.status,"pendingAcceptance");assert.equal(view.canRelease,false);assert.equal(view.canAssign,false);
- await assert.rejects(service(context(uid),release(data)),code("permission-denied"));
- await assert.rejects(service(context(uid),{action:"intakeAssignmentCandidates",country:"CL",id:data.id,classificationRevision:1}),code("permission-denied"));
+ assert.equal(view.status,"pendingAcceptance");assert.equal(view.canRelease,true);assert.equal(view.canAssign,false);
+ await service(context(uid),release(data));
+ assert.ok((await service(context(uid),{action:"intakeAssignmentCandidates",country:"CL",id:data.id,classificationRevision:1})).items.length > 0);
  await database.doc("panelStaff/"+uid).update({memberships:{AR:["superadmin"]}});
  await assert.rejects(read({...data,uid}),code("permission-denied"));
  await database.doc("panelStaff/"+uid).update({memberships:{CL:["superadmin"]},active:false});

@@ -148,7 +148,7 @@ void main() {
     },
   );
   test(
-    'retries reuse ID, permission failures discard stale data, no role inheritance',
+    'retries reuse ID, permission failures discard stale data, superadmin can manage',
     () async {
       final repository = Repository(),
           catalog = Catalog(),
@@ -177,7 +177,7 @@ void main() {
       await denied.load();
       expect(denied.issue, isNull);
       expect(denied.record, isNotNull);
-      expect(denied.canSave, isFalse);
+      expect(denied.canEdit, isTrue);
       denied.dispose();
     },
   );
