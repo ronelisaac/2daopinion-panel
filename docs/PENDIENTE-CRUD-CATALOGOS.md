@@ -18,10 +18,15 @@ La baja debe preservar registros referenciados por casos, verificaciones o histo
 
 Las especialidades se seleccionarán por ID desde el catálogo. El texto libre de especialidad principal existente en E2-15 es transitorio: su migración requiere mapeo revisado, sin inventar equivalencias ni certificar especialidades automáticamente. Definir relaciones médico–especialidad y médico–clínica sin asumir exclusividad ni pertenencia obligatoria a una clínica.
 
+## Prioridad vigente · 9 de septiembre · E2-19
+
+Ronel prioriza médicos como profesionales independientes aunque el CRUD de clínicas ya exista. No exigir clínica para registrar al médico ni inferir afiliaciones. E2-19 conecta la especialidad principal al catálogo privado por ID y conserva el nombre como instantánea; no publica perfiles ni acredita automáticamente profesionales.
+
 ## Estado y siguiente orden propuesto
 
-1. CRUD de especialidades y permisos explícitos; luego conectar selectores y migrar las referencias existentes.
-2. CRUD de clínicas y relaciones con médicos.
-3. Completar CRUD de médicos, baja administrativa y vinculación de cuenta, conservando la revisión independiente.
+1. Especialidad principal del médico vinculada al catálogo activo: E2-19; fichas antiguas se actualizan explícitamente, nunca por coincidencia de nombre.
+2. Completar la gestión del médico independiente: baja administrativa, vinculación de cuenta y disponibilidad, conservando la revisión independiente.
+3. Asignación manual por país/especialidad con permisos por caso; no depende de una clínica.
+4. Afiliaciones opcionales a clínicas más adelante; sin forzar exclusividad ni convenios.
 
-E2-15 entrega registro/corrección/revisión manual de médicos en desarrollo; no un CRUD completo con eliminación. [E2-17](E2-17-ESPECIALIDADES-FIREBASE.md) y [E2-18](E2-18-CLINICAS-FIREBASE.md) activan especialidades y clínicas con baja lógica, validaciones y auditoría en Firebase remoto; superadmin administra y Operaciones/Dirección médica consultan por país. Próximo paso: conectar médicos con ambos catálogos por ID; selectores del paciente y proyección pública segura pendientes. La política vigente autoriza publicar secciones verificadas de desarrollo sin nueva confirmación rutinaria; no ampliar roles reales ni habilitar atención clínica por inferencia.
+E2-15 entrega registro/corrección/revisión manual de médicos en desarrollo; no un CRUD completo con eliminación. [E2-17](E2-17-ESPECIALIDADES-FIREBASE.md) y [E2-18](E2-18-CLINICAS-FIREBASE.md) activan especialidades y clínicas con baja lógica, validaciones y auditoría en Firebase remoto; superadmin administra y Operaciones/Dirección médica consultan por país. E2-19 conecta médicos con especialidades por ID; la relación con clínicas no es prioritaria ni obligatoria. Selectores del paciente y proyección pública segura pendientes. La política vigente autoriza publicar secciones verificadas de desarrollo sin nueva confirmación rutinaria; no ampliar roles reales ni habilitar atención clínica por inferencia.

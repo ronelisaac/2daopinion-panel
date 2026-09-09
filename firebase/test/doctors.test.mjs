@@ -10,7 +10,7 @@ const recordId = 'CL_987654321';
 const access = roles => ({panelAccess: {version: 1, active: true, memberships: {CL: roles}}, email_verified: true});
 function client(uid, roles) { return environment.authenticatedContext(uid, access(roles)).firestore(); }
 function initial() {
-  return {id: recordId, countryCode: 'CL', schemaVersion: 1, environment: 'development',
+  return {id: recordId, countryCode: 'CL', schemaVersion: 2, specialtyId: 'CL_qa_specialty', environment: 'development',
     name: 'Médico Ficticio QA', registryNumber: '987654321', specialty: 'Especialidad ficticia',
     status: 'pending', review: {}, revision: 1, createdBy: 'operator', createdAt: serverTimestamp(),
     updatedBy: 'operator', updatedAt: serverTimestamp()};
@@ -41,6 +41,7 @@ before(async () => {
 beforeEach(async () => {
   await environment.clearFirestore();
   await environment.withSecurityRulesDisabled(async context => {
+    await setDoc(doc(context.firestore(), 'specialties', 'CL_qa_specialty'), {countryCode: 'CL', active: true, name: 'Especialidad ficticia'});
     for (const [uid, roles] of [['operator', ['operations']], ['director', ['medicalDirector']], ['admin', ['superadmin']], ['doctor', ['doctor']]]) {
       await setDoc(doc(context.firestore(), 'panelStaff', uid), {active: true, provisioning: 'ready', memberships: {CL: roles}});
     }
@@ -99,7 +100,7 @@ test('rejection can be corrected by operations and resets review with immutable 
   await assertSucceeds(write(client('director', ['medicalDirector']), reviewed(await create(), 'rejected'), 'review'));
   const database = client('operator', ['operations']);
   const previous = (await getDoc(doc(database, 'doctorRecords', recordId))).data();
-  await assertSucceeds(write(database, {...previous, status: 'pending', review: {}, specialty: 'Especialidad corregida', revision: 3, updatedBy: 'operator', updatedAt: serverTimestamp()}, 'edit'));
+  await assertSucceeds(write(database, {...previous, status: 'pending', review: {}, name: 'Nombre corregido', revision: 3, updatedBy: 'operator', updatedAt: serverTimestamp()}, 'edit'));
   assert.equal((await getDoc(doc(database, 'doctorRecords', recordId, 'events', '2'))).data().snapshot.status, 'rejected');
 });
 test('duplicate/stale revisions, deletion and audit alteration are denied', async () => {
@@ -122,4 +123,36 @@ test('canonical revocation and mismatched claims deny access', async () => {
   await assertFails(getDoc(doc(client('operator', ['medicalDirector']), 'doctorRecords', recordId)));
   await environment.withSecurityRulesDisabled(context => setDoc(doc(context.firestore(), 'panelStaff', 'operator'), {active: false, provisioning: 'ready', memberships: {CL: ['operations']}}));
   await assertFails(getDoc(doc(client('operator', ['operations']), 'doctorRecords', recordId)));
+});
+
+for (const [label, change] of [
+  ['legacy new record', {schemaVersion: 1}], ['missing specialty ID', {specialtyId: null}],
+  ['unknown specialty', {specialtyId: 'CL_missing'}], ['foreign ID', {specialtyId: 'AR_qa_specialty'}],
+  ['forged specialty name', {specialty: 'Otra especialidad'}], ['clinic required by client', {clinicId: 'CL_any'}],
+]) test(`catalog rejects ${label}`, async () => {
+  await assertFails(write(client('operator', ['operations']), {...initial(), ...change}));
+});
+test('inactive and foreign-country catalog references are denied at registration and approval', async () => {
+  const previous = await create();
+  for (const change of [{countryCode: 'CL', active: false}, {countryCode: 'AR', active: true}]) {
+    await environment.withSecurityRulesDisabled(context => setDoc(doc(context.firestore(), 'specialties', 'CL_qa_specialty'), {...change, name: 'Especialidad ficticia'}));
+    await assertFails(write(client('director', ['medicalDirector']), reviewed(previous), 'review'));
+    await assertFails(write(client('operator', ['operations']), {...previous, revision: 2, updatedAt: serverTimestamp()}, 'edit'));
+  }
+});
+test('catalog rename does not change historical label or prevent otherwise valid review', async () => {
+  const previous = await create();
+  await environment.withSecurityRulesDisabled(context => setDoc(doc(context.firestore(), 'specialties', 'CL_qa_specialty'), {countryCode: 'CL', active: true, name: 'Nombre actualizado'}));
+  await assertSucceeds(write(client('director', ['medicalDirector']), reviewed(previous), 'review'));
+});
+test('legacy pending needs explicit operations mapping; existing verified can still be suspended', async () => {
+  const database = client('operator', ['operations']);
+  const legacy = {...initial(), schemaVersion: 1}; delete legacy.specialtyId;
+  await environment.withSecurityRulesDisabled(context => setDoc(doc(context.firestore(), 'doctorRecords', recordId), legacy));
+  const previous = (await getDoc(doc(database, 'doctorRecords', recordId))).data();
+  await assertFails(write(client('director', ['medicalDirector']), reviewed(previous), 'review'));
+  await assertSucceeds(write(database, {...previous, schemaVersion: 2, specialtyId: 'CL_qa_specialty', revision: 2, updatedAt: serverTimestamp()}, 'edit'));
+  await environment.withSecurityRulesDisabled(context => setDoc(doc(context.firestore(), 'doctorRecords', recordId), {...legacy, status: 'verified', revision: 10}));
+  const verified = (await getDoc(doc(database, 'doctorRecords', recordId))).data();
+  await assertSucceeds(write(client('director', ['medicalDirector']), reviewed(verified, 'suspended'), 'review'));
 });

@@ -45,6 +45,7 @@ class FirebaseDoctorRepository implements DoctorRepository {
         data['name'] as String,
         data['registryNumber'] as String,
         data['specialty'] as String,
+        specialtyId: data['specialtyId'] as String?,
       ),
       status: status,
       revision: data['revision'] as int,
@@ -92,6 +93,7 @@ class FirebaseDoctorRepository implements DoctorRepository {
   }) => _guard(() async {
     if (country != 'CL' ||
         !input.valid ||
+        !input.linked ||
         (previous != null &&
             (!previous.editable ||
                 previous.country != country ||
@@ -119,14 +121,24 @@ class FirebaseDoctorRepository implements DoctorRepository {
               previous.id != reference.id)) {
         return DoctorIssue.conflict;
       }
+      final specialty = await transaction.get(
+        database().collection('specialties').doc(input.specialtyId!),
+      );
+      if (!specialty.exists ||
+          specialty.data()!['active'] != true ||
+          specialty.data()!['countryCode'] != country ||
+          specialty.data()!['name'] != input.specialty) {
+        return DoctorIssue.specialtyUnavailable;
+      }
       final data = <String, dynamic>{
         'id': reference.id,
         'countryCode': country,
-        'schemaVersion': 1,
+        'schemaVersion': 2,
         'environment': 'development',
         'name': input.name,
         'registryNumber': input.registry,
         'specialty': input.specialty,
+        'specialtyId': input.specialtyId,
         'status': 'pending',
         'review': <String, dynamic>{},
         'revision': (previous?.revision ?? 0) + 1,
@@ -171,6 +183,20 @@ class FirebaseDoctorRepository implements DoctorRepository {
       }
       if (!current.exists || current.data()!['revision'] != previous.revision) {
         return DoctorIssue.conflict;
+      }
+      if (review.status == DoctorStatus.verified) {
+        final specialtyId = current.data()!['specialtyId'];
+        if (specialtyId is! String || !previous.input.linked) {
+          return DoctorIssue.specialtyUnavailable;
+        }
+        final specialty = await transaction.get(
+          database().collection('specialties').doc(specialtyId),
+        );
+        if (!specialty.exists ||
+            specialty.data()!['active'] != true ||
+            specialty.data()!['countryCode'] != previous.country) {
+          return DoctorIssue.specialtyUnavailable;
+        }
       }
       final data = <String, dynamic>{
         ...current.data()!,

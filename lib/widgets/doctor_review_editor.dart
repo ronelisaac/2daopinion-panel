@@ -62,6 +62,8 @@ class _DoctorReviewEditorState extends State<DoctorReviewEditor> {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Text(text.doctorReviewIntro),
+                    if (!widget.record.input.linked)
+                      Text(text.doctorLegacySpecialty),
                     const SizedBox(height: 12),
                     Text(text.doctorSource),
                     SelectableText(text.doctorSourceUrl),

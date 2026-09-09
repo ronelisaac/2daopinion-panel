@@ -371,10 +371,18 @@ service cloud.firestore {
       return value is string && value.size() >= minimum && value.size() <= maximum
         && value.matches('[^\\s]([\\s\\S]*[^\\s])?');
     }
+    function doctorSpecialty(data, matchName) {
+      let specialty = get(/databases/$(database)/documents/specialties/$(data.specialtyId)).data;
+      return data.schemaVersion == 2
+        && specialty.countryCode == data.countryCode && specialty.active == true
+        && (!matchName || specialty.name == data.specialty);
+    }
     function doctorShape(data, id) {
       return data.keys().hasAll(['id', 'countryCode', 'schemaVersion', 'environment', 'name', 'registryNumber', 'specialty', 'status', 'review', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
-        && data.keys().hasOnly(['id', 'countryCode', 'schemaVersion', 'environment', 'name', 'registryNumber', 'specialty', 'status', 'review', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
-        && data.countryCode == 'CL' && data.schemaVersion == 1 && data.environment == 'development'
+        && data.keys().hasOnly(['id', 'countryCode', 'schemaVersion', 'environment', 'name', 'registryNumber', 'specialty', 'specialtyId', 'status', 'review', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
+        && data.countryCode == 'CL' && data.environment == 'development'
+        && ((data.schemaVersion == 1 && !('specialtyId' in data))
+          || (data.schemaVersion == 2 && data.specialtyId is string && data.specialtyId.matches('CL_[a-z][a-z0-9_]{1,31}')))
         && data.registryNumber is string && data.registryNumber.matches('[1-9][0-9]{0,9}')
         && data.id == id && id == 'CL_' + data.registryNumber
         && doctorText(data.name, 3, 120) && doctorText(data.specialty, 2, 120)
@@ -403,14 +411,14 @@ service cloud.firestore {
         && review.actorId == request.auth.uid && review.at == request.time && review.source == 'CL_RNPI'
         && doctorText(review.evidence, 3, 200) && doctorText(review.note, 10, 2000)
         && review.identityChecked is bool && review.titleChecked is bool && review.specialtyChecked is bool
-        && (data.status != 'verified' || (review.identityChecked && review.titleChecked && review.specialtyChecked));
+        && (data.status != 'verified' || (review.identityChecked && review.titleChecked && review.specialtyChecked && doctorSpecialty(data, false)));
     }
     match /doctorRecords/{id} {
       allow get: if (exists(/databases/$(database)/documents/doctorRecords/$(id)) && doctorReader(resource.data.countryCode))
         || (!exists(/databases/$(database)/documents/doctorRecords/$(id)) && id.matches('CL_[1-9][0-9]{0,9}') && doctorReader('CL'));
       allow list: if request.query.limit != null && request.query.limit <= 21 && doctorReader(resource.data.countryCode);
       allow create: if doctorRole(request.resource.data.countryCode, 'operations')
-        && doctorShape(request.resource.data, id) && request.resource.data.revision == 1
+        && doctorShape(request.resource.data, id) && doctorSpecialty(request.resource.data, true) && request.resource.data.revision == 1
         && request.resource.data.createdBy == request.auth.uid && request.resource.data.createdAt == request.time
         && request.resource.data.status == 'pending' && request.resource.data.review == {}
         && doctorAudit(request.resource.data, id);
@@ -421,7 +429,7 @@ service cloud.firestore {
         && doctorAudit(request.resource.data, id)
         && ((doctorRole(resource.data.countryCode, 'operations')
             && resource.data.status in ['pending', 'rejected'] && request.resource.data.status == 'pending'
-            && request.resource.data.review == {}) || doctorReview(request.resource.data, resource.data));
+            && request.resource.data.review == {} && doctorSpecialty(request.resource.data, true)) || doctorReview(request.resource.data, resource.data));
       match /events/{revision} {
         allow get: if doctorReader(get(/databases/$(database)/documents/doctorRecords/$(id)).data.countryCode);
         allow list: if request.query.limit != null && request.query.limit <= 50

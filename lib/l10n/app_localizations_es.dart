@@ -234,7 +234,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get doctorsIntro =>
-      'Registro profesional privado de desarrollo. Usa solo datos ficticios. Registrar antecedentes no crea una cuenta ni habilita atención, recetas o acceso a pacientes. La revisión RNPI es manual; no existe conexión automática con el registro.';
+      'Gestiona médicos independientes por país. No se exige una clínica. El registro no otorga acceso clínico ni acredita al profesional.';
 
   @override
   String get doctorCreate => 'Registrar médico';
@@ -281,7 +281,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'Introduce de 1 a 10 dígitos, sin ceros iniciales.';
 
   @override
-  String get doctorSpecialtyInvalid => 'Escribe entre 2 y 120 caracteres.';
+  String get doctorSpecialtyInvalid =>
+      'Selecciona una especialidad activa del catálogo.';
 
   @override
   String get doctorSaved =>
@@ -850,4 +851,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String clinicPhoneValue(String phone) {
     return 'Teléfono: $phone';
   }
+
+  @override
+  String get doctorCatalogHelp =>
+      'Elige una especialidad del país. Su selección no reemplaza la verificación profesional.';
+
+  @override
+  String get doctorCatalogEmpty =>
+      'No hay especialidades activas en esta página. Carga más o solicita al administrador que registre una.';
+
+  @override
+  String get doctorCatalogLoading => 'Cargando especialidades…';
+
+  @override
+  String get doctorCatalogError =>
+      'No se pudieron cargar las especialidades. Vuelve a intentarlo.';
+
+  @override
+  String get doctorCatalogRetry => 'Actualizar especialidades';
+
+  @override
+  String get doctorCatalogMore => 'Cargar más especialidades';
+
+  @override
+  String get doctorCatalogInvalid =>
+      'La especialidad ya no está disponible. Actualiza el catálogo y selecciona una especialidad activa.';
+
+  @override
+  String get doctorLegacySpecialty =>
+      'Ficha histórica: Operaciones debe vincular explícitamente una especialidad del catálogo antes de aprobar. No se asignará por coincidencia de nombre.';
 }

@@ -111,12 +111,30 @@ void main() {
         );
       }
 
+      final seeded = await http.patch(
+        Uri.parse(
+          'http://127.0.0.1:8080/v1/projects/demo-2daopinion/databases/(default)/documents/specialties/CL_qa_specialty',
+        ),
+        headers: {
+          'Authorization': 'Bearer owner',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'fields': {
+            'countryCode': {'stringValue': 'CL'},
+            'active': {'booleanValue': true},
+            'name': {'stringValue': 'Especialidad ficticia'},
+          },
+        }),
+      );
+      expect(seeded.statusCode, 200);
       await login('operations');
       final registry = '${1000000000 + suffix % 9000000000}';
       final input = DoctorInput(
         'Médico ficticio integración',
         registry,
         'Especialidad ficticia',
+        specialtyId: 'CL_qa_specialty',
       );
       await repository.save('CL', input);
       await expectLater(
@@ -140,6 +158,7 @@ void main() {
           'Nombre ficticio corregido',
           registry,
           'Especialidad ficticia',
+          specialtyId: 'CL_qa_specialty',
         ),
         previous: first,
       );

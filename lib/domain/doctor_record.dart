@@ -1,6 +1,13 @@
 enum DoctorStatus { pending, verified, rejected, suspended }
 
-enum DoctorIssue { invalid, denied, duplicate, conflict, unavailable }
+enum DoctorIssue {
+  invalid,
+  denied,
+  duplicate,
+  conflict,
+  specialtyUnavailable,
+  unavailable,
+}
 
 class DoctorFailure implements Exception {
   const DoctorFailure(this.issue);
@@ -8,19 +15,27 @@ class DoctorFailure implements Exception {
 }
 
 class DoctorInput {
-  DoctorInput(String name, String registry, String specialty)
-    : name = name.trim(),
-      registry = registry.trim(),
-      specialty = specialty.trim();
+  DoctorInput(
+    String name,
+    String registry,
+    String specialty, {
+    this.specialtyId,
+  }) : name = name.trim(),
+       registry = registry.trim(),
+       specialty = specialty.trim();
   final String name;
   final String registry;
   final String specialty;
+  final String? specialtyId;
+  bool get linked =>
+      specialtyId != null &&
+      RegExp(r'^CL_[a-z][a-z0-9_]{1,31}$').hasMatch(specialtyId!);
   static bool validName(String value) =>
-      value.trim().length >= 3 && value.trim().length <= 120;
+      value.trim().runes.length >= 3 && value.trim().runes.length <= 120;
   static bool validRegistry(String value) =>
       RegExp(r'^[1-9][0-9]{0,9}$').hasMatch(value.trim());
   static bool validSpecialty(String value) =>
-      value.trim().length >= 2 && value.trim().length <= 120;
+      value.trim().runes.length >= 2 && value.trim().runes.length <= 120;
   bool get valid =>
       validName(name) && validRegistry(registry) && validSpecialty(specialty);
 }

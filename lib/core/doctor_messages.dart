@@ -16,5 +16,6 @@ String doctorIssueLabel(BuildContext context, DoctorIssue issue) =>
       DoctorIssue.denied => strings(context).doctorDenied,
       DoctorIssue.duplicate => strings(context).doctorDuplicate,
       DoctorIssue.conflict => strings(context).doctorConflict,
+      DoctorIssue.specialtyUnavailable => strings(context).doctorCatalogInvalid,
       DoctorIssue.unavailable => strings(context).doctorUnavailable,
     };

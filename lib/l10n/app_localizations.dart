@@ -499,7 +499,7 @@ abstract class AppLocalizations {
   /// No description provided for @doctorsIntro.
   ///
   /// In es, this message translates to:
-  /// **'Registro profesional privado de desarrollo. Usa solo datos ficticios. Registrar antecedentes no crea una cuenta ni habilita atención, recetas o acceso a pacientes. La revisión RNPI es manual; no existe conexión automática con el registro.'**
+  /// **'Gestiona médicos independientes por país. No se exige una clínica. El registro no otorga acceso clínico ni acredita al profesional.'**
   String get doctorsIntro;
 
   /// No description provided for @doctorCreate.
@@ -583,7 +583,7 @@ abstract class AppLocalizations {
   /// No description provided for @doctorSpecialtyInvalid.
   ///
   /// In es, this message translates to:
-  /// **'Escribe entre 2 y 120 caracteres.'**
+  /// **'Selecciona una especialidad activa del catálogo.'**
   String get doctorSpecialtyInvalid;
 
   /// No description provided for @doctorSaved.
@@ -1545,6 +1545,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Teléfono: {phone}'**
   String clinicPhoneValue(String phone);
+
+  /// No description provided for @doctorCatalogHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una especialidad del país. Su selección no reemplaza la verificación profesional.'**
+  String get doctorCatalogHelp;
+
+  /// No description provided for @doctorCatalogEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay especialidades activas en esta página. Carga más o solicita al administrador que registre una.'**
+  String get doctorCatalogEmpty;
+
+  /// No description provided for @doctorCatalogLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando especialidades…'**
+  String get doctorCatalogLoading;
+
+  /// No description provided for @doctorCatalogError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar las especialidades. Vuelve a intentarlo.'**
+  String get doctorCatalogError;
+
+  /// No description provided for @doctorCatalogRetry.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar especialidades'**
+  String get doctorCatalogRetry;
+
+  /// No description provided for @doctorCatalogMore.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más especialidades'**
+  String get doctorCatalogMore;
+
+  /// No description provided for @doctorCatalogInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'La especialidad ya no está disponible. Actualiza el catálogo y selecciona una especialidad activa.'**
+  String get doctorCatalogInvalid;
+
+  /// No description provided for @doctorLegacySpecialty.
+  ///
+  /// In es, this message translates to:
+  /// **'Ficha histórica: Operaciones debe vincular explícitamente una especialidad del catálogo antes de aprobar. No se asignará por coincidencia de nombre.'**
+  String get doctorLegacySpecialty;
 }
 
 class _AppLocalizationsDelegate

@@ -9,6 +9,37 @@ import 'package:segunda_opinion_panel/domain/repositories/doctor_repository.dart
 import 'package:segunda_opinion_panel/widgets/doctor_editor.dart';
 import 'package:segunda_opinion_panel/widgets/doctor_review_editor.dart';
 import 'fake_identity.dart';
+import 'package:segunda_opinion_panel/domain/specialty.dart';
+import 'package:segunda_opinion_panel/domain/repositories/specialty_repository.dart';
+
+class TestSpecialties implements SpecialtyRepository {
+  List<Specialty> items = [
+    Specialty(
+      id: 'CL_qa_specialty',
+      country: 'CL',
+      input: SpecialtyInput('qa_specialty', 'Especialidad ficticia', ''),
+      active: true,
+      revision: 1,
+      updatedAt: DateTime.utc(2026),
+    ),
+  ];
+  SpecialtyIssue? issue;
+  String? cursor;
+  @override
+  Future<SpecialtyPage> list(String country, {String? cursor}) async {
+    if (issue != null) throw SpecialtyFailure(issue!);
+    return SpecialtyPage(items, this.cursor);
+  }
+
+  @override
+  Future<void> save(
+    String country,
+    SpecialtyInput input, {
+    Specialty? previous,
+  }) async {}
+  @override
+  Future<void> setActive(Specialty previous, bool active) async {}
+}
 
 PanelPrincipal principal(
   PanelRole role, {
@@ -21,7 +52,12 @@ DoctorRecord record({
 }) => DoctorRecord(
   id: 'CL_123',
   country: 'CL',
-  input: DoctorInput('Nombre ficticio', '123', 'Especialidad ficticia'),
+  input: DoctorInput(
+    'Nombre ficticio',
+    '123',
+    'Especialidad ficticia',
+    specialtyId: 'CL_qa_specialty',
+  ),
   status: status,
   revision: 1,
   createdBy: creator,
@@ -84,6 +120,7 @@ Future<void> open(
     PanelApp(
       identity: FakeIdentity(current: user),
       doctorRepository: repository,
+      specialtyRepository: TestSpecialties(),
     ),
   );
   await tester.pumpAndSettle();
@@ -93,6 +130,85 @@ Future<void> open(
 }
 
 void main() {
+  test(
+    'catalog is paged, filtered and cleared after permission failure',
+    () async {
+      final catalog = TestSpecialties()..cursor = 'next';
+      final controller = DoctorController(
+        TestDoctors(),
+        principal(PanelRole.operations),
+        'CL',
+        specialtyRepository: catalog,
+      );
+      addTearDown(controller.dispose);
+      await controller.loadSpecialties();
+      expect(controller.specialties.single.id, 'CL_qa_specialty');
+      expect(controller.specialtyCursor, 'next');
+      catalog.items = [
+        Specialty(
+          id: 'CL_inactive',
+          country: 'CL',
+          input: SpecialtyInput('inactive', 'Inactiva', ''),
+          active: false,
+          revision: 1,
+          updatedAt: DateTime.utc(2026),
+        ),
+      ];
+      catalog.cursor = null;
+      await controller.loadSpecialties(more: true);
+      expect(controller.specialties.length, 1);
+      expect(controller.specialtyCursor, isNull);
+      catalog.issue = SpecialtyIssue.denied;
+      await controller.loadSpecialties();
+      expect(controller.specialties, isEmpty);
+      expect(controller.catalogFailed, isTrue);
+    },
+  );
+  test(
+    'legacy text is readable but cannot be saved or approved without explicit reference',
+    () async {
+      final repository = TestDoctors();
+      final operations = DoctorController(
+        repository,
+        principal(PanelRole.operations),
+        'CL',
+      );
+      final director = DoctorController(
+        repository,
+        principal(PanelRole.medicalDirector, id: 'director'),
+        'CL',
+      );
+      addTearDown(operations.dispose);
+      addTearDown(director.dispose);
+      final legacy = DoctorInput(
+        'Nombre histórico',
+        '123',
+        'Especialidad ficticia',
+      );
+      expect(legacy.valid, isTrue);
+      expect(legacy.linked, isFalse);
+      expect(await operations.save(legacy), isFalse);
+      final previous = DoctorRecord(
+        id: 'CL_123',
+        country: 'CL',
+        input: legacy,
+        status: DoctorStatus.pending,
+        revision: 1,
+        createdBy: 'operator',
+        updatedAt: DateTime.utc(2026),
+      );
+      expect(await director.review(previous, review()), isFalse);
+      expect(director.issue, DoctorIssue.specialtyUnavailable);
+      expect(repository.writes, 0);
+      for (final id in ['AR_qa_specialty', 'CL_x', 'CL_ABC', 'CL_aa/bb']) {
+        expect(
+          DoctorInput('Nombre', '123', 'Especialidad', specialtyId: id).linked,
+          isFalse,
+        );
+      }
+    },
+  );
+
   test('typed normalized registration validates exact boundaries', () {
     final input = DoctorInput(' Nombre ', '123', ' Clínica ');
     expect(input.name, 'Nombre');
@@ -258,7 +374,14 @@ void main() {
         tester.widget<TextFormField>(fields.at(1)).controller!.text,
         '123',
       );
-      await tester.enterText(fields.at(2), 'Especialidad ficticia');
+      final dropdown = find.descendant(
+        of: find.byType(DoctorEditor),
+        matching: find.byType(DropdownButton<String>),
+      );
+      await tester.ensureVisible(dropdown);
+      await tester.tap(dropdown);
+      await tester.pumpAndSettle();
+      await tap(tester, 'Especialidad ficticia · qa_specialty');
       await tap(tester, 'Guardar registro');
       expect(repository.writes, 1);
       expect(tester.takeException(), isNull);

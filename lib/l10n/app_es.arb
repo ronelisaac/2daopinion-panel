@@ -85,7 +85,7 @@
   "menuGateways": "Pasarelas de pago",
   "menuAudit": "Auditoría",
   "signOut": "Cerrar sesión",
-  "doctorsIntro": "Registro profesional privado de desarrollo. Usa solo datos ficticios. Registrar antecedentes no crea una cuenta ni habilita atención, recetas o acceso a pacientes. La revisión RNPI es manual; no existe conexión automática con el registro.",
+  "doctorsIntro": "Gestiona médicos independientes por país. No se exige una clínica. El registro no otorga acceso clínico ni acredita al profesional.",
   "doctorCreate": "Registrar médico",
   "doctorEdit": "Editar antecedentes",
   "doctorReview": "Registrar revisión",
@@ -99,7 +99,7 @@
   "doctorRequiredHint": "Los campos con * son obligatorios. La especialidad se registra como declarada, pendiente de revisión.",
   "doctorNameInvalid": "Escribe entre 3 y 120 caracteres, sin dejar el nombre vacío.",
   "doctorRegistryInvalid": "Introduce de 1 a 10 dígitos, sin ceros iniciales.",
-  "doctorSpecialtyInvalid": "Escribe entre 2 y 120 caracteres.",
+  "doctorSpecialtyInvalid": "Selecciona una especialidad activa del catálogo.",
   "doctorSaved": "Registro y evento de auditoría guardados en Firebase de desarrollo.",
   "doctorPending": "Pendiente de revisión",
   "doctorVerified": "Revisión aprobada · Desarrollo",
@@ -305,5 +305,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "doctorCatalogHelp": "Elige una especialidad del país. Su selección no reemplaza la verificación profesional.",
+  "doctorCatalogEmpty": "No hay especialidades activas en esta página. Carga más o solicita al administrador que registre una.",
+  "doctorCatalogLoading": "Cargando especialidades…",
+  "doctorCatalogError": "No se pudieron cargar las especialidades. Vuelve a intentarlo.",
+  "doctorCatalogRetry": "Actualizar especialidades",
+  "doctorCatalogMore": "Cargar más especialidades",
+  "doctorCatalogInvalid": "La especialidad ya no está disponible. Actualiza el catálogo y selecciona una especialidad activa.",
+  "doctorLegacySpecialty": "Ficha histórica: Operaciones debe vincular explícitamente una especialidad del catálogo antes de aprobar. No se asignará por coincidencia de nombre."
 }

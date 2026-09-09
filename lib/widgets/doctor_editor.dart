@@ -4,6 +4,8 @@ import '../controllers/doctor_controller.dart';
 import '../core/doctor_messages.dart';
 import '../core/localization.dart';
 import '../domain/doctor_record.dart';
+import '../domain/specialty.dart';
+import 'doctor_specialty_field.dart';
 
 class DoctorEditor extends StatefulWidget {
   const DoctorEditor({super.key, required this.controller, this.previous});
@@ -18,15 +20,20 @@ class _DoctorEditorState extends State<DoctorEditor> {
   late final registry = TextEditingController(
     text: widget.previous?.input.registry,
   );
-  late final specialty = TextEditingController(
-    text: widget.previous?.input.specialty,
-  );
+  Specialty? specialty;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) widget.controller.loadSpecialties();
+    });
+  }
+
   final form = GlobalKey<FormState>();
   @override
   void dispose() {
     name.dispose();
     registry.dispose();
-    specialty.dispose();
     super.dispose();
   }
 
@@ -87,18 +94,12 @@ class _DoctorEditorState extends State<DoctorEditor> {
                           ? null
                           : text.doctorRegistryInvalid,
                     ),
-                    TextFormField(
-                      controller: specialty,
-                      enabled: !controller.busy,
-                      maxLength: 120,
-                      decoration: InputDecoration(
-                        labelText: text.doctorSpecialty,
-                        errorMaxLines: 4,
-                      ),
-                      validator: (value) =>
-                          DoctorInput.validSpecialty(value ?? '')
-                          ? null
-                          : text.doctorSpecialtyInvalid,
+                    if (widget.previous != null &&
+                        !widget.previous!.input.linked)
+                      Text(text.doctorLegacySpecialty),
+                    DoctorSpecialtyField(
+                      controller: controller,
+                      onChanged: (value) => specialty = value,
                     ),
                     if (controller.issue != null)
                       Text(
@@ -126,7 +127,12 @@ class _DoctorEditorState extends State<DoctorEditor> {
                   : () async {
                       if (!form.currentState!.validate()) return;
                       final saved = await controller.save(
-                        DoctorInput(name.text, registry.text, specialty.text),
+                        DoctorInput(
+                          name.text,
+                          registry.text,
+                          specialty!.input.name,
+                          specialtyId: specialty!.id,
+                        ),
                         previous: widget.previous,
                       );
                       if (saved && context.mounted) {

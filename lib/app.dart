@@ -101,8 +101,12 @@ class _PanelAppState extends State<PanelApp> {
     }
     if (module == PanelModule.doctors && widget.doctorRepository != null) {
       return DoctorsScreen(
-        createController: () =>
-            DoctorController(widget.doctorRepository!, principal, country),
+        createController: () => DoctorController(
+          widget.doctorRepository!,
+          principal,
+          country,
+          specialtyRepository: widget.specialtyRepository,
+        ),
       );
     }
     if (module == PanelModule.specialties &&
