@@ -1,5 +1,9 @@
 # Convenciones de 2daOpinion Panel
 
+- Criterio de entrega acordado el 09/09/2026: una sección definida se trabaja de extremo a extremo, conectada a Firebase de desarrollo y con persistencia/recuperación verificadas cuando corresponda; no cerrar como terminada una maqueta o integración solo en emuladores. Si falta una dependencia o autorización, registrar entrega parcial, bloqueo concreto y siguiente acción, sin ampliar IAM, costos o acceso clínico por inferencia.
+- Antes de cerrar una sección, validarla visualmente en navegador a tamaños móvil, tablet y escritorio, incluyendo carga, vacío, error y éxito; las pruebas de widgets no sustituyen la inspección visual. Registrar evidencia sin datos personales ni clínicos.
+- Formularios: definir tipo de dato, obligatoriedad, límites, formato y relaciones entre campos; elegir controles/teclados adecuados, identificar requeridos/opcionales y mostrar errores localizados junto al campo. Validar en controller/dominio y también en reglas Firebase o función confiable según corresponda; probar vacíos, espacios, límites, valores inválidos, permisos y persistencia tras recarga. No confiar solo en el teclado o validación visual.
+
 - Flutter y Firebase directo, sin API propia en el MVP.
 - E2-11 amplía E2-10 con lote privado de reservas y bloqueo de cambios de adjuntos tras enviar, solo en emuladores. Operaciones recibe únicamente documentCount/hasVideo, no documentos ni texto clínico. Los conteos son vínculos, no archivos certificados; validación confiable y correcciones pendientes. Ver docs/E2-11-ADJUNTOS-EN-RECEPCION.md. No desplegar reglas ni ampliar roles por inercia.
 - E2-10: recepción paciente→panel solo en emuladores/debug. consultationSubmissions privada del propietario; intakeRequests con metadatos mínimos para operations del país, nunca texto clínico. Reglas/índices candidatos, no desplegados. No ampliar roles de Ronel ni activar envíos remotos por inercia. Ver docs/E2-10-RECEPCION-DE-SOLICITUDES.md.
