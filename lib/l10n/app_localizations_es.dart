@@ -922,4 +922,85 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get staffDoctorBound =>
       'La ficha o la cuenta ya tiene un vínculo. Revisa los datos antes de intentarlo nuevamente.';
+
+  @override
+  String get workspaceTitle => 'Mi espacio médico';
+
+  @override
+  String get workspaceIntro =>
+      'Tu ficha independiente y tu disponibilidad para nuevas solicitudes, por país.';
+
+  @override
+  String get workspaceUnlinkedTitle => 'Vinculación pendiente';
+
+  @override
+  String get workspaceUnlinked =>
+      'Todavía no hay una ficha médica vinculada a tu cuenta en este país. Solicita al administrador que la vincule desde Usuarios.';
+
+  @override
+  String get workspaceBlocked =>
+      'La ficha o su especialidad no está habilitada en desarrollo. La recepción permanece pausada; contacta al equipo para revisar tu situación.';
+
+  @override
+  String get workspaceReady =>
+      'Ficha vinculada y revisión aprobada en desarrollo. No equivale a autorización para atender pacientes.';
+
+  @override
+  String get workspaceAvailability => 'Disponibilidad';
+
+  @override
+  String get workspaceAvailable =>
+      'Disponible para nuevas solicitudes · Preferencia guardada';
+
+  @override
+  String get workspacePaused => 'Recepción pausada';
+
+  @override
+  String get workspaceAccepting => 'Quiero recibir nuevas solicitudes';
+
+  @override
+  String get workspaceAvailabilityHelp =>
+      'Esta preferencia no crea citas ni asignaciones automáticas. Pausar no cancela casos existentes. Al cambiar el vínculo o la revisión profesional, deberás confirmar nuevamente tu disponibilidad.';
+
+  @override
+  String get workspaceSave => 'Guardar disponibilidad';
+
+  @override
+  String get workspaceSaved =>
+      'Disponibilidad guardada en Firebase de desarrollo.';
+
+  @override
+  String get workspaceRefresh => 'Actualizar mi espacio';
+
+  @override
+  String get workspaceLoading => 'Consultando Firebase…';
+
+  @override
+  String get workspaceDenied =>
+      'No tienes permisos vigentes para este espacio. Vuelve a iniciar sesión.';
+
+  @override
+  String get workspaceConflict =>
+      'Tu vínculo o disponibilidad cambió. Actualiza mi espacio y revisa los datos antes de guardar.';
+
+  @override
+  String get workspaceLimit =>
+      'Alcanzaste el límite de cambios de hoy. Vuelve a intentarlo mañana.';
+
+  @override
+  String get workspaceInvalid =>
+      'Revisa la disponibilidad seleccionada antes de guardar.';
+
+  @override
+  String get workspaceUnavailable =>
+      'No pudimos confirmar la operación. Reintenta guardar sin cambiar la selección o actualiza para consultar el estado real.';
+
+  @override
+  String get workspaceCasesPending =>
+      'La bandeja clínica y las asignaciones se habilitarán con permisos por caso. Aquí todavía no se muestran expedientes ni estadísticas de pacientes.';
+
+  @override
+  String workspaceUpdated(String date) {
+    return 'Último cambio: $date';
+  }
 }

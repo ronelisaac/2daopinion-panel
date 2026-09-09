@@ -1665,6 +1665,138 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'La ficha o la cuenta ya tiene un vínculo. Revisa los datos antes de intentarlo nuevamente.'**
   String get staffDoctorBound;
+
+  /// No description provided for @workspaceTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi espacio médico'**
+  String get workspaceTitle;
+
+  /// No description provided for @workspaceIntro.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu ficha independiente y tu disponibilidad para nuevas solicitudes, por país.'**
+  String get workspaceIntro;
+
+  /// No description provided for @workspaceUnlinkedTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Vinculación pendiente'**
+  String get workspaceUnlinkedTitle;
+
+  /// No description provided for @workspaceUnlinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay una ficha médica vinculada a tu cuenta en este país. Solicita al administrador que la vincule desde Usuarios.'**
+  String get workspaceUnlinked;
+
+  /// No description provided for @workspaceBlocked.
+  ///
+  /// In es, this message translates to:
+  /// **'La ficha o su especialidad no está habilitada en desarrollo. La recepción permanece pausada; contacta al equipo para revisar tu situación.'**
+  String get workspaceBlocked;
+
+  /// No description provided for @workspaceReady.
+  ///
+  /// In es, this message translates to:
+  /// **'Ficha vinculada y revisión aprobada en desarrollo. No equivale a autorización para atender pacientes.'**
+  String get workspaceReady;
+
+  /// No description provided for @workspaceAvailability.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponibilidad'**
+  String get workspaceAvailability;
+
+  /// No description provided for @workspaceAvailable.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible para nuevas solicitudes · Preferencia guardada'**
+  String get workspaceAvailable;
+
+  /// No description provided for @workspacePaused.
+  ///
+  /// In es, this message translates to:
+  /// **'Recepción pausada'**
+  String get workspacePaused;
+
+  /// No description provided for @workspaceAccepting.
+  ///
+  /// In es, this message translates to:
+  /// **'Quiero recibir nuevas solicitudes'**
+  String get workspaceAccepting;
+
+  /// No description provided for @workspaceAvailabilityHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta preferencia no crea citas ni asignaciones automáticas. Pausar no cancela casos existentes. Al cambiar el vínculo o la revisión profesional, deberás confirmar nuevamente tu disponibilidad.'**
+  String get workspaceAvailabilityHelp;
+
+  /// No description provided for @workspaceSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar disponibilidad'**
+  String get workspaceSave;
+
+  /// No description provided for @workspaceSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponibilidad guardada en Firebase de desarrollo.'**
+  String get workspaceSaved;
+
+  /// No description provided for @workspaceRefresh.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar mi espacio'**
+  String get workspaceRefresh;
+
+  /// No description provided for @workspaceLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Consultando Firebase…'**
+  String get workspaceLoading;
+
+  /// No description provided for @workspaceDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes para este espacio. Vuelve a iniciar sesión.'**
+  String get workspaceDenied;
+
+  /// No description provided for @workspaceConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu vínculo o disponibilidad cambió. Actualiza mi espacio y revisa los datos antes de guardar.'**
+  String get workspaceConflict;
+
+  /// No description provided for @workspaceLimit.
+  ///
+  /// In es, this message translates to:
+  /// **'Alcanzaste el límite de cambios de hoy. Vuelve a intentarlo mañana.'**
+  String get workspaceLimit;
+
+  /// No description provided for @workspaceInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa la disponibilidad seleccionada antes de guardar.'**
+  String get workspaceInvalid;
+
+  /// No description provided for @workspaceUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar la operación. Reintenta guardar sin cambiar la selección o actualiza para consultar el estado real.'**
+  String get workspaceUnavailable;
+
+  /// No description provided for @workspaceCasesPending.
+  ///
+  /// In es, this message translates to:
+  /// **'La bandeja clínica y las asignaciones se habilitarán con permisos por caso. Aquí todavía no se muestran expedientes ni estadísticas de pacientes.'**
+  String get workspaceCasesPending;
+
+  /// No description provided for @workspaceUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'Último cambio: {date}'**
+  String workspaceUpdated(String date);
 }
 
 class _AppLocalizationsDelegate

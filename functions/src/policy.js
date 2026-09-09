@@ -21,10 +21,12 @@ function memberships(value) {
 function validate(data) {
   if (!data || typeof data !== "object" || Array.isArray(data) ||
       Buffer.byteLength(JSON.stringify(data)) > 4096) fail("invalid-argument", "invalid");
-  if (!["list", "create", "update", "setActive", "invite", "resume", "doctorPreview", "linkDoctor", "unlinkDoctor"].includes(data.action) ||
+  if (!["list", "create", "update", "setActive", "invite", "resume", "doctorPreview", "linkDoctor", "unlinkDoctor", "myWorkspace", "setAvailability"].includes(data.action) ||
       typeof data.country !== "string" || !/^[A-Z]{2}$/.test(data.country)) fail("invalid-argument", "invalid");
   const allowed = {
     list: ["action", "country", "cursor"],
+    myWorkspace: ["action", "country"],
+    setAvailability: ["action", "country", "requestId", "revision", "workspaceToken", "accepting"],
     doctorPreview: ["action", "country", "uid", "registry"],
     linkDoctor: ["action", "country", "uid", "revision", "requestId", "registry", "doctorRevision"],
     unlinkDoctor: ["action", "country", "uid", "revision", "requestId", "registry"],
@@ -35,6 +37,14 @@ function validate(data) {
     invite: ["action", "country", "requestId", "uid", "revision"],
   }[data.action];
   if (Object.keys(data).some((key) => !allowed.includes(key))) fail("invalid-argument", "invalid");
+  if (["myWorkspace", "setAvailability"].includes(data.action)) {
+    if (data.country !== "CL") fail("invalid-argument", "invalid");
+    if (data.action === "setAvailability" && (typeof data.accepting !== "boolean" ||
+        !Number.isSafeInteger(data.revision) || data.revision < 0 ||
+        typeof data.workspaceToken !== "string" || !/^[a-f0-9]{64}$/.test(data.workspaceToken) ||
+        typeof data.requestId !== "string" || !/^[a-f0-9]{32}$/.test(data.requestId))) fail("invalid-argument", "invalid");
+    return data;
+  }
   if (["doctorPreview", "linkDoctor", "unlinkDoctor"].includes(data.action)) {
     if (data.country !== "CL" || !uidValid(data.uid) || typeof data.registry !== "string" ||
         !/^[1-9][0-9]{0,9}$/.test(data.registry)) fail("invalid-argument", "invalid");

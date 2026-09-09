@@ -2,6 +2,7 @@ enum PanelRole { superadmin, operations, medicalDirector, finance, doctor }
 
 enum PanelModule {
   dashboard,
+  doctorWorkspace,
   requests,
   doctors,
   specialties,
@@ -85,6 +86,7 @@ class PanelAccess {
       PanelModule.pricing,
     },
     PanelRole.doctor: {
+      PanelModule.doctorWorkspace,
       PanelModule.dashboard,
       PanelModule.myCases,
       PanelModule.agenda,

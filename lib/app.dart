@@ -26,6 +26,9 @@ import 'views/specialties_screen.dart';
 import 'controllers/clinic_controller.dart';
 import 'domain/repositories/clinic_repository.dart';
 import 'views/clinics_screen.dart';
+import 'domain/repositories/doctor_workspace_repository.dart';
+import 'controllers/doctor_workspace_controller.dart';
+import 'views/doctor_workspace_screen.dart';
 
 class PanelApp extends StatefulWidget {
   const PanelApp({
@@ -36,6 +39,7 @@ class PanelApp extends StatefulWidget {
     this.doctorRepository,
     this.specialtyRepository,
     this.clinicRepository,
+    this.workspaceRepository,
   });
   final PanelIdentityRepository identity;
   final IntakeRepository? repository;
@@ -43,6 +47,7 @@ class PanelApp extends StatefulWidget {
   final DoctorRepository? doctorRepository;
   final SpecialtyRepository? specialtyRepository;
   final ClinicRepository? clinicRepository;
+  final DoctorWorkspaceRepository? workspaceRepository;
   @override
   State<PanelApp> createState() => _PanelAppState();
 }
@@ -64,9 +69,14 @@ class _PanelAppState extends State<PanelApp> {
     }
     final country = session.country;
     final segments = Uri.tryParse(name)?.pathSegments ?? [];
+    final doctorOnly =
+        principal.rolesFor(country).length == 1 &&
+        principal.rolesFor(country).contains(PanelRole.doctor);
     final moduleName = segments.isEmpty
-        ? (widget.repository != null &&
-                  PanelAccess.allows(principal, country, PanelModule.requests)
+        ? (doctorOnly && widget.workspaceRepository != null
+              ? 'doctorWorkspace'
+              : widget.repository != null &&
+                    PanelAccess.allows(principal, country, PanelModule.requests)
               ? 'requests'
               : 'dashboard')
         : segments.first;
@@ -79,6 +89,17 @@ class _PanelAppState extends State<PanelApp> {
         segments.length > 2 ||
         (segments.length == 2 && module != PanelModule.requests)) {
       return const PanelModuleScreen(denied: true);
+    }
+    if ((module == PanelModule.doctorWorkspace ||
+            (module == PanelModule.dashboard && doctorOnly)) &&
+        widget.workspaceRepository != null) {
+      return DoctorWorkspaceScreen(
+        createController: () => DoctorWorkspaceController(
+          widget.workspaceRepository!,
+          principal,
+          country,
+        ),
+      );
     }
     if (module == PanelModule.requests && widget.repository != null) {
       final scoped = ScopedIntakeRepository(

@@ -6,6 +6,7 @@ import '../domain/panel_access.dart';
 class PanelMenu extends StatelessWidget {
   const PanelMenu({super.key});
   IconData _icon(PanelModule module) => switch (module) {
+    PanelModule.doctorWorkspace => Icons.work_outline,
     PanelModule.dashboard => Icons.dashboard_outlined,
     PanelModule.requests => Icons.inbox_outlined,
     PanelModule.doctors => Icons.verified_user_outlined,
@@ -84,7 +85,13 @@ class PanelMenu extends StatelessWidget {
                     (ModalRoute.of(context)?.settings.name ?? '/') ==
                         '/${module.name}' ||
                     (ModalRoute.of(context)?.settings.name == '/' &&
-                        module == PanelModule.dashboard),
+                        module ==
+                            (principal.rolesFor(session.country).length == 1 &&
+                                    principal
+                                        .rolesFor(session.country)
+                                        .contains(PanelRole.doctor)
+                                ? PanelModule.doctorWorkspace
+                                : PanelModule.dashboard)),
                 onTap: () => Navigator.pushNamedAndRemoveUntil(
                   context,
                   '/${module.name}',

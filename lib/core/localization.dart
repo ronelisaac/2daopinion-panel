@@ -13,6 +13,7 @@ String roleLabel(BuildContext context, PanelRole role) => switch (role) {
 
 String moduleLabel(BuildContext context, PanelModule module) =>
     switch (module) {
+      PanelModule.doctorWorkspace => strings(context).workspaceTitle,
       PanelModule.dashboard => strings(context).menuDashboard,
       PanelModule.requests => strings(context).inbox,
       PanelModule.doctors => strings(context).menuDoctors,
