@@ -399,7 +399,7 @@
   "classificationLimit": "Alcanzaste el límite diario de cambios. Intenta otro día.",
   "classificationUnavailable": "No pudimos confirmar el resultado. Reintenta sin cambiar la selección para evitar duplicados.",
   "classificationSaved": "Clasificación guardada.",
-  "classificationLocked": "Esta solicitud ya no está en recepción. No se puede reclasificar desde aquí.",
+  "classificationLocked": "No se puede reclasificar fuera de recepción o con una asignación pendiente. Libera primero la asignación si corresponde.",
   "classificationNotAssignment": "Clasificar no asigna un médico, no acredita pagos y no habilita acceso al expediente.",
   "classificationDate": "Actualizada: {date} · Hora local",
   "@classificationDate": {
@@ -408,5 +408,39 @@
         "type": "String"
       }
     }
-  }
-}
+  },
+  "assignmentTitle": "Asignación manual",
+  "assignmentHelp": "Asignación administrativa pendiente de aceptación. No abre el expediente, no acredita pagos y no inicia atención médica.",
+  "assignmentNone": "Sin médico asignado",
+  "assignmentPending": "Pendiente de aceptación",
+  "assignmentReleased": "Asignación liberada",
+  "assignmentBlocked": "Confirma primero la especialidad activa. Solo se asignan solicitudes en recepción y sin otra asignación pendiente.",
+  "assignmentChoose": "Elegir médico",
+  "assignmentRefresh": "Actualizar asignación",
+  "assignmentRelease": "Liberar asignación",
+  "assignmentCandidate": "Médico disponible *",
+  "assignmentCandidatesHelp": "Se muestran médicos de la especialidad con disponibilidad confirmada. Se vuelven a validar al guardar.",
+  "assignmentEmpty": "No hay médicos elegibles en esta página. Puedes revisar más o actualizar.",
+  "assignmentMore": "Cargar más médicos",
+  "assignmentConfirm": "Confirmo la selección. Esta asignación no autoriza atención ni acceso clínico.",
+  "assignmentRequired": "Completa la selección y confirma antes de continuar.",
+  "assignmentSave": "Confirmar asignación",
+  "assignmentReason": "Motivo de liberación *",
+  "assignmentWrong": "Selección incorrecta",
+  "assignmentAvailability": "Cambio de disponibilidad",
+  "assignmentRouting": "Cambio de clasificación",
+  "assignmentReleaseHelp": "Libera la asignación pendiente para corregir la especialidad o seleccionar otro médico. El historial se conserva.",
+  "assignmentSaved": "Asignación actualizada.",
+  "assignmentInvalid": "Selecciona una opción válida y confirma la operación.",
+  "assignmentConflict": "La solicitud, clasificación o disponibilidad cambió. Cierra y actualiza antes de continuar.",
+  "assignmentDenied": "No tienes permisos vigentes para esta asignación.",
+  "assignmentLimit": "Alcanzaste el límite diario de cambios de asignación.",
+  "assignmentUnavailable": "No pudimos confirmar el resultado. Reintenta con la misma selección.",
+  "assignmentPrevious": "Último médico: {name}",
+  "@assignmentPrevious": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }}

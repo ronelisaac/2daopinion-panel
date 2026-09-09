@@ -6,6 +6,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'repositories/firebase_intake_repository.dart';
 import 'app.dart';
+import 'repositories/firebase_intake_assignment_repository.dart';
 import 'repositories/firebase_intake_classification_repository.dart';
 import 'firebase_options.dart';
 import 'repositories/firebase_panel_identity_repository.dart';
@@ -57,6 +58,11 @@ void main() {
   })();
   runApp(
     PanelApp(
+      assignmentRepository: FirebaseIntakeAssignmentRepository(
+        functions: () =>
+            FirebaseFunctions.instanceFor(region: 'southamerica-west1'),
+        initialize: initialize,
+      ),
       classificationRepository: FirebaseIntakeClassificationRepository(
         functions: () =>
             FirebaseFunctions.instanceFor(region: 'southamerica-west1'),

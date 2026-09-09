@@ -21,9 +21,13 @@ function memberships(value) {
 function validate(data) {
   if (!data || typeof data !== "object" || Array.isArray(data) ||
       Buffer.byteLength(JSON.stringify(data)) > 4096) fail("invalid-argument", "invalid");
-  if (!["list", "create", "update", "setActive", "invite", "resume", "doctorPreview", "linkDoctor", "unlinkDoctor", "myWorkspace", "setAvailability", "doctorAdminList", "doctorAdminSetActive", "intakeClassificationGet", "intakeClassificationSet"].includes(data.action) ||
+  if (!["list", "create", "update", "setActive", "invite", "resume", "doctorPreview", "linkDoctor", "unlinkDoctor", "myWorkspace", "setAvailability", "doctorAdminList", "doctorAdminSetActive", "intakeClassificationGet", "intakeClassificationSet", "intakeAssignmentGet", "intakeAssignmentCandidates", "intakeAssignmentSet", "intakeAssignmentRelease"].includes(data.action) ||
       typeof data.country !== "string" || !/^[A-Z]{2}$/.test(data.country)) fail("invalid-argument", "invalid");
   const allowed = {
+    intakeAssignmentGet: ["action", "country", "id"],
+    intakeAssignmentCandidates: ["action", "country", "id", "classificationRevision", "cursor"],
+    intakeAssignmentSet: ["action", "country", "id", "classificationRevision", "doctorId", "revision", "confirmed", "requestId"],
+    intakeAssignmentRelease: ["action", "country", "id", "revision", "reason", "confirmed", "requestId"],
     intakeClassificationGet: ["action", "country", "id"],
     intakeClassificationSet: ["action", "country", "id", "specialtyId", "source", "confirmed", "revision", "requestId"],
     list: ["action", "country", "cursor"],
@@ -41,6 +45,23 @@ function validate(data) {
     invite: ["action", "country", "requestId", "uid", "revision"],
   }[data.action];
   if (Object.keys(data).some((key) => !allowed.includes(key))) fail("invalid-argument", "invalid");
+  if (data.action.startsWith("intakeAssignment")) {
+    if (data.country !== "CL" || typeof data.id !== "string" || !/^[a-zA-Z0-9]{20}$/.test(data.id)) fail("invalid-argument", "invalid");
+    if (data.action === "intakeAssignmentGet") return data;
+    const revisionValid = value => Number.isSafeInteger(value) && value >= 0 && value < Number.MAX_SAFE_INTEGER;
+    const doctorValid = value => typeof value === "string" && /^CL_[1-9][0-9]{0,9}$/.test(value);
+    if (["intakeAssignmentCandidates", "intakeAssignmentSet"].includes(data.action) &&
+        (!revisionValid(data.classificationRevision) || data.classificationRevision < 1)) fail("invalid-argument", "invalid");
+    if (data.action === "intakeAssignmentCandidates") {
+      if (data.cursor != null && !doctorValid(data.cursor)) fail("invalid-argument", "invalid");
+      return data;
+    }
+    if (!revisionValid(data.revision) || data.confirmed !== true ||
+        typeof data.requestId !== "string" || !/^[a-f0-9]{32}$/.test(data.requestId) ||
+        (data.action === "intakeAssignmentSet" ? !doctorValid(data.doctorId) :
+          !["wrongSelection", "availabilityChanged", "routingChanged"].includes(data.reason))) fail("invalid-argument", "invalid");
+    return Object.fromEntries(allowed.map(key => [key, data[key]]));
+  }
   if (["intakeClassificationGet", "intakeClassificationSet"].includes(data.action)) {
     if (data.country !== "CL" || typeof data.id !== "string" || !/^[a-zA-Z0-9]{20}$/.test(data.id)) fail("invalid-argument", "invalid");
     if (data.action === "intakeClassificationGet") return data;

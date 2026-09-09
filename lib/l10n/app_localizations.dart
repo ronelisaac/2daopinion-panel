@@ -2083,7 +2083,7 @@ abstract class AppLocalizations {
   /// No description provided for @classificationLocked.
   ///
   /// In es, this message translates to:
-  /// **'Esta solicitud ya no está en recepción. No se puede reclasificar desde aquí.'**
+  /// **'No se puede reclasificar fuera de recepción o con una asignación pendiente. Libera primero la asignación si corresponde.'**
   String get classificationLocked;
 
   /// No description provided for @classificationNotAssignment.
@@ -2097,6 +2097,174 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Actualizada: {date} · Hora local'**
   String classificationDate(String date);
+
+  /// No description provided for @assignmentTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Asignación manual'**
+  String get assignmentTitle;
+
+  /// No description provided for @assignmentHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Asignación administrativa pendiente de aceptación. No abre el expediente, no acredita pagos y no inicia atención médica.'**
+  String get assignmentHelp;
+
+  /// No description provided for @assignmentNone.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin médico asignado'**
+  String get assignmentNone;
+
+  /// No description provided for @assignmentPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente de aceptación'**
+  String get assignmentPending;
+
+  /// No description provided for @assignmentReleased.
+  ///
+  /// In es, this message translates to:
+  /// **'Asignación liberada'**
+  String get assignmentReleased;
+
+  /// No description provided for @assignmentBlocked.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma primero la especialidad activa. Solo se asignan solicitudes en recepción y sin otra asignación pendiente.'**
+  String get assignmentBlocked;
+
+  /// No description provided for @assignmentChoose.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir médico'**
+  String get assignmentChoose;
+
+  /// No description provided for @assignmentRefresh.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar asignación'**
+  String get assignmentRefresh;
+
+  /// No description provided for @assignmentRelease.
+  ///
+  /// In es, this message translates to:
+  /// **'Liberar asignación'**
+  String get assignmentRelease;
+
+  /// No description provided for @assignmentCandidate.
+  ///
+  /// In es, this message translates to:
+  /// **'Médico disponible *'**
+  String get assignmentCandidate;
+
+  /// No description provided for @assignmentCandidatesHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Se muestran médicos de la especialidad con disponibilidad confirmada. Se vuelven a validar al guardar.'**
+  String get assignmentCandidatesHelp;
+
+  /// No description provided for @assignmentEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay médicos elegibles en esta página. Puedes revisar más o actualizar.'**
+  String get assignmentEmpty;
+
+  /// No description provided for @assignmentMore.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más médicos'**
+  String get assignmentMore;
+
+  /// No description provided for @assignmentConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmo la selección. Esta asignación no autoriza atención ni acceso clínico.'**
+  String get assignmentConfirm;
+
+  /// No description provided for @assignmentRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Completa la selección y confirma antes de continuar.'**
+  String get assignmentRequired;
+
+  /// No description provided for @assignmentSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar asignación'**
+  String get assignmentSave;
+
+  /// No description provided for @assignmentReason.
+  ///
+  /// In es, this message translates to:
+  /// **'Motivo de liberación *'**
+  String get assignmentReason;
+
+  /// No description provided for @assignmentWrong.
+  ///
+  /// In es, this message translates to:
+  /// **'Selección incorrecta'**
+  String get assignmentWrong;
+
+  /// No description provided for @assignmentAvailability.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambio de disponibilidad'**
+  String get assignmentAvailability;
+
+  /// No description provided for @assignmentRouting.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambio de clasificación'**
+  String get assignmentRouting;
+
+  /// No description provided for @assignmentReleaseHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Libera la asignación pendiente para corregir la especialidad o seleccionar otro médico. El historial se conserva.'**
+  String get assignmentReleaseHelp;
+
+  /// No description provided for @assignmentSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Asignación actualizada.'**
+  String get assignmentSaved;
+
+  /// No description provided for @assignmentInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona una opción válida y confirma la operación.'**
+  String get assignmentInvalid;
+
+  /// No description provided for @assignmentConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'La solicitud, clasificación o disponibilidad cambió. Cierra y actualiza antes de continuar.'**
+  String get assignmentConflict;
+
+  /// No description provided for @assignmentDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes para esta asignación.'**
+  String get assignmentDenied;
+
+  /// No description provided for @assignmentLimit.
+  ///
+  /// In es, this message translates to:
+  /// **'Alcanzaste el límite diario de cambios de asignación.'**
+  String get assignmentLimit;
+
+  /// No description provided for @assignmentUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar el resultado. Reintenta con la misma selección.'**
+  String get assignmentUnavailable;
+
+  /// No description provided for @assignmentPrevious.
+  ///
+  /// In es, this message translates to:
+  /// **'Último médico: {name}'**
+  String assignmentPrevious(String name);
 }
 
 class _AppLocalizationsDelegate

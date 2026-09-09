@@ -4,6 +4,8 @@ import 'core/panel_session_scope.dart';
 import 'controllers/intake_controller.dart';
 import 'controllers/intake_detail_controller.dart';
 import 'controllers/intake_classification_controller.dart';
+import 'controllers/intake_assignment_controller.dart';
+import 'domain/repositories/intake_assignment_repository.dart';
 import 'domain/repositories/intake_classification_repository.dart';
 import 'controllers/panel_login_controller.dart';
 import 'controllers/panel_session_controller.dart';
@@ -45,10 +47,12 @@ class PanelApp extends StatefulWidget {
     this.workspaceRepository,
     this.administrationRepository,
     this.classificationRepository,
+    this.assignmentRepository,
   });
   final PanelIdentityRepository identity;
   final IntakeRepository? repository;
   final IntakeClassificationRepository? classificationRepository;
+  final IntakeAssignmentRepository? assignmentRepository;
   final PanelStaffRepository? staffRepository;
   final DoctorRepository? doctorRepository;
   final SpecialtyRepository? specialtyRepository;
@@ -116,6 +120,14 @@ class _PanelAppState extends State<PanelApp> {
       );
       return segments.length == 2
           ? IntakeDetailScreen(
+              createAssignmentController: widget.assignmentRepository == null
+                  ? null
+                  : () => IntakeAssignmentController(
+                      widget.assignmentRepository!,
+                      principal,
+                      country,
+                      segments.last,
+                    ),
               createClassificationController:
                   widget.classificationRepository != null &&
                       widget.specialtyRepository != null

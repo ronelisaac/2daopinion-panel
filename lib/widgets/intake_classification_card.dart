@@ -7,8 +7,13 @@ import '../domain/intake_classification.dart';
 import 'intake_classification_editor.dart';
 
 class IntakeClassificationCard extends StatefulWidget {
-  const IntakeClassificationCard({super.key, required this.createController});
+  const IntakeClassificationCard({
+    super.key,
+    required this.createController,
+    this.onChanged,
+  });
   final IntakeClassificationController Function() createController;
+  final VoidCallback? onChanged;
   @override
   State<IntakeClassificationCard> createState() =>
       _IntakeClassificationCardState();
@@ -94,6 +99,7 @@ class _IntakeClassificationCardState extends State<IntakeClassificationCard> {
                                   ),
                                 );
                                 if (saved == true && context.mounted) {
+                                  widget.onChanged?.call();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(text.classificationSaved),

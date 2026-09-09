@@ -18,8 +18,8 @@ function createIntakeClassification({database, now}) {
     allowed(actor, input.country);
     return database.runTransaction(async transaction => {
       const reference = database.doc("intakeClassifications/" + input.id);
-      const [canonical, intake, stored] = await transaction.getAll(
-        database.doc("panelStaff/" + actor.uid), database.doc("intakeRequests/" + input.id), reference);
+      const [canonical, intake, stored, assignment] = await transaction.getAll(
+        database.doc("panelStaff/" + actor.uid), database.doc("intakeRequests/" + input.id), reference, database.doc("intakeAssignments/" + input.id));
       allowed(canonical.data(), input.country);
       const request = intake.data(), previous = stored.data();
       if (!request || request.id !== input.id || request.countryCode !== input.country ||
@@ -29,7 +29,7 @@ function createIntakeClassification({database, now}) {
       if (input.action === "intakeClassificationGet") {
         const specialty = previous?.specialtyId
           ? (await transaction.get(database.doc("specialties/" + previous.specialtyId))).data() : null;
-        return view(input.id, previous, request.status === "received", specialty);
+        return view(input.id, previous, request.status === "received" && (!assignment.exists || assignment.data().status === "released"), specialty);
       }
       const eventRef = reference.collection("events").doc(input.requestId);
       const quotaRef = database.doc("intakeClassificationLimits/" + actor.uid);
@@ -39,7 +39,7 @@ function createIntakeClassification({database, now}) {
         if (event.data().digest !== digest || event.data().actorId !== actor.uid) fail("already-exists", "request-mismatch");
         return {saved: true};
       }
-      if (request.status !== "received") fail("failed-precondition", "locked");
+      if (request.status !== "received" || (assignment.exists && assignment.data().status !== "released")) fail("failed-precondition", "locked");
       if ((previous?.revision || 0) !== input.revision) fail("aborted", "conflict");
       if ((previous?.specialtyId || null) === input.specialtyId &&
           (previous?.source || "unconfirmed") === input.source) fail("failed-precondition", "unchanged");

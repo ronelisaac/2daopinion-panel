@@ -1177,7 +1177,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get classificationLocked =>
-      'Esta solicitud ya no está en recepción. No se puede reclasificar desde aquí.';
+      'No se puede reclasificar fuera de recepción o con una asignación pendiente. Libera primero la asignación si corresponde.';
 
   @override
   String get classificationNotAssignment =>
@@ -1186,5 +1186,103 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String classificationDate(String date) {
     return 'Actualizada: $date · Hora local';
+  }
+
+  @override
+  String get assignmentTitle => 'Asignación manual';
+
+  @override
+  String get assignmentHelp =>
+      'Asignación administrativa pendiente de aceptación. No abre el expediente, no acredita pagos y no inicia atención médica.';
+
+  @override
+  String get assignmentNone => 'Sin médico asignado';
+
+  @override
+  String get assignmentPending => 'Pendiente de aceptación';
+
+  @override
+  String get assignmentReleased => 'Asignación liberada';
+
+  @override
+  String get assignmentBlocked =>
+      'Confirma primero la especialidad activa. Solo se asignan solicitudes en recepción y sin otra asignación pendiente.';
+
+  @override
+  String get assignmentChoose => 'Elegir médico';
+
+  @override
+  String get assignmentRefresh => 'Actualizar asignación';
+
+  @override
+  String get assignmentRelease => 'Liberar asignación';
+
+  @override
+  String get assignmentCandidate => 'Médico disponible *';
+
+  @override
+  String get assignmentCandidatesHelp =>
+      'Se muestran médicos de la especialidad con disponibilidad confirmada. Se vuelven a validar al guardar.';
+
+  @override
+  String get assignmentEmpty =>
+      'No hay médicos elegibles en esta página. Puedes revisar más o actualizar.';
+
+  @override
+  String get assignmentMore => 'Cargar más médicos';
+
+  @override
+  String get assignmentConfirm =>
+      'Confirmo la selección. Esta asignación no autoriza atención ni acceso clínico.';
+
+  @override
+  String get assignmentRequired =>
+      'Completa la selección y confirma antes de continuar.';
+
+  @override
+  String get assignmentSave => 'Confirmar asignación';
+
+  @override
+  String get assignmentReason => 'Motivo de liberación *';
+
+  @override
+  String get assignmentWrong => 'Selección incorrecta';
+
+  @override
+  String get assignmentAvailability => 'Cambio de disponibilidad';
+
+  @override
+  String get assignmentRouting => 'Cambio de clasificación';
+
+  @override
+  String get assignmentReleaseHelp =>
+      'Libera la asignación pendiente para corregir la especialidad o seleccionar otro médico. El historial se conserva.';
+
+  @override
+  String get assignmentSaved => 'Asignación actualizada.';
+
+  @override
+  String get assignmentInvalid =>
+      'Selecciona una opción válida y confirma la operación.';
+
+  @override
+  String get assignmentConflict =>
+      'La solicitud, clasificación o disponibilidad cambió. Cierra y actualiza antes de continuar.';
+
+  @override
+  String get assignmentDenied =>
+      'No tienes permisos vigentes para esta asignación.';
+
+  @override
+  String get assignmentLimit =>
+      'Alcanzaste el límite diario de cambios de asignación.';
+
+  @override
+  String get assignmentUnavailable =>
+      'No pudimos confirmar el resultado. Reintenta con la misma selección.';
+
+  @override
+  String assignmentPrevious(String name) {
+    return 'Último médico: $name';
   }
 }
