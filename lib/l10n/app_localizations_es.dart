@@ -578,4 +578,117 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get staffMore => 'Cargar más usuarios';
+
+  @override
+  String get menuSpecialties => 'Especialidades';
+
+  @override
+  String get specialtiesIntro =>
+      'Catálogo administrativo por país. Usa solo datos ficticios en desarrollo. Activar una especialidad no verifica médicos ni publica servicios al paciente.';
+
+  @override
+  String get specialtyReadOnly =>
+      'Tu rol puede consultar el catálogo. Solo superadmin administra las especialidades.';
+
+  @override
+  String get specialtyCreate => 'Crear especialidad';
+
+  @override
+  String get specialtyEdit => 'Editar especialidad';
+
+  @override
+  String get specialtyRefresh => 'Actualizar especialidades';
+
+  @override
+  String get specialtySave => 'Guardar especialidad';
+
+  @override
+  String get specialtySaved =>
+      'Especialidad e historial guardados en Firebase de desarrollo.';
+
+  @override
+  String get specialtyRequired =>
+      'Los campos con * son obligatorios. El código identifica la especialidad dentro del país y no podrá cambiarse.';
+
+  @override
+  String get specialtyCode => 'Código *';
+
+  @override
+  String get specialtyCodeHelp =>
+      'De 2 a 32 caracteres: letras sin tildes, números o guion bajo. Empieza con una letra. Se guarda en minúsculas.';
+
+  @override
+  String get specialtyCodeInvalid =>
+      'Usa de 2 a 32 letras, números o guion bajo, empezando con una letra sin tilde.';
+
+  @override
+  String get specialtyName => 'Nombre *';
+
+  @override
+  String get specialtyNameInvalid => 'Escribe entre 2 y 100 caracteres.';
+
+  @override
+  String get specialtyDescription => 'Descripción (opcional)';
+
+  @override
+  String get specialtyDescriptionInvalid =>
+      'La descripción admite hasta 500 caracteres.';
+
+  @override
+  String get specialtyActive => 'Activa';
+
+  @override
+  String get specialtyInactive => 'Inactiva';
+
+  @override
+  String get specialtyDeactivate => 'Desactivar especialidad';
+
+  @override
+  String get specialtyReactivate => 'Reactivar especialidad';
+
+  @override
+  String specialtyToggleConfirm(String name) {
+    return '¿Cambiar el estado de «$name»? Se conserva su código e historial. No modifica casos ni verificaciones existentes.';
+  }
+
+  @override
+  String get specialtyConfirm => 'Confirmar cambio';
+
+  @override
+  String specialtyRevision(int revision, String date) {
+    return 'Revisión $revision · Actualizada $date';
+  }
+
+  @override
+  String get specialtyLoading => 'Cargando especialidades';
+
+  @override
+  String get specialtySaving => 'Guardando especialidad';
+
+  @override
+  String get specialtyEmpty =>
+      'Todavía no hay especialidades registradas para este país.';
+
+  @override
+  String get specialtyMore => 'Cargar más especialidades';
+
+  @override
+  String get specialtyInvalid =>
+      'Revisa los datos y el estado de la especialidad.';
+
+  @override
+  String get specialtyDenied =>
+      'No tienes permisos vigentes para esta operación en el país seleccionado.';
+
+  @override
+  String get specialtyDuplicate =>
+      'Ya existe ese código en el país, incluso si está inactivo. Consulta el registro existente.';
+
+  @override
+  String get specialtyConflict =>
+      'La especialidad cambió en otra sesión. Actualiza el listado antes de reintentar.';
+
+  @override
+  String get specialtyUnavailable =>
+      'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.';
 }

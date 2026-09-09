@@ -228,6 +228,68 @@ service cloud.firestore {
           && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.updatedAt == request.time;
       }
     }
+    function specialtyRole(country, role) {
+      let staff = get(/databases/$(database)/documents/panelStaff/$(request.auth.uid)).data;
+      let access = request.auth.token.panelAccess;
+      return request.auth != null && request.auth.token.email_verified == true && country == 'CL'
+        && access.version == 1 && access.active == true && role in access.memberships.get(country, [])
+        && staff.active == true && staff.provisioning == 'ready' && role in staff.memberships.get(country, []);
+    }
+    function specialtyReader(country) {
+      return specialtyRole(country, 'superadmin') || specialtyRole(country, 'operations') || specialtyRole(country, 'medicalDirector');
+    }
+    function specialtyText(value, minimum, maximum) {
+      return value is string && value.size() >= minimum && value.size() <= maximum
+        && (value == '' || value.matches('[^\\s]([\\s\\S]*[^\\s])?'));
+    }
+    function specialtyShape(data, id) {
+      return data.keys().hasAll(['id', 'countryCode', 'schemaVersion', 'environment', 'code', 'name', 'description', 'active', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'countryCode', 'schemaVersion', 'environment', 'code', 'name', 'description', 'active', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
+        && data.countryCode == 'CL' && data.schemaVersion == 1 && data.environment == 'development'
+        && data.code is string && data.code.matches('[a-z][a-z0-9_]{1,31}')
+        && data.id == id && id == 'CL_' + data.code
+        && specialtyText(data.name, 2, 100) && specialtyText(data.description, 0, 500)
+        && data.active is bool && data.revision is int && data.revision > 0
+        && data.updatedBy == request.auth.uid && data.updatedAt == request.time;
+    }
+    function specialtyAction(data, id) {
+      return !exists(/databases/$(database)/documents/specialties/$(id)) ? 'create'
+        : data.active == get(/databases/$(database)/documents/specialties/$(id)).data.active ? 'edit'
+        : data.active ? 'reactivate' : 'deactivate';
+    }
+    function specialtyAudit(data, id) {
+      let event = getAfter(/databases/$(database)/documents/specialties/$(id)/events/$(string(data.revision))).data;
+      return event.keys().hasAll(['revision', 'actorId', 'countryCode', 'action', 'recordedAt', 'snapshot'])
+        && event.keys().hasOnly(['revision', 'actorId', 'countryCode', 'action', 'recordedAt', 'snapshot'])
+        && event.revision == data.revision && event.actorId == request.auth.uid
+        && event.countryCode == data.countryCode && event.recordedAt == request.time
+        && event.action == specialtyAction(data, id) && event.snapshot == data;
+    }
+    match /specialties/{id} {
+      allow get: if (exists(/databases/$(database)/documents/specialties/$(id)) && specialtyReader(resource.data.countryCode))
+        || (!exists(/databases/$(database)/documents/specialties/$(id)) && id.matches('CL_[a-z][a-z0-9_]{1,31}') && specialtyReader('CL'));
+      allow list: if request.query.limit != null && request.query.limit <= 21 && specialtyReader(resource.data.countryCode);
+      allow create: if specialtyRole(request.resource.data.countryCode, 'superadmin')
+        && specialtyShape(request.resource.data, id) && request.resource.data.revision == 1
+        && request.resource.data.active == true && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdAt == request.time && specialtyAudit(request.resource.data, id);
+      allow update: if specialtyRole(resource.data.countryCode, 'superadmin') && specialtyShape(request.resource.data, id)
+        && request.resource.data.revision == resource.data.revision + 1
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'description', 'active', 'revision', 'updatedBy', 'updatedAt'])
+        && (request.resource.data.active == resource.data.active
+          || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['active', 'revision', 'updatedBy', 'updatedAt']))
+        && specialtyAudit(request.resource.data, id);
+      match /events/{revision} {
+        allow get: if specialtyReader(get(/databases/$(database)/documents/specialties/$(id)).data.countryCode);
+        allow list: if request.query.limit != null && request.query.limit <= 50
+          && specialtyReader(get(/databases/$(database)/documents/specialties/$(id)).data.countryCode);
+        allow create: if specialtyRole(request.resource.data.countryCode, 'superadmin')
+          && revision == string(request.resource.data.revision)
+          && request.resource.data.revision == (!exists(/databases/$(database)/documents/specialties/$(id)) ? 1
+            : get(/databases/$(database)/documents/specialties/$(id)).data.revision + 1)
+          && specialtyAudit(getAfter(/databases/$(database)/documents/specialties/$(id)).data, id);
+      }
+    }
     function doctorRole(country, role) {
       let staff = get(/databases/$(database)/documents/panelStaff/$(request.auth.uid)).data;
       let access = request.auth.token.panelAccess;

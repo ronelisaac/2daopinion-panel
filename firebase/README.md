@@ -1,5 +1,9 @@
 # Infraestructura Firebase compartida
 
+## Candidato local · E2-16 especialidades
+
+Reglas candidatas de `specialties` y auditoría transaccional: superadmin administra; operations/medicalDirector leen; país y personal canónico obligatorios. Desactivar/reactivar sin borrar registros ni historial. **No desplegadas; autorización solicitada pendiente.** El generador excluye este bloque por defecto, conserva E2-15 y mantiene avisos cerrados. `--include-specialties` prepara el candidato explícito, no lo despliega. [Contrato, pruebas y activación](../docs/E2-16-ESPECIALIDADES.md).
+
 ## Estado vigente · E2-15
 
 Médicos y revisión manual activos en Firestore de desarrollo tras autorización y QA remoto ficticio. Generar con `node scripts/development-rules.mjs`: incluye médicos y recepción/adjuntos E2-13, excluye avisos. Desplegar solo los servicios autorizados con `firebase.development.json`, nunca todos los candidatos de `firebase.json`. `--exclude-doctors` es una reversión deliberada, no el valor normal. [Pruebas y límites](../docs/E2-15-MEDICOS-FIREBASE.md). Este estado sustituye las restricciones históricas de E2-11 siguientes.

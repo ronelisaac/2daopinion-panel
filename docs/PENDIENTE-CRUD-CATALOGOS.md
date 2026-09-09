@@ -24,4 +24,4 @@ Las especialidades se seleccionarán por ID desde el catálogo. El texto libre d
 2. CRUD de clínicas y relaciones con médicos.
 3. Completar CRUD de médicos, baja administrativa y vinculación de cuenta, conservando la revisión independiente.
 
-E2-15 entrega registro/corrección/revisión manual de médicos en desarrollo; no un CRUD completo con eliminación. Especialidades y clínicas siguen pendientes. Antes de implementar, precisar campos y unicidad por catálogo, roles que administran/publican, cardinalidades y política de baja. Esta decisión no autoriza ampliar roles reales, desplegar nuevas reglas por inercia ni habilitar atención clínica.
+E2-15 entrega registro/corrección/revisión manual de médicos en desarrollo; no un CRUD completo con eliminación. [E2-16](E2-16-ESPECIALIDADES.md) implementa especialidades con baja lógica, validaciones y auditoría, verificadas en emuladores; activación remota y conexión de selectores pendientes. Clínicas sigue pendiente. Confirmar roles que administran/publican y baja lógica antes de activar el nuevo catálogo. Esta decisión no autoriza ampliar roles reales, desplegar nuevas reglas por inercia ni habilitar atención clínica.

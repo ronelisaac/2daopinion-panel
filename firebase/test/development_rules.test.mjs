@@ -17,6 +17,10 @@ test('development configuration excludes unapproved notices and unrelated servic
   assert.ok(!rules.includes('match /patientNotices'));
   assert.ok(!rules.includes('match /doctorRecords'));
   assert.ok(developmentRules(source).includes('match /doctorRecords'));
+  assert.ok(!developmentRules(source).includes('match /specialties'));
+  assert.ok(developmentRules(source, {includeSpecialties: true}).includes('match /specialties'));
+  assert.ok(!developmentRules(source, {includeSpecialties: true}).includes('match /patientNotices'));
+  assert.throws(()=>developmentRules(source.replace('function specialtyRole(country, role)', 'function changedSpecialtyBoundary(country, role)')));
   assert.ok(!developmentRules(source, {includeDoctors: true}).includes('match /patientNotices'));
   assert.ok(rules.includes('match /consultationSubmissions'));
   assert.ok(rules.includes('match /draftAttachments'));
@@ -41,4 +45,12 @@ test('explicit rollback subset keeps doctors closed even to a valid operator',as
   });
   const database=environment.authenticatedContext('operator',{email_verified:true,panelAccess:{version:1,active:true,memberships:{CL:['operations']}}}).firestore();
   await assertFails(getDoc(doc(database,'doctorRecords/CL_123')));
+});
+test('specialties stay closed in the unapproved development subset',async()=>{
+  await environment.withSecurityRulesDisabled(async context=>{
+    await setDoc(doc(context.firestore(),'panelStaff/admin'),{active:true,provisioning:'ready',memberships:{CL:['superadmin']}});
+    await setDoc(doc(context.firestore(),'specialties/CL_qa'),{countryCode:'CL'});
+  });
+  const database=environment.authenticatedContext('admin',{email_verified:true,panelAccess:{version:1,active:true,memberships:{CL:['superadmin']}}}).firestore();
+  await assertFails(getDoc(doc(database,'specialties/CL_qa')));
 });

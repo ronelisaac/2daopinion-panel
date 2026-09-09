@@ -9,6 +9,7 @@ class PanelMenu extends StatelessWidget {
     PanelModule.dashboard => Icons.dashboard_outlined,
     PanelModule.requests => Icons.inbox_outlined,
     PanelModule.doctors => Icons.verified_user_outlined,
+    PanelModule.specialties => Icons.category_outlined,
     PanelModule.clinicalReview => Icons.health_and_safety_outlined,
     PanelModule.assignments => Icons.assignment_ind_outlined,
     PanelModule.myCases => Icons.folder_shared_outlined,

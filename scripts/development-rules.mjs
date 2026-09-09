@@ -1,7 +1,15 @@
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 
-export function developmentRules(source, {includeDoctors = true} = {}) {
+export function developmentRules(source, {includeDoctors = true, includeSpecialties = false} = {}) {
+  if (!includeSpecialties) {
+    const start = source.indexOf('    function specialtyRole(country, role) {');
+    const end = source.indexOf('    function doctorRole(country, role) {');
+    if (start < 0 || end <= start || source.slice(start, end).includes('    function owner(')) {
+      throw new Error('Review the specialty boundary before preparing development.');
+    }
+    source = source.slice(0, start) + source.slice(end);
+  }
   if (!includeDoctors) {
     const doctors = source.indexOf('    function doctorRole(country, role) {');
     const notices = source.indexOf('    match /patientNotices/{uid}/items/{noticeId} {');
@@ -27,6 +35,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const source = await readFile('firebase/firestore.rules', 'utf8');
   await mkdir('.firebase/development', {recursive:true});
   const includeDoctors = !process.argv.includes('--exclude-doctors');
-  await writeFile('.firebase/development/firestore.rules', developmentRules(source, {includeDoctors}));
-  console.log(`Development rules prepared; doctors ${includeDoctors ? 'included' : 'excluded'}, notices denied. Nothing deployed.`);
+  const includeSpecialties = process.argv.includes('--include-specialties');
+  await writeFile('.firebase/development/firestore.rules', developmentRules(source, {includeDoctors, includeSpecialties}));
+  console.log(`Development rules prepared; doctors ${includeDoctors ? 'included' : 'excluded'}, specialties ${includeSpecialties ? 'included' : 'excluded'}, notices denied. Nothing deployed.`);
 }

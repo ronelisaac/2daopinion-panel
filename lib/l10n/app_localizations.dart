@@ -1089,6 +1089,198 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargar más usuarios'**
   String get staffMore;
+
+  /// No description provided for @menuSpecialties.
+  ///
+  /// In es, this message translates to:
+  /// **'Especialidades'**
+  String get menuSpecialties;
+
+  /// No description provided for @specialtiesIntro.
+  ///
+  /// In es, this message translates to:
+  /// **'Catálogo administrativo por país. Usa solo datos ficticios en desarrollo. Activar una especialidad no verifica médicos ni publica servicios al paciente.'**
+  String get specialtiesIntro;
+
+  /// No description provided for @specialtyReadOnly.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu rol puede consultar el catálogo. Solo superadmin administra las especialidades.'**
+  String get specialtyReadOnly;
+
+  /// No description provided for @specialtyCreate.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear especialidad'**
+  String get specialtyCreate;
+
+  /// No description provided for @specialtyEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar especialidad'**
+  String get specialtyEdit;
+
+  /// No description provided for @specialtyRefresh.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar especialidades'**
+  String get specialtyRefresh;
+
+  /// No description provided for @specialtySave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar especialidad'**
+  String get specialtySave;
+
+  /// No description provided for @specialtySaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Especialidad e historial guardados en Firebase de desarrollo.'**
+  String get specialtySaved;
+
+  /// No description provided for @specialtyRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Los campos con * son obligatorios. El código identifica la especialidad dentro del país y no podrá cambiarse.'**
+  String get specialtyRequired;
+
+  /// No description provided for @specialtyCode.
+  ///
+  /// In es, this message translates to:
+  /// **'Código *'**
+  String get specialtyCode;
+
+  /// No description provided for @specialtyCodeHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'De 2 a 32 caracteres: letras sin tildes, números o guion bajo. Empieza con una letra. Se guarda en minúsculas.'**
+  String get specialtyCodeHelp;
+
+  /// No description provided for @specialtyCodeInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa de 2 a 32 letras, números o guion bajo, empezando con una letra sin tilde.'**
+  String get specialtyCodeInvalid;
+
+  /// No description provided for @specialtyName.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre *'**
+  String get specialtyName;
+
+  /// No description provided for @specialtyNameInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe entre 2 y 100 caracteres.'**
+  String get specialtyNameInvalid;
+
+  /// No description provided for @specialtyDescription.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción (opcional)'**
+  String get specialtyDescription;
+
+  /// No description provided for @specialtyDescriptionInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'La descripción admite hasta 500 caracteres.'**
+  String get specialtyDescriptionInvalid;
+
+  /// No description provided for @specialtyActive.
+  ///
+  /// In es, this message translates to:
+  /// **'Activa'**
+  String get specialtyActive;
+
+  /// No description provided for @specialtyInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'Inactiva'**
+  String get specialtyInactive;
+
+  /// No description provided for @specialtyDeactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Desactivar especialidad'**
+  String get specialtyDeactivate;
+
+  /// No description provided for @specialtyReactivate.
+  ///
+  /// In es, this message translates to:
+  /// **'Reactivar especialidad'**
+  String get specialtyReactivate;
+
+  /// No description provided for @specialtyToggleConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cambiar el estado de «{name}»? Se conserva su código e historial. No modifica casos ni verificaciones existentes.'**
+  String specialtyToggleConfirm(String name);
+
+  /// No description provided for @specialtyConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar cambio'**
+  String get specialtyConfirm;
+
+  /// No description provided for @specialtyRevision.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión {revision} · Actualizada {date}'**
+  String specialtyRevision(int revision, String date);
+
+  /// No description provided for @specialtyLoading.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando especialidades'**
+  String get specialtyLoading;
+
+  /// No description provided for @specialtySaving.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando especialidad'**
+  String get specialtySaving;
+
+  /// No description provided for @specialtyEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay especialidades registradas para este país.'**
+  String get specialtyEmpty;
+
+  /// No description provided for @specialtyMore.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más especialidades'**
+  String get specialtyMore;
+
+  /// No description provided for @specialtyInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los datos y el estado de la especialidad.'**
+  String get specialtyInvalid;
+
+  /// No description provided for @specialtyDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes para esta operación en el país seleccionado.'**
+  String get specialtyDenied;
+
+  /// No description provided for @specialtyDuplicate.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe ese código en el país, incluso si está inactivo. Consulta el registro existente.'**
+  String get specialtyDuplicate;
+
+  /// No description provided for @specialtyConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'La especialidad cambió en otra sesión. Actualiza el listado antes de reintentar.'**
+  String get specialtyConflict;
+
+  /// No description provided for @specialtyUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.'**
+  String get specialtyUnavailable;
 }
 
 class _AppLocalizationsDelegate

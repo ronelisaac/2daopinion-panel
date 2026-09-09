@@ -10,6 +10,7 @@ import 'firebase_options.dart';
 import 'repositories/firebase_panel_identity_repository.dart';
 import 'repositories/firebase_panel_staff_repository.dart';
 import 'repositories/firebase_doctor_repository.dart';
+import 'repositories/firebase_specialty_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +53,15 @@ void main() {
   })();
   runApp(
     PanelApp(
+      specialtyRepository:
+          const bool.fromEnvironment('USE_FIREBASE_EMULATORS') ||
+              const bool.fromEnvironment('ENABLE_SPECIALTY_CATALOG')
+          ? FirebaseSpecialtyRepository(
+              database: () => FirebaseFirestore.instance,
+              auth: () => FirebaseAuth.instance,
+              initialize: initialize,
+            )
+          : null,
       doctorRepository: FirebaseDoctorRepository(
         database: () => FirebaseFirestore.instance,
         auth: () => FirebaseAuth.instance,

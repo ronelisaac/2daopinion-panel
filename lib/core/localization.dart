@@ -16,6 +16,7 @@ String moduleLabel(BuildContext context, PanelModule module) =>
       PanelModule.dashboard => strings(context).menuDashboard,
       PanelModule.requests => strings(context).inbox,
       PanelModule.doctors => strings(context).menuDoctors,
+      PanelModule.specialties => strings(context).menuSpecialties,
       PanelModule.clinicalReview => strings(context).menuClinicalReview,
       PanelModule.assignments => strings(context).menuAssignments,
       PanelModule.myCases => strings(context).menuMyCases,
