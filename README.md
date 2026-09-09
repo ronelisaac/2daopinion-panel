@@ -2,9 +2,11 @@
 
 Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
-## Especialidades · E2-16 · Parcial
+## Especialidades · E2-17 · Firebase de desarrollo
 
-CRUD con código estable, nombre, descripción, baja/reactivación, validaciones y auditoría. Implementado y verificado con el adaptador Firebase en emuladores; **pendiente confirmar permisos y activar/probar en Firebase remoto**. Compilación normal y generador conservan especialidades desactivado. No cambia los médicos existentes ni publica el catálogo al paciente. [Contrato, pruebas y activación](docs/E2-16-ESPECIALIDADES.md).
+CRUD con código estable, nombre, descripción, baja/reactivación, validaciones y auditoría, **publicado y verificado en Firebase de desarrollo**. Superadmin administra; Operaciones y Dirección médica consultan. Sesión y datos recuperados tras recarga en los tres roles. Adaptador normal activo; generador conserva especialidades en próximos despliegues. No cambia los médicos existentes ni publica el catálogo al paciente. [Activación y pruebas](docs/E2-17-ESPECIALIDADES-FIREBASE.md).
+
+Política vigente: completar, probar, publicar selectivamente en Firebase dev y verificar cada sección en la misma entrega, sin nueva autorización rutinaria; documentar, hacer commit y push. Producción, facturación, IAM y acceso clínico fuera de esa autorización general. Ver `docs/operacion/POLITICA-DE-ENTREGAS.md` en la carpeta central.
 
 ## Médicos y revisión · E2-15 · Firebase de desarrollo
 

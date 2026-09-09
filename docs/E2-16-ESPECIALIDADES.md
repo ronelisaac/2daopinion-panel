@@ -1,6 +1,6 @@
 # E2-16 · CRUD de especialidades
 
-9 de septiembre de 2026. **Entrega parcial: CRUD y adaptador Firebase implementados y verificados con emuladores; activación y QA remoto pendientes de respuesta a la autorización solicitada.** No se declara terminada la sección conectada al proyecto real. Médicos E2-15 sigue activo y no se modifica su alcance.
+9 de septiembre de 2026. **Historial de la entrega local inicial. La activación remota y su QA se completan posteriormente en [E2-17](E2-17-ESPECIALIDADES-FIREBASE.md).** E2-17 sustituye los bloqueos y el procedimiento de activación descritos aquí. Se conserva el contrato y la evidencia de la implementación original.
 
 ## Implementación
 

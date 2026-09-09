@@ -53,15 +53,11 @@ void main() {
   })();
   runApp(
     PanelApp(
-      specialtyRepository:
-          const bool.fromEnvironment('USE_FIREBASE_EMULATORS') ||
-              const bool.fromEnvironment('ENABLE_SPECIALTY_CATALOG')
-          ? FirebaseSpecialtyRepository(
-              database: () => FirebaseFirestore.instance,
-              auth: () => FirebaseAuth.instance,
-              initialize: initialize,
-            )
-          : null,
+      specialtyRepository: FirebaseSpecialtyRepository(
+        database: () => FirebaseFirestore.instance,
+        auth: () => FirebaseAuth.instance,
+        initialize: initialize,
+      ),
       doctorRepository: FirebaseDoctorRepository(
         database: () => FirebaseFirestore.instance,
         auth: () => FirebaseAuth.instance,

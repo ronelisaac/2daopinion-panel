@@ -1,8 +1,8 @@
 # Infraestructura Firebase compartida
 
-## Candidato local · E2-16 especialidades
+## Estado vigente · E2-17 especialidades
 
-Reglas candidatas de `specialties` y auditoría transaccional: superadmin administra; operations/medicalDirector leen; país y personal canónico obligatorios. Desactivar/reactivar sin borrar registros ni historial. **No desplegadas; autorización solicitada pendiente.** El generador excluye este bloque por defecto, conserva E2-15 y mantiene avisos cerrados. `--include-specialties` prepara el candidato explícito, no lo despliega. [Contrato, pruebas y activación](../docs/E2-16-ESPECIALIDADES.md).
+Reglas de `specialties` y auditoría transaccional publicadas y comprobadas en Firebase dev: superadmin administra; operations/medicalDirector leen; país y personal canónico obligatorios. Desactivar/reactivar sin borrar registros ni historial. El generador incluye especialidades por defecto, conserva E2-15 y mantiene avisos cerrados. `--exclude-specialties` es una reversión deliberada. [Activación, pruebas y alcance](../docs/E2-17-ESPECIALIDADES-FIREBASE.md). Secciones verificadas se publican bajo la política vigente, no todos los candidatos incompletos.
 
 ## Estado vigente · E2-15
 
