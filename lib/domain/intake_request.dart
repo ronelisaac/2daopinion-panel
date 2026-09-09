@@ -51,10 +51,11 @@ class IntakeQuery {
 }
 
 class IntakePage {
-  IntakePage({required List<IntakeRequest> items, required this.total})
+  IntakePage({required List<IntakeRequest> items, this.total, this.hasMore})
     : items = List.unmodifiable(items);
   final List<IntakeRequest> items;
-  final int total;
+  final int? total;
+  final bool? hasMore;
 }
 
 enum IntakeIssue { unavailable, notFound }

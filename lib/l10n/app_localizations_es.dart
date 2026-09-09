@@ -9,6 +9,11 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String pageWithoutTotal(int page) {
+    return 'Página $page';
+  }
+
+  @override
   String get appTitle => '2daOpinion · Panel';
 
   @override
@@ -19,7 +24,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get inboxSubtitle =>
-      'Organiza la recepción y revisa la documentación disponible.';
+      'Recepción de solicitudes de desarrollo. Solo código, país, modalidad y fecha; sin acceso al contenido clínico, archivos ni pagos.';
 
   @override
   String get previewNotice =>
@@ -42,7 +47,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get reference => 'Código';
 
   @override
-  String get searchHint => 'Ej. DEMO-0001';
+  String get searchHint => 'Pega el código completo SO-…';
 
   @override
   String get searchAction => 'Buscar';
@@ -78,7 +83,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get modality => 'Modalidad';
 
   @override
-  String get status => 'Estado de ejemplo';
+  String get status => 'Estado';
 
   @override
   String get documents => 'Documentación disponible';
@@ -88,8 +93,8 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count archivos de ejemplo',
-      one: '1 archivo de ejemplo',
+      other: '$count archivos',
+      one: '1 archivo',
     );
     return '$_temp0';
   }
@@ -98,7 +103,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get video => 'Video explicativo opcional';
 
   @override
-  String get withVideo => 'Incluido en este ejemplo';
+  String get withVideo => 'Incluido';
 
   @override
   String get withoutVideo => 'No incluido · No es requisito';
@@ -114,7 +119,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get metadataOnly =>
-      'Solo metadatos ficticios: no hay archivos para abrir o descargar. Recibir documentación no significa validarla clínicamente.';
+      'Esta etapa recibe solo texto privado del paciente y un registro administrativo separado. Los archivos y el video no se envían todavía. El contenido clínico no es accesible desde esta bandeja; no hay revisión ni asignación médica habilitada.';
 
   @override
   String get detail => 'Detalle de solicitud';
@@ -130,7 +135,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'No pudimos cargar la información. Inténtalo nuevamente.';
 
   @override
-  String get notFound => 'No se encontró esta solicitud de ejemplo.';
+  String get notFound => 'No se encontró esta solicitud.';
 
   @override
   String get retry => 'Reintentar';

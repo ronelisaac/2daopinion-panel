@@ -2,6 +2,10 @@
 
 Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
+## Recepción local · E2-10
+
+Envío paciente→panel implementado y probado con Firebase emulado. Bandeja Firestore por país, búsqueda exacta, paginación acotada y detalle administrativo sin datos clínicos; solo operations activo del país. Copia/aceptación privada del paciente y comprobante idempotente. **Adaptadores, reglas e índices nuevos no activados remotamente**; una recepción por cuenta, solo texto, integración documental pendiente. [Alcance, pruebas y activación](docs/E2-10-RECEPCION-DE-SOLICITUDES.md).
+
 ## Estado vigente · E1-PANEL-03
 
 CRUD real implementado con una función Firebase y pruebas completas en emuladores: altas por correo, roles por país, edición, baja reversible y reenvío. **Función desplegada en desarrollo tras autorización IAM específica; sin simulador.** Mínimo cero/máximo una instancia y limpieza de imágenes de compilación a un día; USD 10 sigue siendo una alerta, no un corte. [Entrega, seguridad y verificación](docs/E1-PANEL-03-USUARIOS.md).

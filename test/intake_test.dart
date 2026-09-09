@@ -34,6 +34,49 @@ Future<void> tapText(WidgetTester tester, String text) async {
 }
 
 void main() {
+  testWidgets(
+    'enabling intake does not redirect other roles into a denied inbox',
+    (tester) async {
+      for (final role in [
+        PanelRole.superadmin,
+        PanelRole.doctor,
+        PanelRole.finance,
+        PanelRole.medicalDirector,
+      ]) {
+        final repository = ControlledRepository();
+        await tester.pumpWidget(
+          PanelApp(
+            key: ValueKey(role),
+            identity: FakeIdentity(
+              current: PanelPrincipal(
+                id: 'local-test',
+                roles: {role},
+                countries: {'CL'},
+              ),
+            ),
+            repository: repository,
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('Resumen'), findsWidgets);
+        expect(repository.pages, isEmpty);
+      }
+    },
+  );
+  test('cursor-based pages work without an invented total', () async {
+    final repository = ControlledRepository();
+    final controller = IntakeController(repository);
+    addTearDown(controller.dispose);
+    final first = controller.load();
+    repository.pages.single.complete(IntakePage(items: [], hasMore: true));
+    await first;
+    expect(controller.result!.total, isNull);
+    expect(controller.hasNext, isTrue);
+    final last = controller.load(page: 1);
+    repository.pages.last.complete(IntakePage(items: [], hasMore: false));
+    await last;
+    expect(controller.hasNext, isFalse);
+  });
   test(
     'preview pages are stable, bounded and independent from filters',
     () async {
@@ -149,7 +192,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.textContaining('EJEMPLO ·'), findsOneWidget);
+      expect(find.textContaining('DESARROLLO ·'), findsOneWidget);
       await tester.enterText(find.byType(TextField), 'DEMO-0001');
       await tester.testTextInput.receiveAction(TextInputAction.search);
       await tester.pumpAndSettle();
@@ -162,7 +205,10 @@ void main() {
       await tester.tap(button);
       await tester.pumpAndSettle();
       expect(find.byType(IntakeDetailContent), findsOneWidget);
-      expect(find.textContaining('Solo metadatos ficticios'), findsOneWidget);
+      expect(
+        find.textContaining('El contenido clínico no es accesible'),
+        findsOneWidget,
+      );
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       expect(

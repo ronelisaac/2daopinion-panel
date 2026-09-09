@@ -13,7 +13,9 @@ class IntakeController extends ChangeNotifier {
   int _request = 0;
 
   bool get hasNext =>
-      result != null && (query.page + 1) * IntakeQuery.pageSize < result!.total;
+      result != null &&
+      (result!.hasMore ??
+          ((query.page + 1) * IntakeQuery.pageSize < (result!.total ?? 0)));
 
   Future<void> load({
     String? search,

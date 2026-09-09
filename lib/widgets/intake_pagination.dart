@@ -10,7 +10,7 @@ class IntakePagination extends StatelessWidget {
     required this.onNext,
   });
   final int page;
-  final int total;
+  final int? total;
   final VoidCallback? onPrevious;
   final VoidCallback? onNext;
   @override
@@ -20,7 +20,11 @@ class IntakePagination extends StatelessWidget {
     spacing: 12,
     runSpacing: 8,
     children: [
-      Text(strings(context).pageSummary(page + 1, total)),
+      Text(
+        total == null
+            ? strings(context).pageWithoutTotal(page + 1)
+            : strings(context).pageSummary(page + 1, total!),
+      ),
       Wrap(
         spacing: 8,
         children: [

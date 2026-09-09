@@ -94,6 +94,12 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('es')];
 
+  /// No description provided for @pageWithoutTotal.
+  ///
+  /// In es, this message translates to:
+  /// **'Página {page}'**
+  String pageWithoutTotal(int page);
+
   /// No description provided for @appTitle.
   ///
   /// In es, this message translates to:
@@ -115,7 +121,7 @@ abstract class AppLocalizations {
   /// No description provided for @inboxSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Organiza la recepción y revisa la documentación disponible.'**
+  /// **'Recepción de solicitudes de desarrollo. Solo código, país, modalidad y fecha; sin acceso al contenido clínico, archivos ni pagos.'**
   String get inboxSubtitle;
 
   /// No description provided for @previewNotice.
@@ -157,7 +163,7 @@ abstract class AppLocalizations {
   /// No description provided for @searchHint.
   ///
   /// In es, this message translates to:
-  /// **'Ej. DEMO-0001'**
+  /// **'Pega el código completo SO-…'**
   String get searchHint;
 
   /// No description provided for @searchAction.
@@ -229,7 +235,7 @@ abstract class AppLocalizations {
   /// No description provided for @status.
   ///
   /// In es, this message translates to:
-  /// **'Estado de ejemplo'**
+  /// **'Estado'**
   String get status;
 
   /// No description provided for @documents.
@@ -241,7 +247,7 @@ abstract class AppLocalizations {
   /// No description provided for @documentCount.
   ///
   /// In es, this message translates to:
-  /// **'{count, plural, =1{1 archivo de ejemplo} other{{count} archivos de ejemplo}}'**
+  /// **'{count, plural, =1{1 archivo} other{{count} archivos}}'**
   String documentCount(int count);
 
   /// No description provided for @video.
@@ -253,7 +259,7 @@ abstract class AppLocalizations {
   /// No description provided for @withVideo.
   ///
   /// In es, this message translates to:
-  /// **'Incluido en este ejemplo'**
+  /// **'Incluido'**
   String get withVideo;
 
   /// No description provided for @withoutVideo.
@@ -283,7 +289,7 @@ abstract class AppLocalizations {
   /// No description provided for @metadataOnly.
   ///
   /// In es, this message translates to:
-  /// **'Solo metadatos ficticios: no hay archivos para abrir o descargar. Recibir documentación no significa validarla clínicamente.'**
+  /// **'Esta etapa recibe solo texto privado del paciente y un registro administrativo separado. Los archivos y el video no se envían todavía. El contenido clínico no es accesible desde esta bandeja; no hay revisión ni asignación médica habilitada.'**
   String get metadataOnly;
 
   /// No description provided for @detail.
@@ -313,7 +319,7 @@ abstract class AppLocalizations {
   /// No description provided for @notFound.
   ///
   /// In es, this message translates to:
-  /// **'No se encontró esta solicitud de ejemplo.'**
+  /// **'No se encontró esta solicitud.'**
   String get notFound;
 
   /// No description provided for @retry.

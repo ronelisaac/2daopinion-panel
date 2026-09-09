@@ -104,6 +104,53 @@ service cloud.firestore {
           && getAfter(/databases/$(database)/documents/consultationDrafts/$(uid)).data.policyVersion == version;
       }
     }
+    function intakeOperator(country) {
+      let staff = get(/databases/$(database)/documents/panelStaff/$(request.auth.uid)).data;
+      return request.auth != null && request.auth.token.email_verified == true
+        && staff.active == true && staff.provisioning == 'ready'
+        && 'operations' in staff.memberships.get(country, []);
+    }
+    function validSubmission(data, uid) {
+      let draft = get(/databases/$(database)/documents/consultationDrafts/$(uid)).data;
+      let intake = getAfter(/databases/$(database)/documents/intakeRequests/$(data.id)).data;
+      return data.keys().hasAll(['id', 'authUserId', 'countryCode', 'revision', 'environment', 'status', 'policyVersion', 'accepted', 'submittedAt', 'draft'])
+        && data.keys().hasOnly(['id', 'authUserId', 'countryCode', 'revision', 'environment', 'status', 'policyVersion', 'accepted', 'submittedAt', 'draft'])
+        && data.id == draft.id && data.authUserId == uid
+        && data.countryCode == 'CL' && data.countryCode == draft.countryCode
+        && data.revision == draft.revision && data.draft == draft
+        && draft.reason.matches('(?s).*[^\\s].*') && draft.details.matches('(?s).*[^\\s].*')
+        && draft.clinicalContext.modality in ['document_review', 'review_and_consultation']
+        && data.environment == 'development' && data.status == 'received'
+        && data.policyVersion == 'dev-submission-2026-09-08' && data.accepted == true
+        && data.submittedAt == request.time
+        && !exists(/databases/$(database)/documents/draftAttachments/$(uid))
+        && !existsAfter(/databases/$(database)/documents/draftAttachments/$(uid))
+        && intake.id == data.id && intake.countryCode == data.countryCode
+        && intake.createdAt == request.time && intake.status == 'received'
+        && intake.mode == draft.clinicalContext.modality;
+    }
+    match /consultationSubmissions/{uid} {
+      allow get: if draftOwner(uid);
+      allow create: if draftOwner(uid) && validSubmission(request.resource.data, uid);
+    }
+    match /intakeRequests/{id} {
+      allow get: if intakeOperator(resource.data.countryCode)
+        || (draftOwner(request.auth.uid)
+          && get(/databases/$(database)/documents/consultationSubmissions/$(request.auth.uid)).data.id == id);
+      allow list: if request.query.limit != null && request.query.limit <= 9
+        && intakeOperator(resource.data.countryCode);
+      allow create: if draftOwner(request.auth.uid)
+        && request.resource.data.keys().hasAll(['id', 'countryCode', 'mode', 'createdAt', 'status', 'environment'])
+        && request.resource.data.keys().hasOnly(['id', 'countryCode', 'mode', 'createdAt', 'status', 'environment'])
+        && request.resource.data.id == id && id.matches('[a-zA-Z0-9]{20}')
+        && request.resource.data.countryCode == 'CL'
+        && request.resource.data.mode in ['document_review', 'review_and_consultation']
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.status == 'received' && request.resource.data.environment == 'development'
+        && !exists(/databases/$(database)/documents/consultationSubmissions/$(request.auth.uid))
+        && getAfter(/databases/$(database)/documents/consultationSubmissions/$(request.auth.uid)).data.id == id
+        && getAfter(/databases/$(database)/documents/consultationSubmissions/$(request.auth.uid)).data.submittedAt == request.time;
+    }
     function isVideo(data) {
       return data.mimeType in ['video/mp4', 'video/quicktime'];
     }

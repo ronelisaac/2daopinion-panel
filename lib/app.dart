@@ -50,7 +50,10 @@ class _PanelAppState extends State<PanelApp> {
     final country = session.country;
     final segments = Uri.tryParse(name)?.pathSegments ?? [];
     final moduleName = segments.isEmpty
-        ? (widget.repository != null ? 'requests' : 'dashboard')
+        ? (widget.repository != null &&
+                  PanelAccess.allows(principal, country, PanelModule.requests)
+              ? 'requests'
+              : 'dashboard')
         : segments.first;
     final matching = PanelModule.values.where(
       (item) => item.name == moduleName,

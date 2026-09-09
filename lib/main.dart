@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'repositories/firebase_intake_repository.dart';
 import 'app.dart';
 import 'firebase_options.dart';
 import 'repositories/firebase_panel_identity_repository.dart';
@@ -30,6 +32,10 @@ void main() {
         );
       }
       if (emulators) {
+        FirebaseFirestore.instance.settings = const Settings(
+          persistenceEnabled: false,
+        );
+        FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080);
         await FirebaseAuth.instance.useAuthEmulator('127.0.0.1', 9099);
         FirebaseFunctions.instanceFor(
           region: 'southamerica-west1',
@@ -45,6 +51,13 @@ void main() {
   })();
   runApp(
     PanelApp(
+      repository: const bool.fromEnvironment('USE_FIREBASE_EMULATORS')
+          ? FirebaseIntakeRepository(
+              database: () => FirebaseFirestore.instance,
+              auth: () => FirebaseAuth.instance,
+              initialize: initialize,
+            )
+          : null,
       staffRepository: FirebasePanelStaffRepository(
         functions: () =>
             FirebaseFunctions.instanceFor(region: 'southamerica-west1'),

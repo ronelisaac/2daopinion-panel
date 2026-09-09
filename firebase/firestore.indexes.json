@@ -1,4 +1,16 @@
 {
-  "indexes": [],
+  "indexes": [
+    {"collectionGroup": "intakeRequests", "queryScope": "COLLECTION", "fields": [
+      {"fieldPath": "countryCode", "order": "ASCENDING"},
+      {"fieldPath": "createdAt", "order": "DESCENDING"},
+      {"fieldPath": "__name__", "order": "ASCENDING"}
+    ]},
+    {"collectionGroup": "intakeRequests", "queryScope": "COLLECTION", "fields": [
+      {"fieldPath": "countryCode", "order": "ASCENDING"},
+      {"fieldPath": "status", "order": "ASCENDING"},
+      {"fieldPath": "createdAt", "order": "DESCENDING"},
+      {"fieldPath": "__name__", "order": "ASCENDING"}
+    ]}
+  ],
   "fieldOverrides": []
 }
