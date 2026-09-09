@@ -25,6 +25,7 @@ class IntakeRequest {
     required this.createdAt,
     required List<IntakeDocument> documents,
     this.hasVideo = false,
+    this.declaredDocumentCount,
   }) : documents = List.unmodifiable(documents);
   final String id;
   final String reference;
@@ -34,6 +35,8 @@ class IntakeRequest {
   final DateTime createdAt;
   final List<IntakeDocument> documents;
   final bool hasVideo;
+  final int? declaredDocumentCount;
+  int get documentCount => declaredDocumentCount ?? documents.length;
 }
 
 class IntakeQuery {

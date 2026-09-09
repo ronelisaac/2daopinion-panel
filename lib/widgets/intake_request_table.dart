@@ -39,7 +39,7 @@ class IntakeRequestTable extends StatelessWidget {
                   ),
                 ),
                 DataCell(Text(modeLabel(context, request.mode))),
-                DataCell(Text(text.documentCount(request.documents.length))),
+                DataCell(Text(text.documentCount(request.documentCount))),
                 DataCell(
                   IconButton(
                     tooltip: '${text.view} ${request.reference}',

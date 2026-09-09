@@ -35,6 +35,7 @@ class IntakeDetailContent extends StatelessWidget {
         Text(text.documents, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 12),
         Text(text.metadataOnly),
+        Text(text.documentCount(request.documentCount)),
         const SizedBox(height: 12),
         for (final document in request.documents)
           Card(

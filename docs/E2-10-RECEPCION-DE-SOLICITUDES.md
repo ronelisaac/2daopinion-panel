@@ -1,5 +1,7 @@
 # E2-10 · Primer circuito paciente → recepción
 
+Histórico: [E2-11](E2-11-ADJUNTOS-EN-RECEPCION.md) sustituye la exclusión de adjuntos y amplía la prueba conjunta con Storage. Los resultados y límites siguientes describen E2-10, no la entrega vigente.
+
 8 de septiembre de 2026 · Implementación para Firebase emulado. Activación remota pendiente; no es una entrega completa de casos clínicos.
 
 ## Qué incluye
@@ -42,7 +44,7 @@ Desde el repositorio del panel, con Node, Firebase CLI, Java compatible, Flutter
 
 ```sh
 firebase emulators:exec --only firestore,storage --project demo-2daopinion 'node --test --test-concurrency=1 firebase/test/*.test.mjs'
-firebase emulators:exec --only auth,firestore --project demo-2daopinion 'bash scripts/test-reception.sh'
+firebase emulators:exec --only auth,firestore,storage --project demo-2daopinion 'bash scripts/test-reception.sh'
 flutter analyze
 flutter test
 flutter build web

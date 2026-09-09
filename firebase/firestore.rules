@@ -110,21 +110,31 @@ service cloud.firestore {
         && staff.active == true && staff.provisioning == 'ready'
         && 'operations' in staff.memberships.get(country, []);
     }
+    function validSubmissionAttachments(data, uid, intake) {
+      return !('attachmentBatch' in data)
+        ? !exists(/databases/$(database)/documents/draftAttachments/$(uid))
+          && !existsAfter(/databases/$(database)/documents/draftAttachments/$(uid))
+          && intake.get('documentCount', 0) == 0 && intake.get('hasVideo', false) == false
+        : data.policyVersion == 'dev-submission-2026-09-09'
+          && data.attachmentBatch == get(/databases/$(database)/documents/draftAttachments/$(uid)).data
+          && data.attachmentBatch == getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data
+          && intake.documentCount == data.attachmentBatch.count - data.attachmentBatch.get('videoCount', 0)
+          && intake.hasVideo == (data.attachmentBatch.get('videoCount', 0) == 1);
+    }
     function validSubmission(data, uid) {
       let draft = get(/databases/$(database)/documents/consultationDrafts/$(uid)).data;
       let intake = getAfter(/databases/$(database)/documents/intakeRequests/$(data.id)).data;
       return data.keys().hasAll(['id', 'authUserId', 'countryCode', 'revision', 'environment', 'status', 'policyVersion', 'accepted', 'submittedAt', 'draft'])
-        && data.keys().hasOnly(['id', 'authUserId', 'countryCode', 'revision', 'environment', 'status', 'policyVersion', 'accepted', 'submittedAt', 'draft'])
+        && data.keys().hasOnly(['id', 'authUserId', 'countryCode', 'revision', 'environment', 'status', 'policyVersion', 'accepted', 'submittedAt', 'draft', 'attachmentBatch'])
         && data.id == draft.id && data.authUserId == uid
         && data.countryCode == 'CL' && data.countryCode == draft.countryCode
         && data.revision == draft.revision && data.draft == draft
         && draft.reason.matches('(?s).*[^\\s].*') && draft.details.matches('(?s).*[^\\s].*')
         && draft.clinicalContext.modality in ['document_review', 'review_and_consultation']
         && data.environment == 'development' && data.status == 'received'
-        && data.policyVersion == 'dev-submission-2026-09-08' && data.accepted == true
+        && data.policyVersion in ['dev-submission-2026-09-08', 'dev-submission-2026-09-09'] && data.accepted == true
         && data.submittedAt == request.time
-        && !exists(/databases/$(database)/documents/draftAttachments/$(uid))
-        && !existsAfter(/databases/$(database)/documents/draftAttachments/$(uid))
+        && validSubmissionAttachments(data, uid, intake)
         && intake.id == data.id && intake.countryCode == data.countryCode
         && intake.createdAt == request.time && intake.status == 'received'
         && intake.mode == draft.clinicalContext.modality;
@@ -141,7 +151,10 @@ service cloud.firestore {
         && intakeOperator(resource.data.countryCode);
       allow create: if draftOwner(request.auth.uid)
         && request.resource.data.keys().hasAll(['id', 'countryCode', 'mode', 'createdAt', 'status', 'environment'])
-        && request.resource.data.keys().hasOnly(['id', 'countryCode', 'mode', 'createdAt', 'status', 'environment'])
+        && request.resource.data.keys().hasOnly(['id', 'countryCode', 'mode', 'createdAt', 'status', 'environment', 'documentCount', 'hasVideo'])
+        && request.resource.data.get('documentCount', 0) is int
+        && request.resource.data.get('documentCount', 0) >= 0 && request.resource.data.get('documentCount', 0) <= 20
+        && request.resource.data.get('hasVideo', false) is bool
         && request.resource.data.id == id && id.matches('[a-zA-Z0-9]{20}')
         && request.resource.data.countryCode == 'CL'
         && request.resource.data.mode in ['document_review', 'review_and_consultation']
@@ -201,11 +214,16 @@ service cloud.firestore {
     }
     match /draftAttachments/{uid} {
       allow get: if draftOwner(uid);
-      allow create, update: if draftOwner(uid) && validAttachmentQuota(request.resource.data, uid);
+      allow create, update: if draftOwner(uid)
+        && !exists(/databases/$(database)/documents/consultationSubmissions/$(uid))
+        && !existsAfter(/databases/$(database)/documents/consultationSubmissions/$(uid))
+        && validAttachmentQuota(request.resource.data, uid);
       match /files/{documentId} {
         allow get: if draftOwner(uid);
         allow list: if draftOwner(uid) && request.query.limit != null && request.query.limit <= 21;
         allow create: if draftOwner(uid) && validAttachment(request.resource.data, uid, documentId)
+          && !exists(/databases/$(database)/documents/consultationSubmissions/$(uid))
+          && !existsAfter(/databases/$(database)/documents/consultationSubmissions/$(uid))
           && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.lastDocumentId == documentId
           && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.updatedAt == request.time;
       }

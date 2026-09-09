@@ -31,7 +31,7 @@ class IntakeRequestCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(modeLabel(context, request.mode)),
-            Text(text.documentCount(request.documents.length)),
+            Text(text.documentCount(request.documentCount)),
             Text(
               MaterialLocalizations.of(
                 context,

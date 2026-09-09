@@ -1,5 +1,9 @@
 # Infraestructura Firebase compartida
 
+## E2-11: recepción con reservas vinculadas, candidato local
+
+La copia privada del envío conserva attachmentBatch, idéntico al contador de reservas antes y después de la transacción. intakeRequests agrega solo documentCount/hasVideo. Firestore bloquea reservas nuevas en el mismo envío o después; Storage bloquea creación y borrado después de la recepción y conserva lectura del propietario. No certifica existencia ni validez de bytes desde Firestore. 126 pruebas de reglas y dos integraciones web aprobadas; sin despliegue ni cambios IAM. [Contrato, límites y reproducción](../docs/E2-11-ADJUNTOS-EN-RECEPCION.md). Este estado prevalece sobre el historial de candidatos siguiente; nunca desplegar todo por inercia.
+
 ## E2-08: avisos privados, candidato local
 
 `patientNotices/{uid}/items/{noticeId}` permite lectura al destinatario verificado con perfil y cambio exclusivo de `readAt` a hora del servidor o null. Clientes no pueden crear/borrar avisos ni cambiar su contenido. Consultas limitadas hasta 100. 102 pruebas de reglas aprobadas; integración con Flutter web/Auth/Firestore local verifica paginación, persistencia e aislamiento. No hay productor de eventos, push/email ni cambios remotos. **No desplegado**. [Alcance y pendientes](../../2daopinion-app/docs/E2-08-CENTRO-DE-AVISOS.md).

@@ -1,23 +1,25 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    function ownsDraft(uid, draftId) {
-      return request.auth != null && request.auth.uid == uid && request.auth.token.email_verified == true
-        && firestore.get(/databases/(default)/documents/consultationDrafts/$(uid)).data.id == draftId;
+    function ownsFiles(uid) {
+      return request.auth != null && request.auth.uid == uid && request.auth.token.email_verified == true;
     }
     function attachment(uid, documentId) {
       return firestore.get(/databases/(default)/documents/draftAttachments/$(uid)/files/$(documentId)).data;
     }
     function matchesReservation(uid, draftId, documentId) {
       let data = attachment(uid, documentId);
-      return ownsDraft(uid, draftId) && data.authUserId == uid && data.draftId == draftId
+      return ownsFiles(uid) && data.authUserId == uid && data.draftId == draftId
         && data.id == documentId && data.policyVersion == 'dev-files-2026-09-08'
         && data.storageBackendId == 'firebase-development-v1'
         && data.objectKey == 'private-drafts/' + uid + '/' + draftId + '/' + documentId;
     }
     match /private-drafts/{uid}/{draftId}/{documentId} {
-      allow get, delete: if matchesReservation(uid, draftId, documentId);
+      allow get: if matchesReservation(uid, draftId, documentId);
+      allow delete: if matchesReservation(uid, draftId, documentId)
+        && !firestore.exists(/databases/(default)/documents/consultationSubmissions/$(uid));
       allow create: if resource == null && matchesReservation(uid, draftId, documentId)
+        && !firestore.exists(/databases/(default)/documents/consultationSubmissions/$(uid))
         && request.resource.size == attachment(uid, documentId).size
         && request.resource.size <= (request.resource.contentType in ['video/mp4', 'video/quicktime'] ? 20971520 : 5242880)
         && request.resource.contentType == attachment(uid, documentId).mimeType

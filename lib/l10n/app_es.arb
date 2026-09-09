@@ -5,7 +5,7 @@
   "appTitle": "2daOpinion · Panel",
   "workspace": "Panel administrativo",
   "inbox": "Solicitudes",
-  "inboxSubtitle": "Recepción de solicitudes de desarrollo. Solo código, país, modalidad y fecha; sin acceso al contenido clínico, archivos ni pagos.",
+  "inboxSubtitle": "Recepción de solicitudes de desarrollo: código, país, modalidad, fecha y cantidad de adjuntos vinculados. Sin acceso al contenido clínico, nombres de archivos ni pagos.",
   "previewNotice": "EJEMPLO · Solo datos ficticios. No hay acceso a pacientes ni operaciones reales.",
   "scope": "Alcance de esta vista previa",
   "scopeBody": "El acceso usa Firebase Authentication y requiere permisos administrativos asignados desde un entorno confiable. No hay registro público ni creación automática de roles. Los módulos operativos y las altas internas están pendientes; no se accede a datos clínicos.",
@@ -26,7 +26,7 @@
   "modality": "Modalidad",
   "status": "Estado",
   "documents": "Documentación disponible",
-  "documentCount": "{count, plural, =1{1 archivo} other{{count} archivos}}",
+  "documentCount": "{count, plural, =1{1 documento vinculado} other{{count} documentos vinculados}}",
   "@documentCount": {
     "placeholders": {
       "count": {
@@ -40,7 +40,7 @@
   "report": "Informe médico",
   "examination": "Estudio o examen",
   "prescription": "Receta aportada por el paciente",
-  "metadataOnly": "Esta etapa recibe solo texto privado del paciente y un registro administrativo separado. Los archivos y el video no se envían todavía. El contenido clínico no es accesible desde esta bandeja; no hay revisión ni asignación médica habilitada.",
+  "metadataOnly": "Los adjuntos vinculados permanecen privados. Las cantidades describen registros aportados, no archivos validados. El contenido clínico no es accesible desde esta bandeja; no hay descarga, revisión clínica ni asignación médica habilitada.",
   "detail": "Detalle de solicitud",
   "view": "Ver detalle",
   "empty": "No hay solicitudes que coincidan con los filtros.",

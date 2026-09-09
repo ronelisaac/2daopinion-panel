@@ -121,7 +121,7 @@ abstract class AppLocalizations {
   /// No description provided for @inboxSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Recepción de solicitudes de desarrollo. Solo código, país, modalidad y fecha; sin acceso al contenido clínico, archivos ni pagos.'**
+  /// **'Recepción de solicitudes de desarrollo: código, país, modalidad, fecha y cantidad de adjuntos vinculados. Sin acceso al contenido clínico, nombres de archivos ni pagos.'**
   String get inboxSubtitle;
 
   /// No description provided for @previewNotice.
@@ -247,7 +247,7 @@ abstract class AppLocalizations {
   /// No description provided for @documentCount.
   ///
   /// In es, this message translates to:
-  /// **'{count, plural, =1{1 archivo} other{{count} archivos}}'**
+  /// **'{count, plural, =1{1 documento vinculado} other{{count} documentos vinculados}}'**
   String documentCount(int count);
 
   /// No description provided for @video.
@@ -289,7 +289,7 @@ abstract class AppLocalizations {
   /// No description provided for @metadataOnly.
   ///
   /// In es, this message translates to:
-  /// **'Esta etapa recibe solo texto privado del paciente y un registro administrativo separado. Los archivos y el video no se envían todavía. El contenido clínico no es accesible desde esta bandeja; no hay revisión ni asignación médica habilitada.'**
+  /// **'Los adjuntos vinculados permanecen privados. Las cantidades describen registros aportados, no archivos validados. El contenido clínico no es accesible desde esta bandeja; no hay descarga, revisión clínica ni asignación médica habilitada.'**
   String get metadataOnly;
 
   /// No description provided for @detail.

@@ -24,7 +24,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get inboxSubtitle =>
-      'Recepción de solicitudes de desarrollo. Solo código, país, modalidad y fecha; sin acceso al contenido clínico, archivos ni pagos.';
+      'Recepción de solicitudes de desarrollo: código, país, modalidad, fecha y cantidad de adjuntos vinculados. Sin acceso al contenido clínico, nombres de archivos ni pagos.';
 
   @override
   String get previewNotice =>
@@ -93,8 +93,8 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count archivos',
-      one: '1 archivo',
+      other: '$count documentos vinculados',
+      one: '1 documento vinculado',
     );
     return '$_temp0';
   }
@@ -119,7 +119,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get metadataOnly =>
-      'Esta etapa recibe solo texto privado del paciente y un registro administrativo separado. Los archivos y el video no se envían todavía. El contenido clínico no es accesible desde esta bandeja; no hay revisión ni asignación médica habilitada.';
+      'Los adjuntos vinculados permanecen privados. Las cantidades describen registros aportados, no archivos validados. El contenido clínico no es accesible desde esta bandeja; no hay descarga, revisión clínica ni asignación médica habilitada.';
 
   @override
   String get detail => 'Detalle de solicitud';

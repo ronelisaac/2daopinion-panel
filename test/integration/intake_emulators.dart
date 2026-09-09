@@ -100,6 +100,8 @@ void main() {
       expect(patientRequest.status, IntakeStatus.received);
       expect((await repository.get(patientRequest.id)).id, patientRequest.id);
       expect(patientRequest.documents, isEmpty);
+      expect(patientRequest.documentCount, 2);
+      expect(patientRequest.hasVideo, true);
       await expectLater(
         database.collection('consultationSubmissions').limit(1).get(),
         throwsA(isA<FirebaseException>()),

@@ -37,6 +37,8 @@ class FirebaseIntakeRepository implements IntakeRepository {
           : ServiceMode.consultation,
       createdAt: (data['createdAt'] as Timestamp).toDate().toUtc(),
       documents: const [],
+      declaredDocumentCount: data['documentCount'] as int? ?? 0,
+      hasVideo: data['hasVideo'] == true,
     );
   }
 
