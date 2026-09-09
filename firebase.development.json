@@ -1,0 +1,8 @@
+{
+  "storage": [{"bucket": "segundaopinion-ea0c8.firebasestorage.app", "rules": "firebase/storage.rules"}],
+  "firestore": {
+    "database": "(default)",
+    "rules": ".firebase/development/firestore.rules",
+    "indexes": "firebase/firestore.indexes.json"
+  }
+}

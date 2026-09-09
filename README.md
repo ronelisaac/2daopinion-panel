@@ -2,6 +2,10 @@
 
 Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
+## Firebase de desarrollo · E2-13
+
+Recepción conectada y comprobada remotamente con solicitudes y archivos ficticios de pacientes. Operaciones del país ve solo resumen y cantidades, nunca contenido clínico. 128 pruebas de reglas, 26 pruebas Flutter, análisis/build correctos e inspección visual móvil/tablet/escritorio. [Configuración, despliegue selectivo, pruebas y límites](docs/E2-13-FIREBASE-DESARROLLO.md). Este estado sustituye los apartados locales históricos siguientes. No desplegar `firebase/firestore.rules` completo: generar el subconjunto autorizado y utilizar `firebase.development.json`; avisos permanecen cerrados.
+
 ## Adjuntos vinculados · E2-11
 
 La recepción local incluye cantidad de documentos y presencia de video; no expone títulos, ubicaciones ni contenido clínico a operaciones. El envío vincula el lote privado de reservas y bloquea nuevas cargas/borrados desde clientes. **Conteos no certificados; solo emuladores, sin despliegue remoto.** [Entrega, límites y reproducción](docs/E2-11-ADJUNTOS-EN-RECEPCION.md). Sustituye la restricción de texto sin adjuntos de E2-10.
