@@ -1887,6 +1887,84 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos confirmar el cambio. Reintenta sin cambiar el motivo o cierra y actualiza para consultar el estado real.'**
   String get doctorAdminUnavailable;
+
+  /// No description provided for @doctorAvailabilityAvailable.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible · Confirmación vigente'**
+  String get doctorAvailabilityAvailable;
+
+  /// No description provided for @doctorAvailabilityPaused.
+  ///
+  /// In es, this message translates to:
+  /// **'Recepción pausada por el médico'**
+  String get doctorAvailabilityPaused;
+
+  /// No description provided for @doctorAvailabilityConfirmation.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente de confirmar disponibilidad'**
+  String get doctorAvailabilityConfirmation;
+
+  /// No description provided for @doctorAvailabilityUnlinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin cuenta médica vinculada'**
+  String get doctorAvailabilityUnlinked;
+
+  /// No description provided for @doctorAvailabilityAdministration.
+  ///
+  /// In es, this message translates to:
+  /// **'No disponible: ficha administrativa pausada'**
+  String get doctorAvailabilityAdministration;
+
+  /// No description provided for @doctorAvailabilityReview.
+  ///
+  /// In es, this message translates to:
+  /// **'No disponible: revisión profesional pendiente o no habilitada'**
+  String get doctorAvailabilityReview;
+
+  /// No description provided for @doctorAvailabilitySpecialty.
+  ///
+  /// In es, this message translates to:
+  /// **'No disponible: especialidad no habilitada'**
+  String get doctorAvailabilitySpecialty;
+
+  /// No description provided for @doctorAvailabilityAccount.
+  ///
+  /// In es, this message translates to:
+  /// **'No disponible: cuenta médica no habilitada'**
+  String get doctorAvailabilityAccount;
+
+  /// No description provided for @doctorAvailabilityLink.
+  ///
+  /// In es, this message translates to:
+  /// **'No disponible: revisar vínculo de cuenta'**
+  String get doctorAvailabilityLink;
+
+  /// No description provided for @doctorAvailabilityUnknown.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponibilidad sin confirmar'**
+  String get doctorAvailabilityUnknown;
+
+  /// No description provided for @doctorAvailabilityHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'La disponibilidad es una consulta del estado actual, no una reserva ni asignación. Actualiza antes de decidir. Solo el médico puede confirmar o pausar su recepción.'**
+  String get doctorAvailabilityHelp;
+
+  /// No description provided for @doctorAvailabilityChecked.
+  ///
+  /// In es, this message translates to:
+  /// **'Consultado: {date} · Hora local'**
+  String doctorAvailabilityChecked(String date);
+
+  /// No description provided for @doctorAvailabilityConfirmed.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmación del médico: {date} · Hora local'**
+  String doctorAvailabilityConfirmed(String date);
 }
 
 class _AppLocalizationsDelegate

@@ -53,7 +53,9 @@ test("default state, pause and reactivation preserve medical review, account and
   const data = await fixture();
   const references = ["doctorRecords/" + data.id, "panelStaff/" + data.doctorUid, "doctorAccountLinks/" + data.id];
   const before = await Promise.all(references.map(async path => (await database.doc(path).get()).data()));
-  assert.deepEqual((await read(data)).items, [{id: data.id, active: true, revision: 0, reason: null, updatedAt: null}]);
+  const {availability, ...administrative} = (await read(data)).items[0];
+  assert.equal(availability.state, "needsConfirmation");
+  assert.deepEqual(administrative, {id: data.id, active: true, revision: 0, reason: null, updatedAt: null});
   const input = command(data);
   await service(context(data.operator), input);await service(context(data.operator), input);
   const paused = (await read(data)).items[0];

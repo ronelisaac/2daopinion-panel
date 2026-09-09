@@ -1058,4 +1058,54 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get doctorAdminUnavailable =>
       'No pudimos confirmar el cambio. Reintenta sin cambiar el motivo o cierra y actualiza para consultar el estado real.';
+
+  @override
+  String get doctorAvailabilityAvailable => 'Disponible · Confirmación vigente';
+
+  @override
+  String get doctorAvailabilityPaused => 'Recepción pausada por el médico';
+
+  @override
+  String get doctorAvailabilityConfirmation =>
+      'Pendiente de confirmar disponibilidad';
+
+  @override
+  String get doctorAvailabilityUnlinked => 'Sin cuenta médica vinculada';
+
+  @override
+  String get doctorAvailabilityAdministration =>
+      'No disponible: ficha administrativa pausada';
+
+  @override
+  String get doctorAvailabilityReview =>
+      'No disponible: revisión profesional pendiente o no habilitada';
+
+  @override
+  String get doctorAvailabilitySpecialty =>
+      'No disponible: especialidad no habilitada';
+
+  @override
+  String get doctorAvailabilityAccount =>
+      'No disponible: cuenta médica no habilitada';
+
+  @override
+  String get doctorAvailabilityLink =>
+      'No disponible: revisar vínculo de cuenta';
+
+  @override
+  String get doctorAvailabilityUnknown => 'Disponibilidad sin confirmar';
+
+  @override
+  String get doctorAvailabilityHelp =>
+      'La disponibilidad es una consulta del estado actual, no una reserva ni asignación. Actualiza antes de decidir. Solo el médico puede confirmar o pausar su recepción.';
+
+  @override
+  String doctorAvailabilityChecked(String date) {
+    return 'Consultado: $date · Hora local';
+  }
+
+  @override
+  String doctorAvailabilityConfirmed(String date) {
+    return 'Confirmación del médico: $date · Hora local';
+  }
 }

@@ -79,6 +79,11 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
             ),
             const SizedBox(height: 12),
             Text(text.doctorsIntro),
+            if (controller.canRegister &&
+                controller.administrationRepository != null) ...[
+              const SizedBox(height: 12),
+              Text(text.doctorAvailabilityHelp),
+            ],
             const SizedBox(height: 20),
             Wrap(
               spacing: 12,

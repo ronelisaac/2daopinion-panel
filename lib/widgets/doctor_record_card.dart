@@ -4,6 +4,7 @@ import '../core/doctor_messages.dart';
 import '../core/localization.dart';
 import '../domain/doctor_record.dart';
 import '../domain/doctor_administration.dart';
+import 'doctor_availability_status.dart';
 
 class DoctorRecordCard extends StatelessWidget {
   const DoctorRecordCard({
@@ -53,6 +54,10 @@ class DoctorRecordCard extends StatelessWidget {
                 ),
               ),
             ],
+            if (administration?.availability != null)
+              DoctorAvailabilityStatus(
+                availability: administration!.availability!,
+              ),
             const SizedBox(height: 8),
             Text(
               text.doctorRegistrySummary(record.country, record.input.registry),

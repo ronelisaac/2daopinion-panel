@@ -1,11 +1,12 @@
 const {createHash} = require("node:crypto");
 const {FieldValue} = require("firebase-admin/firestore");
+const {readOperationalAvailability} = require("./doctor_availability");
 const {fail} = require("./policy");
 
 function administrationEnabled(record) {
   return !record || record.active === true;
 }
-function createDoctorAdministration({database, now}) {
+function createDoctorAdministration({database, auth, now}) {
   function allowed(actor, country, write) {
     const roles = actor?.memberships?.[country] || [];
     if (!actor || actor.active !== true || actor.provisioning !== "ready" ||
@@ -28,7 +29,12 @@ function createDoctorAdministration({database, now}) {
         const docs = await transaction.getAll(...input.ids.map(id => database.doc("doctorRecords/" + id)));
         docs.forEach((snapshot, index) => requireDoctor(snapshot.data(), input.country, input.ids[index]));
         const states = await transaction.getAll(...input.ids.map(id => database.doc("doctorAdministration/" + id)));
-        return {items: states.map((snapshot, index) => view(input.ids[index], snapshot.data()))};
+        const availability = currentActor.memberships[input.country].includes("operations")
+          ? await readOperationalAvailability({transaction, database, auth, country: input.country,
+            doctors: docs.map(snapshot => snapshot.data()), administrations: states.map(snapshot => snapshot.data()),
+            checkedAt: new Date(now()).toISOString()}) : null;
+        return {items: states.map((snapshot, index) => ({...view(input.ids[index], snapshot.data()),
+          ...(availability ? {availability: availability[index]} : {})}))};
       }
       const reference = database.doc("doctorAdministration/" + input.id);
       const eventRef = reference.collection("events").doc(input.requestId);

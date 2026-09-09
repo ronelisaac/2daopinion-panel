@@ -1,5 +1,6 @@
 const {createHash} = require("node:crypto");
 const {FieldValue} = require("firebase-admin/firestore");
+const {workspaceTokenFor} = require("./doctor_availability");
 const {administrationEnabled} = require("./doctor_administration");
 const {fail} = require("./policy");
 const hash = value => createHash("sha256").update(value).digest("hex");
@@ -32,7 +33,7 @@ function createDoctorWorkspace({database, now}) {
       }
       const ready = administrationEnabled(administration) && doctor.environment === "development" && doctor.schemaVersion === 2 && doctor.status === "verified" &&
         specialty?.countryCode === input.country && specialty.active === true;
-      const workspaceToken = hash(JSON.stringify([actor.uid, input.country, doctorId, link.createdAt.toMillis(), doctor.revision, ...(administration?.revision ? [administration.revision] : [])]));
+      const workspaceToken = workspaceTokenFor(actor.uid, input.country, doctor, link, administration);
       const matching = preference?.workspaceToken === workspaceToken;
       const view = {state: ready ? "ready" : "blocked",
         doctor: {id: doctorId, name: doctor.name, registry: doctor.registryNumber, specialty: doctor.specialty},

@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import '../domain/doctor_administration.dart';
+import '../domain/doctor_operational_availability.dart';
 import '../domain/repositories/doctor_administration_repository.dart';
 
 class FirebaseDoctorAdministrationRepository
@@ -40,6 +41,22 @@ class FirebaseDoctorAdministrationRepository
     }
   }
 
+  DoctorOperationalAvailability? _availability(dynamic data) {
+    if (data == null) return null;
+    final states = DoctorAvailabilityState.values.where(
+      (state) => state.name == data['state'],
+    );
+    return DoctorOperationalAvailability(
+      state: states.isEmpty
+          ? DoctorAvailabilityState.unavailable
+          : states.single,
+      checkedAt: DateTime.parse(data['checkedAt'] as String).toUtc(),
+      confirmedAt: data['confirmedAt'] == null
+          ? null
+          : DateTime.parse(data['confirmedAt'] as String).toUtc(),
+    );
+  }
+
   @override
   Future<List<DoctorAdministration>> list(
     String country,
@@ -58,6 +75,7 @@ class FirebaseDoctorAdministrationRepository
             active: item['active'] == true,
             revision: item['revision'] as int,
             reason: item['reason'] as String?,
+            availability: _availability(item['availability']),
             updatedAt: item['updatedAt'] == null
                 ? null
                 : DateTime.parse(item['updatedAt'] as String).toUtc(),

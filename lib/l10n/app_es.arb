@@ -364,5 +364,20 @@
   "doctorAdminDenied": "No tienes permisos vigentes. Cierra y actualiza el listado.",
   "doctorAdminConflict": "El estado cambió. Cierra y actualiza el listado antes de intentarlo nuevamente.",
   "doctorAdminLimit": "Alcanzaste el límite de 20 cambios administrativos de hoy. Inténtalo mañana.",
-  "doctorAdminUnavailable": "No pudimos confirmar el cambio. Reintenta sin cambiar el motivo o cierra y actualiza para consultar el estado real."
+  "doctorAdminUnavailable": "No pudimos confirmar el cambio. Reintenta sin cambiar el motivo o cierra y actualiza para consultar el estado real.",
+  "doctorAvailabilityAvailable": "Disponible · Confirmación vigente",
+  "doctorAvailabilityPaused": "Recepción pausada por el médico",
+  "doctorAvailabilityConfirmation": "Pendiente de confirmar disponibilidad",
+  "doctorAvailabilityUnlinked": "Sin cuenta médica vinculada",
+  "doctorAvailabilityAdministration": "No disponible: ficha administrativa pausada",
+  "doctorAvailabilityReview": "No disponible: revisión profesional pendiente o no habilitada",
+  "doctorAvailabilitySpecialty": "No disponible: especialidad no habilitada",
+  "doctorAvailabilityAccount": "No disponible: cuenta médica no habilitada",
+  "doctorAvailabilityLink": "No disponible: revisar vínculo de cuenta",
+  "doctorAvailabilityUnknown": "Disponibilidad sin confirmar",
+  "doctorAvailabilityHelp": "La disponibilidad es una consulta del estado actual, no una reserva ni asignación. Actualiza antes de decidir. Solo el médico puede confirmar o pausar su recepción.",
+  "doctorAvailabilityChecked": "Consultado: {date} · Hora local",
+  "@doctorAvailabilityChecked": {"placeholders":{"date":{"type":"String"}}},
+  "doctorAvailabilityConfirmed": "Confirmación del médico: {date} · Hora local",
+  "@doctorAvailabilityConfirmed": {"placeholders":{"date":{"type":"String"}}}
 }

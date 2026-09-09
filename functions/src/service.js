@@ -14,7 +14,7 @@ function createService({auth, database, sendInvitation, now = () => Date.now()})
   const control = database.doc("panelControl/users");
   const doctorLinks = createDoctorLinks({auth, database});
   const workspace = createDoctorWorkspace({database, now});
-  const administration = createDoctorAdministration({database, now});
+  const administration = createDoctorAdministration({database, auth, now});
 
   async function actorFor(context) {
     if (!context?.uid) fail("unauthenticated", "denied");
