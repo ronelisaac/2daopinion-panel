@@ -4,6 +4,7 @@ const {fail, memberships, validate, canManage, publicUser} = require("./policy")
 
 const {createDoctorLinks} = require("./doctor_links");
 const {createDoctorAdministration} = require("./doctor_administration");
+const {createIntakeClassification} = require("./intake_classification");
 const {createDoctorWorkspace} = require("./doctor_workspace");
 
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -14,6 +15,7 @@ function createService({auth, database, sendInvitation, now = () => Date.now()})
   const control = database.doc("panelControl/users");
   const doctorLinks = createDoctorLinks({auth, database});
   const workspace = createDoctorWorkspace({database, now});
+  const classification = createIntakeClassification({database, now});
   const administration = createDoctorAdministration({database, auth, now});
 
   async function actorFor(context) {
@@ -138,6 +140,7 @@ function createService({auth, database, sendInvitation, now = () => Date.now()})
     const input = validate(raw);
     const actor = await actorFor(context);
     if (["myWorkspace", "setAvailability"].includes(input.action)) return workspace(actor, input);
+    if (["intakeClassificationGet", "intakeClassificationSet"].includes(input.action)) return classification(actor, input);
     if (["doctorAdminList", "doctorAdminSetActive"].includes(input.action)) return administration(actor, input);
     if (!canManage(actor, [input.country])) fail("permission-denied", "denied");
     if (input.action === "resume") {

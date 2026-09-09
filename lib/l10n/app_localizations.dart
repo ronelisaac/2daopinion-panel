@@ -1965,6 +1965,138 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Confirmación del médico: {date} · Hora local'**
   String doctorAvailabilityConfirmed(String date);
+
+  /// No description provided for @classificationTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Clasificación por especialidad'**
+  String get classificationTitle;
+
+  /// No description provided for @classificationHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra la especialidad confirmada por el paciente o indicada por el equipo médico. No la deduzcas de síntomas ni del nombre de archivos. Sin confirmación, déjala pendiente.'**
+  String get classificationHelp;
+
+  /// No description provided for @classificationPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Especialidad pendiente de confirmar'**
+  String get classificationPending;
+
+  /// No description provided for @classificationInactive.
+  ///
+  /// In es, this message translates to:
+  /// **'La especialidad registrada ya no está habilitada. Revisa la clasificación.'**
+  String get classificationInactive;
+
+  /// No description provided for @classificationEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Clasificar solicitud'**
+  String get classificationEdit;
+
+  /// No description provided for @classificationRefresh.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar clasificación'**
+  String get classificationRefresh;
+
+  /// No description provided for @classificationOrigin.
+  ///
+  /// In es, this message translates to:
+  /// **'Origen de la información *'**
+  String get classificationOrigin;
+
+  /// No description provided for @classificationPatient.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmada por el paciente'**
+  String get classificationPatient;
+
+  /// No description provided for @classificationMedical.
+  ///
+  /// In es, this message translates to:
+  /// **'Indicación del equipo médico'**
+  String get classificationMedical;
+
+  /// No description provided for @classificationUnconfirmed.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin confirmar · Dejar pendiente'**
+  String get classificationUnconfirmed;
+
+  /// No description provided for @classificationConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmo la información administrativa indicada. No equivale a una evaluación médica.'**
+  String get classificationConfirm;
+
+  /// No description provided for @classificationRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma la información antes de guardar.'**
+  String get classificationRequired;
+
+  /// No description provided for @classificationSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar clasificación'**
+  String get classificationSave;
+
+  /// No description provided for @classificationInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona una especialidad válida y confirma el origen de la información.'**
+  String get classificationInvalid;
+
+  /// No description provided for @classificationConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'La solicitud o especialidad cambió, o la clasificación ya coincide. Actualiza y revisa antes de guardar.'**
+  String get classificationConflict;
+
+  /// No description provided for @classificationDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes para clasificar esta solicitud.'**
+  String get classificationDenied;
+
+  /// No description provided for @classificationLimit.
+  ///
+  /// In es, this message translates to:
+  /// **'Alcanzaste el límite diario de cambios. Intenta otro día.'**
+  String get classificationLimit;
+
+  /// No description provided for @classificationUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar el resultado. Reintenta sin cambiar la selección para evitar duplicados.'**
+  String get classificationUnavailable;
+
+  /// No description provided for @classificationSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Clasificación guardada.'**
+  String get classificationSaved;
+
+  /// No description provided for @classificationLocked.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta solicitud ya no está en recepción. No se puede reclasificar desde aquí.'**
+  String get classificationLocked;
+
+  /// No description provided for @classificationNotAssignment.
+  ///
+  /// In es, this message translates to:
+  /// **'Clasificar no asigna un médico, no acredita pagos y no habilita acceso al expediente.'**
+  String get classificationNotAssignment;
+
+  /// No description provided for @classificationDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizada: {date} · Hora local'**
+  String classificationDate(String date);
 }
 
 class _AppLocalizationsDelegate

@@ -1108,4 +1108,83 @@ class AppLocalizationsEs extends AppLocalizations {
   String doctorAvailabilityConfirmed(String date) {
     return 'Confirmación del médico: $date · Hora local';
   }
+
+  @override
+  String get classificationTitle => 'Clasificación por especialidad';
+
+  @override
+  String get classificationHelp =>
+      'Registra la especialidad confirmada por el paciente o indicada por el equipo médico. No la deduzcas de síntomas ni del nombre de archivos. Sin confirmación, déjala pendiente.';
+
+  @override
+  String get classificationPending => 'Especialidad pendiente de confirmar';
+
+  @override
+  String get classificationInactive =>
+      'La especialidad registrada ya no está habilitada. Revisa la clasificación.';
+
+  @override
+  String get classificationEdit => 'Clasificar solicitud';
+
+  @override
+  String get classificationRefresh => 'Actualizar clasificación';
+
+  @override
+  String get classificationOrigin => 'Origen de la información *';
+
+  @override
+  String get classificationPatient => 'Confirmada por el paciente';
+
+  @override
+  String get classificationMedical => 'Indicación del equipo médico';
+
+  @override
+  String get classificationUnconfirmed => 'Sin confirmar · Dejar pendiente';
+
+  @override
+  String get classificationConfirm =>
+      'Confirmo la información administrativa indicada. No equivale a una evaluación médica.';
+
+  @override
+  String get classificationRequired =>
+      'Confirma la información antes de guardar.';
+
+  @override
+  String get classificationSave => 'Guardar clasificación';
+
+  @override
+  String get classificationInvalid =>
+      'Selecciona una especialidad válida y confirma el origen de la información.';
+
+  @override
+  String get classificationConflict =>
+      'La solicitud o especialidad cambió, o la clasificación ya coincide. Actualiza y revisa antes de guardar.';
+
+  @override
+  String get classificationDenied =>
+      'No tienes permisos vigentes para clasificar esta solicitud.';
+
+  @override
+  String get classificationLimit =>
+      'Alcanzaste el límite diario de cambios. Intenta otro día.';
+
+  @override
+  String get classificationUnavailable =>
+      'No pudimos confirmar el resultado. Reintenta sin cambiar la selección para evitar duplicados.';
+
+  @override
+  String get classificationSaved => 'Clasificación guardada.';
+
+  @override
+  String get classificationLocked =>
+      'Esta solicitud ya no está en recepción. No se puede reclasificar desde aquí.';
+
+  @override
+  String get classificationNotAssignment =>
+      'Clasificar no asigna un médico, no acredita pagos y no habilita acceso al expediente.';
+
+  @override
+  String classificationDate(String date) {
+    return 'Actualizada: $date · Hora local';
+  }
 }

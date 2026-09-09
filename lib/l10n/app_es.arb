@@ -379,5 +379,34 @@
   "doctorAvailabilityChecked": "Consultado: {date} · Hora local",
   "@doctorAvailabilityChecked": {"placeholders":{"date":{"type":"String"}}},
   "doctorAvailabilityConfirmed": "Confirmación del médico: {date} · Hora local",
-  "@doctorAvailabilityConfirmed": {"placeholders":{"date":{"type":"String"}}}
+  "@doctorAvailabilityConfirmed": {"placeholders":{"date":{"type":"String"}}},
+  "classificationTitle": "Clasificación por especialidad",
+  "classificationHelp": "Registra la especialidad confirmada por el paciente o indicada por el equipo médico. No la deduzcas de síntomas ni del nombre de archivos. Sin confirmación, déjala pendiente.",
+  "classificationPending": "Especialidad pendiente de confirmar",
+  "classificationInactive": "La especialidad registrada ya no está habilitada. Revisa la clasificación.",
+  "classificationEdit": "Clasificar solicitud",
+  "classificationRefresh": "Actualizar clasificación",
+  "classificationOrigin": "Origen de la información *",
+  "classificationPatient": "Confirmada por el paciente",
+  "classificationMedical": "Indicación del equipo médico",
+  "classificationUnconfirmed": "Sin confirmar · Dejar pendiente",
+  "classificationConfirm": "Confirmo la información administrativa indicada. No equivale a una evaluación médica.",
+  "classificationRequired": "Confirma la información antes de guardar.",
+  "classificationSave": "Guardar clasificación",
+  "classificationInvalid": "Selecciona una especialidad válida y confirma el origen de la información.",
+  "classificationConflict": "La solicitud o especialidad cambió, o la clasificación ya coincide. Actualiza y revisa antes de guardar.",
+  "classificationDenied": "No tienes permisos vigentes para clasificar esta solicitud.",
+  "classificationLimit": "Alcanzaste el límite diario de cambios. Intenta otro día.",
+  "classificationUnavailable": "No pudimos confirmar el resultado. Reintenta sin cambiar la selección para evitar duplicados.",
+  "classificationSaved": "Clasificación guardada.",
+  "classificationLocked": "Esta solicitud ya no está en recepción. No se puede reclasificar desde aquí.",
+  "classificationNotAssignment": "Clasificar no asigna un médico, no acredita pagos y no habilita acceso al expediente.",
+  "classificationDate": "Actualizada: {date} · Hora local",
+  "@classificationDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }
