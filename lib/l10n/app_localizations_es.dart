@@ -233,6 +233,161 @@ class AppLocalizationsEs extends AppLocalizations {
   String get signOut => 'Cerrar sesión';
 
   @override
+  String get doctorsIntro =>
+      'Registro profesional privado de desarrollo. Usa solo datos ficticios. Registrar antecedentes no crea una cuenta ni habilita atención, recetas o acceso a pacientes. La revisión RNPI es manual; no existe conexión automática con el registro.';
+
+  @override
+  String get doctorCreate => 'Registrar médico';
+
+  @override
+  String get doctorEdit => 'Editar antecedentes';
+
+  @override
+  String get doctorReview => 'Registrar revisión';
+
+  @override
+  String get doctorEmpty =>
+      'Todavía no hay médicos registrados para este país.';
+
+  @override
+  String get doctorRefresh => 'Actualizar médicos';
+
+  @override
+  String get doctorMore => 'Ver más médicos';
+
+  @override
+  String get doctorName => 'Nombre completo *';
+
+  @override
+  String get doctorRegistry => 'Inscripción RNPI *';
+
+  @override
+  String get doctorRegistryHelp =>
+      'Entre 1 y 10 dígitos, sin puntos ni ceros iniciales. No es el RUT. No se modifica después de registrar.';
+
+  @override
+  String get doctorSpecialty => 'Especialidad principal *';
+
+  @override
+  String get doctorRequiredHint =>
+      'Los campos con * son obligatorios. La especialidad se registra como declarada, pendiente de revisión.';
+
+  @override
+  String get doctorNameInvalid =>
+      'Escribe entre 3 y 120 caracteres, sin dejar el nombre vacío.';
+
+  @override
+  String get doctorRegistryInvalid =>
+      'Introduce de 1 a 10 dígitos, sin ceros iniciales.';
+
+  @override
+  String get doctorSpecialtyInvalid => 'Escribe entre 2 y 120 caracteres.';
+
+  @override
+  String get doctorSaved =>
+      'Registro y evento de auditoría guardados en Firebase de desarrollo.';
+
+  @override
+  String get doctorPending => 'Pendiente de revisión';
+
+  @override
+  String get doctorVerified => 'Revisión aprobada · Desarrollo';
+
+  @override
+  String get doctorRejected => 'Requiere corrección';
+
+  @override
+  String get doctorSuspended => 'Revisión suspendida';
+
+  @override
+  String get doctorReviewIntro =>
+      'Consulta la fuente oficial y contrasta identidad, título y especialidad. Guarda la referencia consultada y el resultado. Esta revisión de desarrollo no habilita atención ni publica un perfil verificado al paciente.';
+
+  @override
+  String get doctorSource => 'Fuente Chile: RNPI · Superintendencia de Salud';
+
+  @override
+  String get doctorSourceUrl => 'https://rnpi.superdesalud.gob.cl/';
+
+  @override
+  String get doctorEvidence => 'Referencia de consulta *';
+
+  @override
+  String get doctorEvidenceHelp =>
+      'Código de certificado o referencia de consulta. Solo evidencia ficticia en desarrollo; no contraseñas ni datos de pacientes.';
+
+  @override
+  String get doctorEvidenceInvalid => 'Escribe entre 3 y 200 caracteres.';
+
+  @override
+  String get doctorReviewNote => 'Resultado y fundamento *';
+
+  @override
+  String get doctorNoteInvalid =>
+      'Explica el resultado con entre 10 y 2.000 caracteres.';
+
+  @override
+  String get doctorIdentityCheck => 'Identidad contrastada';
+
+  @override
+  String get doctorTitleCheck => 'Título profesional contrastado';
+
+  @override
+  String get doctorSpecialtyCheck => 'Especialidad y su vigencia contrastadas';
+
+  @override
+  String get doctorChecksRequired =>
+      'Para aprobar, confirma las tres comprobaciones.';
+
+  @override
+  String get doctorDecision => 'Resultado de la revisión';
+
+  @override
+  String get doctorSave => 'Guardar registro';
+
+  @override
+  String get doctorSaveReview => 'Guardar revisión';
+
+  @override
+  String doctorReviewTrace(String date, String actor) {
+    return 'Última revisión: $date · Revisor: $actor';
+  }
+
+  @override
+  String doctorRevision(int revision, String date) {
+    return 'Revisión $revision · Actualizado $date';
+  }
+
+  @override
+  String doctorRegistrySummary(String country, String number) {
+    return '$country · RNPI $number';
+  }
+
+  @override
+  String get doctorNoSelfReview =>
+      'La revisión debe realizarla otra persona con rol de Dirección médica.';
+
+  @override
+  String get doctorInvalid =>
+      'Revisa los campos obligatorios y el estado del registro.';
+
+  @override
+  String get doctorDenied =>
+      'No tienes permisos vigentes para esta operación en el país seleccionado.';
+
+  @override
+  String get doctorDuplicate =>
+      'Ese número RNPI ya está registrado en Chile. Actualiza el listado antes de continuar.';
+
+  @override
+  String get doctorConflict =>
+      'El registro cambió desde que lo abriste. Cierra el formulario, actualiza y revisa los cambios.';
+
+  @override
+  String get doctorUnavailable =>
+      'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.';
+
+  @override
   String get loginTitle => 'Acceso al panel';
 
   @override

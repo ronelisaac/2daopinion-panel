@@ -49,7 +49,13 @@ void main() {
           isFalse,
           reason: source.path,
         );
-        expect(content.contains('https://'), isFalse, reason: source.path);
+        expect(
+          content
+              .replaceAll('https://rnpi.superdesalud.gob.cl/', '')
+              .contains('https://'),
+          isFalse,
+          reason: source.path,
+        );
         expect(
           content.contains('setCustomUserClaims'),
           isFalse,

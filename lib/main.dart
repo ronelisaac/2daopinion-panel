@@ -9,6 +9,7 @@ import 'app.dart';
 import 'firebase_options.dart';
 import 'repositories/firebase_panel_identity_repository.dart';
 import 'repositories/firebase_panel_staff_repository.dart';
+import 'repositories/firebase_doctor_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +52,15 @@ void main() {
   })();
   runApp(
     PanelApp(
+      doctorRepository:
+          const bool.fromEnvironment('USE_FIREBASE_EMULATORS') ||
+              const bool.fromEnvironment('ENABLE_DOCTOR_REGISTRY')
+          ? FirebaseDoctorRepository(
+              database: () => FirebaseFirestore.instance,
+              auth: () => FirebaseAuth.instance,
+              initialize: initialize,
+            )
+          : null,
       repository: FirebaseIntakeRepository(
         database: () => FirebaseFirestore.instance,
         auth: () => FirebaseAuth.instance,

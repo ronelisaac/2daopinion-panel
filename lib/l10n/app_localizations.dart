@@ -496,6 +496,270 @@ abstract class AppLocalizations {
   /// **'Cerrar sesión'**
   String get signOut;
 
+  /// No description provided for @doctorsIntro.
+  ///
+  /// In es, this message translates to:
+  /// **'Registro profesional privado de desarrollo. Usa solo datos ficticios. Registrar antecedentes no crea una cuenta ni habilita atención, recetas o acceso a pacientes. La revisión RNPI es manual; no existe conexión automática con el registro.'**
+  String get doctorsIntro;
+
+  /// No description provided for @doctorCreate.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar médico'**
+  String get doctorCreate;
+
+  /// No description provided for @doctorEdit.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar antecedentes'**
+  String get doctorEdit;
+
+  /// No description provided for @doctorReview.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar revisión'**
+  String get doctorReview;
+
+  /// No description provided for @doctorEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay médicos registrados para este país.'**
+  String get doctorEmpty;
+
+  /// No description provided for @doctorRefresh.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar médicos'**
+  String get doctorRefresh;
+
+  /// No description provided for @doctorMore.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más médicos'**
+  String get doctorMore;
+
+  /// No description provided for @doctorName.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre completo *'**
+  String get doctorName;
+
+  /// No description provided for @doctorRegistry.
+  ///
+  /// In es, this message translates to:
+  /// **'Inscripción RNPI *'**
+  String get doctorRegistry;
+
+  /// No description provided for @doctorRegistryHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre 1 y 10 dígitos, sin puntos ni ceros iniciales. No es el RUT. No se modifica después de registrar.'**
+  String get doctorRegistryHelp;
+
+  /// No description provided for @doctorSpecialty.
+  ///
+  /// In es, this message translates to:
+  /// **'Especialidad principal *'**
+  String get doctorSpecialty;
+
+  /// No description provided for @doctorRequiredHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Los campos con * son obligatorios. La especialidad se registra como declarada, pendiente de revisión.'**
+  String get doctorRequiredHint;
+
+  /// No description provided for @doctorNameInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe entre 3 y 120 caracteres, sin dejar el nombre vacío.'**
+  String get doctorNameInvalid;
+
+  /// No description provided for @doctorRegistryInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Introduce de 1 a 10 dígitos, sin ceros iniciales.'**
+  String get doctorRegistryInvalid;
+
+  /// No description provided for @doctorSpecialtyInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe entre 2 y 120 caracteres.'**
+  String get doctorSpecialtyInvalid;
+
+  /// No description provided for @doctorSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Registro y evento de auditoría guardados en Firebase de desarrollo.'**
+  String get doctorSaved;
+
+  /// No description provided for @doctorPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente de revisión'**
+  String get doctorPending;
+
+  /// No description provided for @doctorVerified.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión aprobada · Desarrollo'**
+  String get doctorVerified;
+
+  /// No description provided for @doctorRejected.
+  ///
+  /// In es, this message translates to:
+  /// **'Requiere corrección'**
+  String get doctorRejected;
+
+  /// No description provided for @doctorSuspended.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión suspendida'**
+  String get doctorSuspended;
+
+  /// No description provided for @doctorReviewIntro.
+  ///
+  /// In es, this message translates to:
+  /// **'Consulta la fuente oficial y contrasta identidad, título y especialidad. Guarda la referencia consultada y el resultado. Esta revisión de desarrollo no habilita atención ni publica un perfil verificado al paciente.'**
+  String get doctorReviewIntro;
+
+  /// No description provided for @doctorSource.
+  ///
+  /// In es, this message translates to:
+  /// **'Fuente Chile: RNPI · Superintendencia de Salud'**
+  String get doctorSource;
+
+  /// No description provided for @doctorSourceUrl.
+  ///
+  /// In es, this message translates to:
+  /// **'https://rnpi.superdesalud.gob.cl/'**
+  String get doctorSourceUrl;
+
+  /// No description provided for @doctorEvidence.
+  ///
+  /// In es, this message translates to:
+  /// **'Referencia de consulta *'**
+  String get doctorEvidence;
+
+  /// No description provided for @doctorEvidenceHelp.
+  ///
+  /// In es, this message translates to:
+  /// **'Código de certificado o referencia de consulta. Solo evidencia ficticia en desarrollo; no contraseñas ni datos de pacientes.'**
+  String get doctorEvidenceHelp;
+
+  /// No description provided for @doctorEvidenceInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe entre 3 y 200 caracteres.'**
+  String get doctorEvidenceInvalid;
+
+  /// No description provided for @doctorReviewNote.
+  ///
+  /// In es, this message translates to:
+  /// **'Resultado y fundamento *'**
+  String get doctorReviewNote;
+
+  /// No description provided for @doctorNoteInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Explica el resultado con entre 10 y 2.000 caracteres.'**
+  String get doctorNoteInvalid;
+
+  /// No description provided for @doctorIdentityCheck.
+  ///
+  /// In es, this message translates to:
+  /// **'Identidad contrastada'**
+  String get doctorIdentityCheck;
+
+  /// No description provided for @doctorTitleCheck.
+  ///
+  /// In es, this message translates to:
+  /// **'Título profesional contrastado'**
+  String get doctorTitleCheck;
+
+  /// No description provided for @doctorSpecialtyCheck.
+  ///
+  /// In es, this message translates to:
+  /// **'Especialidad y su vigencia contrastadas'**
+  String get doctorSpecialtyCheck;
+
+  /// No description provided for @doctorChecksRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Para aprobar, confirma las tres comprobaciones.'**
+  String get doctorChecksRequired;
+
+  /// No description provided for @doctorDecision.
+  ///
+  /// In es, this message translates to:
+  /// **'Resultado de la revisión'**
+  String get doctorDecision;
+
+  /// No description provided for @doctorSave.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar registro'**
+  String get doctorSave;
+
+  /// No description provided for @doctorSaveReview.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar revisión'**
+  String get doctorSaveReview;
+
+  /// No description provided for @doctorReviewTrace.
+  ///
+  /// In es, this message translates to:
+  /// **'Última revisión: {date} · Revisor: {actor}'**
+  String doctorReviewTrace(String date, String actor);
+
+  /// No description provided for @doctorRevision.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión {revision} · Actualizado {date}'**
+  String doctorRevision(int revision, String date);
+
+  /// No description provided for @doctorRegistrySummary.
+  ///
+  /// In es, this message translates to:
+  /// **'{country} · RNPI {number}'**
+  String doctorRegistrySummary(String country, String number);
+
+  /// No description provided for @doctorNoSelfReview.
+  ///
+  /// In es, this message translates to:
+  /// **'La revisión debe realizarla otra persona con rol de Dirección médica.'**
+  String get doctorNoSelfReview;
+
+  /// No description provided for @doctorInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los campos obligatorios y el estado del registro.'**
+  String get doctorInvalid;
+
+  /// No description provided for @doctorDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permisos vigentes para esta operación en el país seleccionado.'**
+  String get doctorDenied;
+
+  /// No description provided for @doctorDuplicate.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese número RNPI ya está registrado en Chile. Actualiza el listado antes de continuar.'**
+  String get doctorDuplicate;
+
+  /// No description provided for @doctorConflict.
+  ///
+  /// In es, this message translates to:
+  /// **'El registro cambió desde que lo abriste. Cierra el formulario, actualiza y revisa los cambios.'**
+  String get doctorConflict;
+
+  /// No description provided for @doctorUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar la operación. Actualiza el listado antes de reintentar.'**
+  String get doctorUnavailable;
+
   /// No description provided for @loginTitle.
   ///
   /// In es, this message translates to:

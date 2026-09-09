@@ -15,10 +15,14 @@ before(async()=>{
 after(async()=>environment.cleanup());
 test('development configuration excludes unapproved notices and unrelated services',()=>{
   assert.ok(!rules.includes('match /patientNotices'));
+  assert.ok(!rules.includes('match /doctorRecords'));
+  assert.ok(developmentRules(source, {includeDoctors: true}).includes('match /doctorRecords'));
+  assert.ok(!developmentRules(source, {includeDoctors: true}).includes('match /patientNotices'));
   assert.ok(rules.includes('match /consultationSubmissions'));
   assert.ok(rules.includes('match /draftAttachments'));
   assert.ok(rules.startsWith(source.slice(0,source.indexOf('    function intakeOperator'))));
   assert.throws(()=>developmentRules('changed structure'));
+  assert.throws(()=>developmentRules(source.replace('function doctorRole(country, role)', 'function changedDoctorBoundary(country, role)')));
   const config=JSON.parse(readFileSync('firebase.development.json','utf8'));
   assert.deepEqual(Object.keys(config).sort(),['firestore','storage']);
 });
@@ -29,4 +33,12 @@ test('development keeps notices denied even to an otherwise valid owner',async()
   });
   const database=environment.authenticatedContext('dev-patient',{email_verified:true}).firestore();
   await assertFails(getDoc(doc(database,'patientNotices/dev-patient/items/notice')));
+});
+test('default development keeps doctors closed even to a valid operator until activation',async()=>{
+  await environment.withSecurityRulesDisabled(async context=>{
+    await setDoc(doc(context.firestore(),'panelStaff/operator'),{active:true,provisioning:'ready',memberships:{CL:['operations']}});
+    await setDoc(doc(context.firestore(),'doctorRecords/CL_123'),{countryCode:'CL'});
+  });
+  const database=environment.authenticatedContext('operator',{email_verified:true,panelAccess:{version:1,active:true,memberships:{CL:['operations']}}}).firestore();
+  await assertFails(getDoc(doc(database,'doctorRecords/CL_123')));
 });

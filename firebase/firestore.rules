@@ -228,6 +228,84 @@ service cloud.firestore {
           && getAfter(/databases/$(database)/documents/draftAttachments/$(uid)).data.updatedAt == request.time;
       }
     }
+    function doctorRole(country, role) {
+      let staff = get(/databases/$(database)/documents/panelStaff/$(request.auth.uid)).data;
+      let access = request.auth.token.panelAccess;
+      return request.auth != null && request.auth.token.email_verified == true
+        && access.version == 1 && access.active == true
+        && role in access.memberships.get(country, [])
+        && staff.active == true && staff.provisioning == 'ready'
+        && role in staff.memberships.get(country, []);
+    }
+    function doctorReader(country) {
+      return doctorRole(country, 'operations') || doctorRole(country, 'medicalDirector');
+    }
+    function doctorText(value, minimum, maximum) {
+      return value is string && value.size() >= minimum && value.size() <= maximum
+        && value.matches('[^\\s]([\\s\\S]*[^\\s])?');
+    }
+    function doctorShape(data, id) {
+      return data.keys().hasAll(['id', 'countryCode', 'schemaVersion', 'environment', 'name', 'registryNumber', 'specialty', 'status', 'review', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'countryCode', 'schemaVersion', 'environment', 'name', 'registryNumber', 'specialty', 'status', 'review', 'revision', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'])
+        && data.countryCode == 'CL' && data.schemaVersion == 1 && data.environment == 'development'
+        && data.registryNumber is string && data.registryNumber.matches('[1-9][0-9]{0,9}')
+        && data.id == id && id == 'CL_' + data.registryNumber
+        && doctorText(data.name, 3, 120) && doctorText(data.specialty, 2, 120)
+        && data.status in ['pending', 'verified', 'rejected', 'suspended']
+        && data.review is map && data.revision is int && data.revision > 0
+        && data.updatedBy == request.auth.uid && data.updatedAt == request.time;
+    }
+    function doctorAudit(data, id) {
+      let event = getAfter(/databases/$(database)/documents/doctorRecords/$(id)/events/$(string(data.revision))).data;
+      return event.keys().hasAll(['revision', 'actorId', 'countryCode', 'action', 'recordedAt', 'snapshot'])
+        && event.keys().hasOnly(['revision', 'actorId', 'countryCode', 'action', 'recordedAt', 'snapshot'])
+        && event.revision == data.revision && event.actorId == request.auth.uid
+        && event.countryCode == data.countryCode && event.recordedAt == request.time
+        && event.action == (data.revision == 1 ? 'create' : (data.status == 'pending' ? 'edit' : 'review'))
+        && event.snapshot == data;
+    }
+    function doctorReview(data, previous) {
+      let review = data.review;
+      return doctorRole(data.countryCode, 'medicalDirector') && request.auth.uid != data.createdBy
+        && ((previous.status == 'pending' && data.status in ['verified', 'rejected'])
+          || (previous.status == 'verified' && data.status == 'suspended')
+          || (previous.status == 'suspended' && data.status in ['verified', 'rejected']))
+        && data.diff(previous).affectedKeys().hasOnly(['status', 'review', 'revision', 'updatedBy', 'updatedAt'])
+        && review.keys().hasAll(['actorId', 'at', 'source', 'evidence', 'note', 'identityChecked', 'titleChecked', 'specialtyChecked'])
+        && review.keys().hasOnly(['actorId', 'at', 'source', 'evidence', 'note', 'identityChecked', 'titleChecked', 'specialtyChecked'])
+        && review.actorId == request.auth.uid && review.at == request.time && review.source == 'CL_RNPI'
+        && doctorText(review.evidence, 3, 200) && doctorText(review.note, 10, 2000)
+        && review.identityChecked is bool && review.titleChecked is bool && review.specialtyChecked is bool
+        && (data.status != 'verified' || (review.identityChecked && review.titleChecked && review.specialtyChecked));
+    }
+    match /doctorRecords/{id} {
+      allow get: if (exists(/databases/$(database)/documents/doctorRecords/$(id)) && doctorReader(resource.data.countryCode))
+        || (!exists(/databases/$(database)/documents/doctorRecords/$(id)) && id.matches('CL_[1-9][0-9]{0,9}') && doctorReader('CL'));
+      allow list: if request.query.limit != null && request.query.limit <= 21 && doctorReader(resource.data.countryCode);
+      allow create: if doctorRole(request.resource.data.countryCode, 'operations')
+        && doctorShape(request.resource.data, id) && request.resource.data.revision == 1
+        && request.resource.data.createdBy == request.auth.uid && request.resource.data.createdAt == request.time
+        && request.resource.data.status == 'pending' && request.resource.data.review == {}
+        && doctorAudit(request.resource.data, id);
+      allow update: if doctorShape(request.resource.data, id)
+        && request.resource.data.revision == resource.data.revision + 1
+        && request.resource.data.createdBy == resource.data.createdBy && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.registryNumber == resource.data.registryNumber
+        && doctorAudit(request.resource.data, id)
+        && ((doctorRole(resource.data.countryCode, 'operations')
+            && resource.data.status in ['pending', 'rejected'] && request.resource.data.status == 'pending'
+            && request.resource.data.review == {}) || doctorReview(request.resource.data, resource.data));
+      match /events/{revision} {
+        allow get: if doctorReader(get(/databases/$(database)/documents/doctorRecords/$(id)).data.countryCode);
+        allow list: if request.query.limit != null && request.query.limit <= 50
+          && doctorReader(get(/databases/$(database)/documents/doctorRecords/$(id)).data.countryCode);
+        allow create: if doctorReader(request.resource.data.countryCode)
+          && revision == string(request.resource.data.revision)
+          && (!exists(/databases/$(database)/documents/doctorRecords/$(id))
+            || request.resource.data.revision == get(/databases/$(database)/documents/doctorRecords/$(id)).data.revision + 1)
+          && doctorAudit(getAfter(/databases/$(database)/documents/doctorRecords/$(id)).data, id);
+      }
+    }
     match /patientNotices/{uid}/items/{noticeId} {
       allow get: if draftOwner(uid);
       allow list: if draftOwner(uid) && request.query.limit != null && request.query.limit <= 100;

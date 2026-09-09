@@ -2,6 +2,10 @@
 
 Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
+## Médicos y revisión · E2-14 · Parcial
+
+Registro profesional por país, edición de antecedentes, revisión manual independiente y auditoría transaccional implementados y probados localmente. Formulario tipado y validado; sin crear cuentas ni acceso clínico. **Pendiente autorización y validación remota**, no es una sección conectada terminada. La compilación normal y el generador de reglas mantienen médicos desactivado por defecto; E2-13 sigue funcionando. [Alcance, permisos y activación](docs/E2-14-MEDICOS-Y-REVISION.md).
+
 ## Firebase de desarrollo · E2-13
 
 Recepción conectada y comprobada remotamente con solicitudes y archivos ficticios de pacientes. Operaciones del país ve solo resumen y cantidades, nunca contenido clínico. 128 pruebas de reglas, 26 pruebas Flutter, análisis/build correctos e inspección visual móvil/tablet/escritorio. [Configuración, despliegue selectivo, pruebas y límites](docs/E2-13-FIREBASE-DESARROLLO.md). Este estado sustituye los apartados locales históricos siguientes. No desplegar `firebase/firestore.rules` completo: generar el subconjunto autorizado y utilizar `firebase.development.json`; avisos permanecen cerrados.
