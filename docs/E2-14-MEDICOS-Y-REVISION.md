@@ -1,6 +1,6 @@
 # E2-14 · Registro de médicos y revisión profesional
 
-9 de septiembre de 2026. **Entrega parcial: implementación y pruebas locales; activación remota pendiente de la confirmación solicitada a Ronel.** No se considera cerrada la sección conectada hasta publicar las reglas autorizadas y repetir la verificación en Firebase de desarrollo con cuentas ficticias temporales.
+9 de septiembre de 2026. **Estado inicial histórico: entrega parcial local. Activación remota autorizada y verificada posteriormente en [E2-15](E2-15-MEDICOS-FIREBASE.md).** E2-15 sustituye el procedimiento de activación y el bloqueo descritos aquí; se conserva este registro de la entrega original.
 
 ## Alcance implementado
 
@@ -34,7 +34,7 @@ La [Superintendencia de Salud](https://www.superdesalud.gob.cl/tramites/registro
 
 Solo contenido ficticio en desarrollo. «Revisión aprobada · Desarrollo» es una decisión interna de prueba, no una certificación oficial ni autorización de atención. Antes del uso clínico faltan evidencia verificable, vinculación de identidad con la cuenta, especialidades múltiples estructuradas, vigencias/revalidación, documentos de respaldo y definición del proceso de publicación del perfil.
 
-## Activación controlada
+## Activación controlada original · sustituida por E2-15
 
 - El adaptador real existe, pero `main.dart` solo lo inyecta en emuladores o con `ENABLE_DOCTOR_REGISTRY=true`.
 - Las reglas canónicas contienen el candidato. El generador de desarrollo **excluye médicos y avisos por defecto**, manteniendo el circuito E2-13. No habilitarlo remotamente por inercia.
@@ -43,7 +43,7 @@ Solo contenido ficticio en desarrollo. «Revisión aprobada · Desarrollo» es u
 - Probar remoto con Operaciones, Dirección médica y tercero ficticios: registro → corrección → revisión independiente → nueva sesión; revisar tres eventos, permisos, revocación, duplicados y conflictos. Limpiar únicamente esas identidades y registros al finalizar y comprobar los roles de Ronel sin cambios.
 - Al activar, actualizar este documento y la política del generador para no excluir médicos en un despliegue posterior. No habilitar avisos junto con médicos.
 
-## Reproducción local
+## Reproducción local e historial de QA anterior a E2-15
 
 ```sh
 npm run test:rules

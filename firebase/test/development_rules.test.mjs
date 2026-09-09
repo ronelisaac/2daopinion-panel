@@ -7,7 +7,7 @@ import {developmentRules} from '../../scripts/development-rules.mjs';
 
 let environment;
 const source = readFileSync('firebase/firestore.rules','utf8');
-const rules = developmentRules(source);
+const rules = developmentRules(source, {includeDoctors: false});
 before(async()=>{
   environment=await initializeTestEnvironment({projectId:'demo-2daopinion',firestore:{host:'127.0.0.1',port:8080,rules}});
   await environment.clearFirestore();
@@ -16,13 +16,13 @@ after(async()=>environment.cleanup());
 test('development configuration excludes unapproved notices and unrelated services',()=>{
   assert.ok(!rules.includes('match /patientNotices'));
   assert.ok(!rules.includes('match /doctorRecords'));
-  assert.ok(developmentRules(source, {includeDoctors: true}).includes('match /doctorRecords'));
+  assert.ok(developmentRules(source).includes('match /doctorRecords'));
   assert.ok(!developmentRules(source, {includeDoctors: true}).includes('match /patientNotices'));
   assert.ok(rules.includes('match /consultationSubmissions'));
   assert.ok(rules.includes('match /draftAttachments'));
   assert.ok(rules.startsWith(source.slice(0,source.indexOf('    function intakeOperator'))));
   assert.throws(()=>developmentRules('changed structure'));
-  assert.throws(()=>developmentRules(source.replace('function doctorRole(country, role)', 'function changedDoctorBoundary(country, role)')));
+  assert.throws(()=>developmentRules(source.replace('function doctorRole(country, role)', 'function changedDoctorBoundary(country, role)'), {includeDoctors: false}));
   const config=JSON.parse(readFileSync('firebase.development.json','utf8'));
   assert.deepEqual(Object.keys(config).sort(),['firestore','storage']);
 });
@@ -34,7 +34,7 @@ test('development keeps notices denied even to an otherwise valid owner',async()
   const database=environment.authenticatedContext('dev-patient',{email_verified:true}).firestore();
   await assertFails(getDoc(doc(database,'patientNotices/dev-patient/items/notice')));
 });
-test('default development keeps doctors closed even to a valid operator until activation',async()=>{
+test('explicit rollback subset keeps doctors closed even to a valid operator',async()=>{
   await environment.withSecurityRulesDisabled(async context=>{
     await setDoc(doc(context.firestore(),'panelStaff/operator'),{active:true,provisioning:'ready',memberships:{CL:['operations']}});
     await setDoc(doc(context.firestore(),'doctorRecords/CL_123'),{countryCode:'CL'});

@@ -1,5 +1,9 @@
 # Infraestructura Firebase compartida
 
+## Estado vigente · E2-15
+
+Médicos y revisión manual activos en Firestore de desarrollo tras autorización y QA remoto ficticio. Generar con `node scripts/development-rules.mjs`: incluye médicos y recepción/adjuntos E2-13, excluye avisos. Desplegar solo los servicios autorizados con `firebase.development.json`, nunca todos los candidatos de `firebase.json`. `--exclude-doctors` es una reversión deliberada, no el valor normal. [Pruebas y límites](../docs/E2-15-MEDICOS-FIREBASE.md). Este estado sustituye las restricciones históricas de E2-11 siguientes.
+
 ## E2-11: recepción con reservas vinculadas, candidato local
 
 La copia privada del envío conserva attachmentBatch, idéntico al contador de reservas antes y después de la transacción. intakeRequests agrega solo documentCount/hasVideo. Firestore bloquea reservas nuevas en el mismo envío o después; Storage bloquea creación y borrado después de la recepción y conserva lectura del propietario. No certifica existencia ni validez de bytes desde Firestore. 126 pruebas de reglas y dos integraciones web aprobadas; sin despliegue ni cambios IAM. [Contrato, límites y reproducción](../docs/E2-11-ADJUNTOS-EN-RECEPCION.md). Este estado prevalece sobre el historial de candidatos siguiente; nunca desplegar todo por inercia.

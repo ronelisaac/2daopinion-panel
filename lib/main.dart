@@ -52,15 +52,11 @@ void main() {
   })();
   runApp(
     PanelApp(
-      doctorRepository:
-          const bool.fromEnvironment('USE_FIREBASE_EMULATORS') ||
-              const bool.fromEnvironment('ENABLE_DOCTOR_REGISTRY')
-          ? FirebaseDoctorRepository(
-              database: () => FirebaseFirestore.instance,
-              auth: () => FirebaseAuth.instance,
-              initialize: initialize,
-            )
-          : null,
+      doctorRepository: FirebaseDoctorRepository(
+        database: () => FirebaseFirestore.instance,
+        auth: () => FirebaseAuth.instance,
+        initialize: initialize,
+      ),
       repository: FirebaseIntakeRepository(
         database: () => FirebaseFirestore.instance,
         auth: () => FirebaseAuth.instance,

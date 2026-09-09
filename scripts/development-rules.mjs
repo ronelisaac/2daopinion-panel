@@ -1,7 +1,7 @@
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 
-export function developmentRules(source, {includeDoctors = false} = {}) {
+export function developmentRules(source, {includeDoctors = true} = {}) {
   if (!includeDoctors) {
     const doctors = source.indexOf('    function doctorRole(country, role) {');
     const notices = source.indexOf('    match /patientNotices/{uid}/items/{noticeId} {');
@@ -26,7 +26,7 @@ export function developmentRules(source, {includeDoctors = false} = {}) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const source = await readFile('firebase/firestore.rules', 'utf8');
   await mkdir('.firebase/development', {recursive:true});
-  const includeDoctors = process.argv.includes('--include-doctors');
+  const includeDoctors = !process.argv.includes('--exclude-doctors');
   await writeFile('.firebase/development/firestore.rules', developmentRules(source, {includeDoctors}));
   console.log(`Development rules prepared; doctors ${includeDoctors ? 'included' : 'excluded'}, notices denied. Nothing deployed.`);
 }
