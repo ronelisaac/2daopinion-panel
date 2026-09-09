@@ -11,7 +11,11 @@ class StaffMemberCard extends StatelessWidget {
     required this.onToggle,
     required this.onInvite,
     required this.onResume,
+    this.onDoctorLink,
+    this.doctorId,
   });
+  final VoidCallback? onDoctorLink;
+  final String? doctorId;
   final PanelStaff user;
   final bool busy;
   final VoidCallback onEdit;
@@ -54,6 +58,17 @@ class StaffMemberCard extends StatelessWidget {
             for (final entry in user.memberships.entries)
               Text(
                 '${entry.key} · ${entry.value.map((role) => roleLabel(context, role)).join(' · ')}',
+              ),
+            if (doctorId != null) Text('${text.staffDoctorLinked}: $doctorId'),
+            if (onDoctorLink != null)
+              TextButton.icon(
+                onPressed: busy ? null : onDoctorLink,
+                icon: const Icon(Icons.link),
+                label: Text(
+                  doctorId == null
+                      ? text.staffDoctorLink
+                      : text.staffDoctorUnlink,
+                ),
               ),
             if (!user.invitationSent) Text(text.staffInviteNotSent),
             if (!user.editable)

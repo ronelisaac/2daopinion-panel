@@ -313,5 +313,17 @@
   "doctorCatalogRetry": "Actualizar especialidades",
   "doctorCatalogMore": "Cargar más especialidades",
   "doctorCatalogInvalid": "La especialidad ya no está disponible. Actualiza el catálogo y selecciona una especialidad activa.",
-  "doctorLegacySpecialty": "Ficha histórica: Operaciones debe vincular explícitamente una especialidad del catálogo antes de aprobar. No se asignará por coincidencia de nombre."
+  "doctorLegacySpecialty": "Ficha histórica: Operaciones debe vincular explícitamente una especialidad del catálogo antes de aprobar. No se asignará por coincidencia de nombre.",
+  "staffDoctorLinkPresent": "Desvincula la ficha médica antes de retirar el rol Médico o su país. Desactivar el acceso no requiere desvincular.",
+  "staffDoctorLink": "Vincular ficha médica",
+  "staffDoctorUnlink": "Desvincular ficha médica",
+  "staffDoctorLinked": "Ficha médica vinculada",
+  "staffDoctorLinkIntro": "Vincula a este usuario con su ficha de médico independiente en Chile. No necesita una clínica. Busca por RNPI y comprueba que sea la misma persona.",
+  "staffDoctorSearch": "Buscar ficha por RNPI",
+  "staffDoctorConfirm": "Confirmar vinculación",
+  "staffDoctorConfirmHint": "Confirma la identidad de esta persona y su cuenta. Vincular no modifica roles, acredita al médico ni habilita acceso a pacientes.",
+  "staffDoctorUnavailable": "La ficha debe estar aprobada en desarrollo, con especialidad activa del mismo país, y la cuenta debe estar activa con rol Médico.",
+  "staffDoctorUnlinkHint": "Se elimina únicamente el vínculo administrativo. Se conservan la cuenta, la ficha, sus estados y la auditoría. No se cambia ningún rol.",
+  "staffDoctorChange": "Cambiar RNPI",
+  "staffDoctorBound": "La ficha o la cuenta ya tiene un vínculo. Revisa los datos antes de intentarlo nuevamente."
 }

@@ -2,12 +2,15 @@ const {createHash, randomUUID} = require("node:crypto");
 const {FieldValue, FieldPath} = require("firebase-admin/firestore");
 const {fail, memberships, validate, canManage, publicUser} = require("./policy");
 
+const {createDoctorLinks} = require("./doctor_links");
+
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 
 function createService({auth, database, sendInvitation, now = () => Date.now()}) {
   const staff = database.collection("panelStaff");
   const operations = database.collection("panelUserOperations");
   const control = database.doc("panelControl/users");
+  const doctorLinks = createDoctorLinks({auth, database});
 
   async function actorFor(context) {
     if (!context?.uid) fail("unauthenticated", "denied");
@@ -90,6 +93,9 @@ function createService({auth, database, sendInvitation, now = () => Date.now()})
     }
     const scopes = input.memberships || before.memberships;
     if (!canManage(actor, Object.keys(scopes))) fail("permission-denied", "denied");
+    if (input.action === "update" && Object.keys(before.doctorLinks || {}).some((country) => !scopes[country]?.includes("doctor"))) {
+      fail("failed-precondition", "doctor-link-present");
+    }
     const after = {
       ...(before || {}), uid: target, name: input.name || before?.name, email: input.email || before?.email,
       memberships: scopes, countryCodes: Object.keys(scopes), active: input.action === "setActive" ? input.active : (before?.active ?? true),
@@ -136,11 +142,15 @@ function createService({auth, database, sendInvitation, now = () => Date.now()})
       return manage(context, operation.data().input);
     }
     if (input.action === "list") return list(actor, input);
+    if (input.action === "doctorPreview") return doctorLinks.preview(actor, input);
     const operation = await reserve(actor, input);
     if (operation.done) return operation.done;
     try {
       const currentActor = await actorFor(context);
       if (!canManage(currentActor, [input.country])) fail("permission-denied", "denied");
+      if (["linkDoctor", "unlinkDoctor"].includes(input.action)) {
+        return await doctorLinks.mutate(currentActor, input, operation);
+      }
       const plan = await makePlan(currentActor, input, operation);
       await synchronize(plan, input.action);
       let invitationSent = plan.after.invitationSent;

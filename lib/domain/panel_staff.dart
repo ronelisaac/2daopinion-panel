@@ -12,7 +12,9 @@ class PanelStaff {
     required this.revision,
     required this.pending,
     required this.invitationSent,
+    this.doctorLinks = const {},
   });
+  final Map<String, String> doctorLinks;
   final String uid;
   final String name;
   final String email;
@@ -37,6 +39,8 @@ enum StaffIssue {
   duplicate,
   conflict,
   protectedAccount,
+  doctorUnavailable,
+  doctorLinkPresent,
   limit,
   unavailable,
 }

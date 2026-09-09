@@ -7,7 +7,10 @@ import 'package:segunda_opinion_panel/domain/panel_access.dart';
 import 'package:segunda_opinion_panel/domain/panel_staff.dart';
 import 'package:segunda_opinion_panel/domain/repositories/panel_staff_repository.dart';
 import 'package:segunda_opinion_panel/widgets/staff_editor.dart';
+import 'package:segunda_opinion_panel/widgets/doctor_account_editor.dart';
 import 'fake_identity.dart';
+import 'package:segunda_opinion_panel/repositories/firebase_panel_staff_repository.dart';
+import 'package:segunda_opinion_panel/domain/doctor_account_preview.dart';
 
 final principal = PanelPrincipal(
   id: 'admin',
@@ -44,6 +47,22 @@ class TestStaffRepository implements PanelStaffRepository {
   }
 
   @override
+  Future<DoctorAccountPreview> previewDoctor(
+    String country,
+    String uid,
+    String registry,
+  ) async {
+    if (failure != null) throw StaffFailure(failure!);
+    return DoctorAccountPreview(
+      id: '${country}_$registry',
+      registry: registry,
+      name: 'Profesional ficticio',
+      specialty: 'Especialidad ficticia',
+      revision: 1,
+    );
+  }
+
+  @override
   Future<bool> mutate(Map<String, Object?> command) async {
     commands.add(Map.of(command));
     if (failure != null) throw StaffFailure(failure!);
@@ -60,6 +79,100 @@ Future<void> tapText(WidgetTester tester, String label) async {
 }
 
 void main() {
+  test(
+    'callable error messages with HTTP suffix preserve actionable validation',
+    () {
+      expect(
+        FirebasePanelStaffRepository.issueFor(
+          'failed-precondition',
+          'doctor-link-present [400]',
+        ),
+        StaffIssue.doctorLinkPresent,
+      );
+      expect(
+        FirebasePanelStaffRepository.issueFor(
+          'failed-precondition',
+          'doctor-unavailable [400]',
+        ),
+        StaffIssue.doctorUnavailable,
+      );
+      expect(
+        FirebasePanelStaffRepository.issueFor(
+          'failed-precondition',
+          'protected',
+        ),
+        StaffIssue.protectedAccount,
+      );
+    },
+  );
+
+  test(
+    'link confirmation carries exact doctor and staff revisions and retries safely',
+    () async {
+      final repository = TestStaffRepository();
+      final controller = PanelStaffController(repository, principal, 'CL');
+      addTearDown(controller.dispose);
+      expect(await controller.previewDoctor(member(), '0123'), isNull);
+      expect(controller.issue, StaffIssue.invalid);
+      final preview = await controller.previewDoctor(member(), '123');
+      expect(preview!.id, 'CL_123');
+      repository.failure = StaffIssue.unavailable;
+      expect(await controller.linkDoctor(member(), preview), isFalse);
+      repository.failure = null;
+      expect(await controller.linkDoctor(member(), preview), isTrue);
+      expect(
+        repository.commands.first['requestId'],
+        repository.commands.last['requestId'],
+      );
+      expect(repository.commands.last['doctorRevision'], 1);
+      expect(repository.commands.last['revision'], 1);
+      expect(repository.commands.last.containsKey('memberships'), isFalse);
+      expect(controller.invitationSent, isNull);
+    },
+  );
+  for (final width in [320.0, 768.0, 1440.0]) {
+    testWidgets(
+      'doctor account link needs valid RNPI and explicit confirmation at $width',
+      (tester) async {
+        tester.view.physicalSize = Size(width, 1000);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        final repository = TestStaffRepository();
+        await tester.pumpWidget(
+          PanelApp(
+            identity: FakeIdentity(current: principal),
+            staffRepository: repository,
+          ),
+        );
+        await tester.pumpAndSettle();
+        Navigator.of(
+          tester.element(find.byType(Scaffold).first),
+        ).pushNamed('/users');
+        await tester.pumpAndSettle();
+        await tapText(tester, 'Vincular ficha médica');
+        await tapText(tester, 'Buscar ficha por RNPI');
+        expect(
+          find.text('Introduce de 1 a 10 dígitos, sin ceros iniciales.'),
+          findsOneWidget,
+        );
+        expect(repository.commands, isEmpty);
+        final field = find.descendant(
+          of: find.byType(DoctorAccountEditor),
+          matching: find.byType(TextFormField),
+        );
+        await tester.enterText(field, '12abc3');
+        expect(tester.widget<TextFormField>(field).controller!.text, '123');
+        await tapText(tester, 'Buscar ficha por RNPI');
+        expect(find.text('Profesional ficticio'), findsOneWidget);
+        expect(repository.commands, isEmpty);
+        await tapText(tester, 'Confirmar vinculación');
+        expect(repository.commands.single['action'], 'linkDoctor');
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
   test(
     'retry after an uncertain write uses the same idempotency key',
     () async {

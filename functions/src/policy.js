@@ -21,10 +21,13 @@ function memberships(value) {
 function validate(data) {
   if (!data || typeof data !== "object" || Array.isArray(data) ||
       Buffer.byteLength(JSON.stringify(data)) > 4096) fail("invalid-argument", "invalid");
-  if (!["list", "create", "update", "setActive", "invite", "resume"].includes(data.action) ||
+  if (!["list", "create", "update", "setActive", "invite", "resume", "doctorPreview", "linkDoctor", "unlinkDoctor"].includes(data.action) ||
       typeof data.country !== "string" || !/^[A-Z]{2}$/.test(data.country)) fail("invalid-argument", "invalid");
   const allowed = {
     list: ["action", "country", "cursor"],
+    doctorPreview: ["action", "country", "uid", "registry"],
+    linkDoctor: ["action", "country", "uid", "revision", "requestId", "registry", "doctorRevision"],
+    unlinkDoctor: ["action", "country", "uid", "revision", "requestId", "registry"],
     resume: ["action", "country", "uid"],
     create: ["action", "country", "requestId", "name", "email", "memberships"],
     update: ["action", "country", "requestId", "uid", "revision", "name", "memberships"],
@@ -32,6 +35,12 @@ function validate(data) {
     invite: ["action", "country", "requestId", "uid", "revision"],
   }[data.action];
   if (Object.keys(data).some((key) => !allowed.includes(key))) fail("invalid-argument", "invalid");
+  if (["doctorPreview", "linkDoctor", "unlinkDoctor"].includes(data.action)) {
+    if (data.country !== "CL" || !uidValid(data.uid) || typeof data.registry !== "string" ||
+        !/^[1-9][0-9]{0,9}$/.test(data.registry)) fail("invalid-argument", "invalid");
+    if (data.action === "doctorPreview") return data;
+    if (data.action === "linkDoctor" && (!Number.isSafeInteger(data.doctorRevision) || data.doctorRevision < 1)) fail("invalid-argument", "invalid");
+  }
   if (data.action === "resume") {
     if (!uidValid(data.uid)) fail("invalid-argument", "invalid");
     return data;
@@ -65,6 +74,7 @@ function canManage(actor, countries) {
 function publicUser(user, authUser, actor) {
   return {
     uid: user.uid, name: user.name, email: user.email, memberships: Object.fromEntries(Object.entries(user.memberships).filter(([country]) => canManage(actor, [country]))),
+    doctorLinks: Object.fromEntries(Object.entries(user.doctorLinks || {}).filter(([country]) => canManage(actor, [country]))),
     active: user.active, revision: user.revision, provisioning: user.provisioning,
     verified: authUser?.emailVerified === true, invitationSent: user.invitationSent === true,
     editable: user.uid !== actor.uid && !user.protected && canManage(actor, user.countryCodes) && (user.provisioning === "ready" || user.operationActor === actor.uid),

@@ -880,4 +880,46 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get doctorLegacySpecialty =>
       'Ficha histórica: Operaciones debe vincular explícitamente una especialidad del catálogo antes de aprobar. No se asignará por coincidencia de nombre.';
+
+  @override
+  String get staffDoctorLinkPresent =>
+      'Desvincula la ficha médica antes de retirar el rol Médico o su país. Desactivar el acceso no requiere desvincular.';
+
+  @override
+  String get staffDoctorLink => 'Vincular ficha médica';
+
+  @override
+  String get staffDoctorUnlink => 'Desvincular ficha médica';
+
+  @override
+  String get staffDoctorLinked => 'Ficha médica vinculada';
+
+  @override
+  String get staffDoctorLinkIntro =>
+      'Vincula a este usuario con su ficha de médico independiente en Chile. No necesita una clínica. Busca por RNPI y comprueba que sea la misma persona.';
+
+  @override
+  String get staffDoctorSearch => 'Buscar ficha por RNPI';
+
+  @override
+  String get staffDoctorConfirm => 'Confirmar vinculación';
+
+  @override
+  String get staffDoctorConfirmHint =>
+      'Confirma la identidad de esta persona y su cuenta. Vincular no modifica roles, acredita al médico ni habilita acceso a pacientes.';
+
+  @override
+  String get staffDoctorUnavailable =>
+      'La ficha debe estar aprobada en desarrollo, con especialidad activa del mismo país, y la cuenta debe estar activa con rol Médico.';
+
+  @override
+  String get staffDoctorUnlinkHint =>
+      'Se elimina únicamente el vínculo administrativo. Se conservan la cuenta, la ficha, sus estados y la auditoría. No se cambia ningún rol.';
+
+  @override
+  String get staffDoctorChange => 'Cambiar RNPI';
+
+  @override
+  String get staffDoctorBound =>
+      'La ficha o la cuenta ya tiene un vínculo. Revisa los datos antes de intentarlo nuevamente.';
 }

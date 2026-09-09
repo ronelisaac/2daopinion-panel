@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import '../domain/panel_access.dart';
 import '../domain/panel_staff.dart';
+import '../domain/doctor_account_preview.dart';
+import '../domain/doctor_record.dart';
 import '../domain/repositories/panel_staff_repository.dart';
 
 class PanelStaffController extends ChangeNotifier {
@@ -74,6 +76,82 @@ class PanelStaffController extends ChangeNotifier {
           MapEntry(country, roles.map((role) => role.name).toList()..sort()),
     ),
   });
+  bool canLinkDoctor(PanelStaff user) =>
+      country == 'CL' &&
+      allowedCountries.contains(country) &&
+      user.editable &&
+      !user.pending &&
+      user.active &&
+      (user.memberships[country]?.contains(PanelRole.doctor) ?? false) &&
+      !user.doctorLinks.containsKey(country);
+
+  Future<DoctorAccountPreview?> previewDoctor(
+    PanelStaff user,
+    String registry,
+  ) async {
+    if (busy || _disposed) return null;
+    busy = true;
+    issue = null;
+    notifyListeners();
+    try {
+      if (!canLinkDoctor(user)) throw const StaffFailure(StaffIssue.denied);
+      if (!DoctorInput.validRegistry(registry)) {
+        throw const StaffFailure(StaffIssue.invalid);
+      }
+      final result = await repository.previewDoctor(
+        country,
+        user.uid,
+        registry.trim(),
+      );
+      return _disposed ? null : result;
+    } catch (error) {
+      if (!_disposed) {
+        issue = error is StaffFailure ? error.issue : StaffIssue.unavailable;
+      }
+      return null;
+    } finally {
+      if (!_disposed) {
+        busy = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<bool> linkDoctor(PanelStaff user, DoctorAccountPreview preview) async {
+    if (!canLinkDoctor(user) ||
+        !DoctorInput.validRegistry(preview.registry) ||
+        preview.id != '${country}_${preview.registry}' ||
+        preview.revision < 1) {
+      return false;
+    }
+    return _mutate({
+      'action': 'linkDoctor',
+      'country': country,
+      'uid': user.uid,
+      'revision': user.revision,
+      'registry': preview.registry,
+      'doctorRevision': preview.revision,
+    });
+  }
+
+  Future<bool> unlinkDoctor(PanelStaff user) async {
+    final id = user.doctorLinks[country];
+    if (!user.editable ||
+        user.pending ||
+        !allowedCountries.contains(country) ||
+        id == null ||
+        !RegExp(r'^CL_[1-9][0-9]{0,9}$').hasMatch(id)) {
+      return false;
+    }
+    return _mutate({
+      'action': 'unlinkDoctor',
+      'country': country,
+      'uid': user.uid,
+      'revision': user.revision,
+      'registry': id.substring(3),
+    });
+  }
+
   Future<bool> setActive(PanelStaff user) => _mutate({
     'action': 'setActive',
     'country': country,

@@ -1593,6 +1593,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ficha histórica: Operaciones debe vincular explícitamente una especialidad del catálogo antes de aprobar. No se asignará por coincidencia de nombre.'**
   String get doctorLegacySpecialty;
+
+  /// No description provided for @staffDoctorLinkPresent.
+  ///
+  /// In es, this message translates to:
+  /// **'Desvincula la ficha médica antes de retirar el rol Médico o su país. Desactivar el acceso no requiere desvincular.'**
+  String get staffDoctorLinkPresent;
+
+  /// No description provided for @staffDoctorLink.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincular ficha médica'**
+  String get staffDoctorLink;
+
+  /// No description provided for @staffDoctorUnlink.
+  ///
+  /// In es, this message translates to:
+  /// **'Desvincular ficha médica'**
+  String get staffDoctorUnlink;
+
+  /// No description provided for @staffDoctorLinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Ficha médica vinculada'**
+  String get staffDoctorLinked;
+
+  /// No description provided for @staffDoctorLinkIntro.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincula a este usuario con su ficha de médico independiente en Chile. No necesita una clínica. Busca por RNPI y comprueba que sea la misma persona.'**
+  String get staffDoctorLinkIntro;
+
+  /// No description provided for @staffDoctorSearch.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar ficha por RNPI'**
+  String get staffDoctorSearch;
+
+  /// No description provided for @staffDoctorConfirm.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar vinculación'**
+  String get staffDoctorConfirm;
+
+  /// No description provided for @staffDoctorConfirmHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma la identidad de esta persona y su cuenta. Vincular no modifica roles, acredita al médico ni habilita acceso a pacientes.'**
+  String get staffDoctorConfirmHint;
+
+  /// No description provided for @staffDoctorUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'La ficha debe estar aprobada en desarrollo, con especialidad activa del mismo país, y la cuenta debe estar activa con rol Médico.'**
+  String get staffDoctorUnavailable;
+
+  /// No description provided for @staffDoctorUnlinkHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Se elimina únicamente el vínculo administrativo. Se conservan la cuenta, la ficha, sus estados y la auditoría. No se cambia ningún rol.'**
+  String get staffDoctorUnlinkHint;
+
+  /// No description provided for @staffDoctorChange.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar RNPI'**
+  String get staffDoctorChange;
+
+  /// No description provided for @staffDoctorBound.
+  ///
+  /// In es, this message translates to:
+  /// **'La ficha o la cuenta ya tiene un vínculo. Revisa los datos antes de intentarlo nuevamente.'**
+  String get staffDoctorBound;
 }
 
 class _AppLocalizationsDelegate

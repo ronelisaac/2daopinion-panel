@@ -5,6 +5,7 @@ import '../core/staff_messages.dart';
 import '../domain/panel_staff.dart';
 import '../widgets/panel_shell.dart';
 import '../widgets/staff_editor.dart';
+import '../widgets/doctor_account_editor.dart';
 import '../widgets/staff_member_card.dart';
 
 class PanelStaffScreen extends StatefulWidget {
@@ -27,6 +28,18 @@ class _PanelStaffScreenState extends State<PanelStaffScreen> {
       context: context,
       barrierDismissible: false,
       builder: (_) => StaffEditor(controller: controller, user: user),
+    );
+    if (saved == true && mounted) {
+      _notice();
+      await controller.load();
+    }
+  }
+
+  Future<void> _doctorLink(PanelStaff user) async {
+    final saved = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => DoctorAccountEditor(controller: controller, user: user),
     );
     if (saved == true && mounted) {
       _notice();
@@ -136,6 +149,14 @@ class _PanelStaffScreenState extends State<PanelStaffScreen> {
             for (final user in controller.users)
               StaffMemberCard(
                 user: user,
+                doctorId: user.doctorLinks[controller.country],
+                onDoctorLink:
+                    controller.canLinkDoctor(user) ||
+                        (user.editable &&
+                            !user.pending &&
+                            user.doctorLinks.containsKey(controller.country))
+                    ? () => _doctorLink(user)
+                    : null,
                 busy: controller.busy || controller.issue != null,
                 onEdit: () => _edit(user),
                 onToggle: () => _act(user, 'toggle'),
