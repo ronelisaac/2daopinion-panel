@@ -76,7 +76,7 @@ test('anonymous, unverified and other patients cannot submit or read copies',asy
 });
 test('roles, country scopes, canonical disable and bounded queries enforced by rules',async()=>{
   await send();
-  for (const uid of ['argentina','mixed','doctor','root','disabled','pending','patient']) {
+  for (const uid of ['argentina','mixed','doctor','disabled','pending','patient']) {
     await assertFails(getDocs(query(collection(databaseFor(uid),'intakeRequests'),where('countryCode','==','CL'),limit(9))));
   }
   const operator=databaseFor('operator');
@@ -118,4 +118,16 @@ test('concurrent transaction retries create exactly one reception',async()=>{
   assert.deepEqual(await Promise.all([submit(),submit()]),[id,id]);
   const records=await getDocs(query(collection(databaseFor('operator'),'intakeRequests'),where('countryCode','==','CL'),limit(9)));
   assert.equal(records.size,1);
+});
+
+test('superadmin supervises receipts, never private clinical data or writes',async()=>{
+  await send();
+  const database=databaseFor('root');
+  await assertSucceeds(getDocs(query(collection(database,'intakeRequests'),where('countryCode','==','CL'),limit(9))));
+  await assertSucceeds(getDoc(doc(database,`intakeRequests/${id}`)));
+  for(const path of ['consultationSubmissions/patient','consultationDrafts/patient']) await assertFails(getDoc(doc(database,path)));
+  await assertFails(updateDoc(doc(database,`intakeRequests/${id}`),{status:'reviewing'}));
+  await assertFails(getDocs(collection(database,'intakeRequests')));
+  await environment.withSecurityRulesDisabled(context=>updateDoc(doc(context.firestore(),'panelStaff/root'),{active:false}));
+  await assertFails(getDoc(doc(database,`intakeRequests/${id}`)));
 });

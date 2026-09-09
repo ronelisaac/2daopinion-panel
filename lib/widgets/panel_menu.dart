@@ -33,71 +33,78 @@ class PanelMenu extends StatelessWidget {
     final text = strings(context);
     final principal = session.principal!;
     return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.all(16),
+      child: Column(
         children: [
-          Image.asset(
-            'assets/images/logo.png',
-            height: 64,
-            semanticLabel: text.appTitle,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            principal
-                .rolesFor(session.country)
-                .map((role) => roleLabel(context, role))
-                .join(' · '),
-          ),
-          const SizedBox(height: 12),
-          const SizedBox(height: 16),
-          DropdownButtonFormField<String>(
-            initialValue: session.country,
-            isExpanded: true,
-            decoration: InputDecoration(labelText: text.country),
-            items: [
-              for (final country in principal.countries)
-                DropdownMenuItem(
-                  value: country,
-                  child: Text(
-                    country == 'CL'
-                        ? text.chile
-                        : country == 'AR'
-                        ? text.argentina
-                        : country,
-                  ),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 64,
+                  semanticLabel: text.appTitle,
                 ),
-            ],
-            onChanged: (country) {
-              if (country != null) session.selectCountry(country);
-            },
+                const SizedBox(height: 16),
+                Text(
+                  principal
+                      .rolesFor(session.country)
+                      .map((role) => roleLabel(context, role))
+                      .join(' · '),
+                ),
+                const SizedBox(height: 12),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  initialValue: session.country,
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: text.country),
+                  items: [
+                    for (final country in principal.countries)
+                      DropdownMenuItem(
+                        value: country,
+                        child: Text(
+                          country == 'CL'
+                              ? text.chile
+                              : country == 'AR'
+                              ? text.argentina
+                              : country,
+                        ),
+                      ),
+                  ],
+                  onChanged: (country) {
+                    if (country != null) session.selectCountry(country);
+                  },
+                ),
+                const SizedBox(height: 16),
+                for (final module in PanelModule.values)
+                  if (PanelAccess.visible(principal, session.country, module))
+                    ListTile(
+                      dense: true,
+                      leading: Icon(_icon(module), size: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      title: Text(moduleLabel(context, module)),
+                      selected:
+                          (ModalRoute.of(context)?.settings.name ?? '/') ==
+                              '/${module.name}' ||
+                          (ModalRoute.of(context)?.settings.name == '/' &&
+                              module ==
+                                  (principal.rolesFor(session.country).length ==
+                                              1 &&
+                                          principal
+                                              .rolesFor(session.country)
+                                              .contains(PanelRole.doctor)
+                                      ? PanelModule.doctorWorkspace
+                                      : PanelModule.dashboard)),
+                      onTap: () => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/${module.name}',
+                        (_) => false,
+                      ),
+                    ),
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
-          for (final module in PanelModule.values)
-            if (PanelAccess.allows(principal, session.country, module))
-              ListTile(
-                dense: true,
-                leading: Icon(_icon(module), size: 20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                title: Text(moduleLabel(context, module)),
-                selected:
-                    (ModalRoute.of(context)?.settings.name ?? '/') ==
-                        '/${module.name}' ||
-                    (ModalRoute.of(context)?.settings.name == '/' &&
-                        module ==
-                            (principal.rolesFor(session.country).length == 1 &&
-                                    principal
-                                        .rolesFor(session.country)
-                                        .contains(PanelRole.doctor)
-                                ? PanelModule.doctorWorkspace
-                                : PanelModule.dashboard)),
-                onTap: () => Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/${module.name}',
-                  (_) => false,
-                ),
-              ),
           const Divider(),
           TextButton.icon(
             onPressed: session.signOut,

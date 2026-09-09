@@ -87,7 +87,7 @@ class _PanelAppState extends State<PanelApp> {
         ? (doctorOnly && widget.workspaceRepository != null
               ? 'doctorWorkspace'
               : widget.repository != null &&
-                    PanelAccess.allows(principal, country, PanelModule.requests)
+                    principal.rolesFor(country).contains(PanelRole.operations)
               ? 'requests'
               : 'dashboard')
         : segments.first;
@@ -96,10 +96,14 @@ class _PanelAppState extends State<PanelApp> {
     );
     final module = matching.isEmpty ? null : matching.first;
     if (module == null ||
-        !PanelAccess.allows(principal, country, module) ||
+        !PanelAccess.visible(principal, country, module) ||
         segments.length > 2 ||
         (segments.length == 2 && module != PanelModule.requests)) {
       return const PanelModuleScreen(denied: true);
+    }
+    if (module == PanelModule.doctorWorkspace &&
+        !PanelAccess.allows(principal, country, module)) {
+      return PanelModuleScreen(module: module, roleRequired: true);
     }
     if ((module == PanelModule.doctorWorkspace ||
             (module == PanelModule.dashboard && doctorOnly)) &&

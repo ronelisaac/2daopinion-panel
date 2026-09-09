@@ -2265,6 +2265,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Último médico: {name}'**
   String assignmentPrevious(String name);
+
+  /// No description provided for @superadminReadOnly.
+  ///
+  /// In es, this message translates to:
+  /// **'Vista de supervisión. Las acciones operativas y la revisión profesional conservan sus permisos específicos.'**
+  String get superadminReadOnly;
+
+  /// No description provided for @moduleRoleRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Este espacio es personal del médico. Superadmin puede ver el módulo, pero no actuar como un profesional ni acceder a expedientes por ese motivo.'**
+  String get moduleRoleRequired;
 }
 
 class _AppLocalizationsDelegate

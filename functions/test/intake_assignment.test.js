@@ -95,7 +95,9 @@ test("all reliable physician blocks, foreign specialty and stale classification 
 test("canonical operations only, no inheritance, revocation and country isolation",async()=>{
  const data=await fixture();
  for(const role of ["superadmin","medicalDirector","doctor","finance"]){
- const uid=await account(role);await assert.rejects(read({...data,uid}),code("permission-denied"));
+ const uid=await account(role);
+ if(role === "superadmin") { const result=await read({...data,uid}); assert.equal(result.canAssign,false); assert.equal(result.canRelease,false); }
+ else await assert.rejects(read({...data,uid}),code("permission-denied"));
  await assert.rejects(service(context(uid),input(data)),code("permission-denied"));
  }
  await database.doc("panelStaff/"+data.uid).update({active:false});
@@ -124,4 +126,17 @@ test("classification racing with assignment cannot leave an active stale classif
  const assignment=(await database.doc("intakeAssignments/"+data.id).get()).data();
  const route=(await database.doc("intakeClassifications/"+data.id).get()).data();
  assert.ok(!assignment || (route.revision===assignment.classificationRevision && route.source!=="unconfirmed"));
+});
+
+test("superadmin supervises active assignment but cannot release, select or bypass revocation",async()=>{
+ const data=await fixture(),uid=await account("superadmin");
+ await service(context(data.uid),input(data));
+ const view=await read({...data,uid});
+ assert.equal(view.status,"pendingAcceptance");assert.equal(view.canRelease,false);assert.equal(view.canAssign,false);
+ await assert.rejects(service(context(uid),release(data)),code("permission-denied"));
+ await assert.rejects(service(context(uid),{action:"intakeAssignmentCandidates",country:"CL",id:data.id,classificationRevision:1}),code("permission-denied"));
+ await database.doc("panelStaff/"+uid).update({memberships:{AR:["superadmin"]}});
+ await assert.rejects(read({...data,uid}),code("permission-denied"));
+ await database.doc("panelStaff/"+uid).update({memberships:{CL:["superadmin"]},active:false});
+ await assert.rejects(read({...data,uid}),code("permission-denied"));
 });

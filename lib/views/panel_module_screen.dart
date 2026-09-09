@@ -5,9 +5,15 @@ import '../domain/panel_access.dart';
 import '../widgets/panel_shell.dart';
 
 class PanelModuleScreen extends StatelessWidget {
-  const PanelModuleScreen({super.key, this.module, this.denied = false});
+  const PanelModuleScreen({
+    super.key,
+    this.module,
+    this.denied = false,
+    this.roleRequired = false,
+  });
   final PanelModule? module;
   final bool denied;
+  final bool roleRequired;
   @override
   Widget build(BuildContext context) {
     final text = strings(context);
@@ -23,7 +29,13 @@ class PanelModuleScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 16),
-          Text(denied ? text.accessDeniedHint : text.modulePending),
+          Text(
+            denied
+                ? text.accessDeniedHint
+                : roleRequired
+                ? text.moduleRoleRequired
+                : text.modulePending,
+          ),
           const SizedBox(height: 16),
           Text('${text.country}: ${session.country}'),
           if (module == PanelModule.dashboard) ...[

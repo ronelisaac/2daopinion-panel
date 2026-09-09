@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'fake_identity.dart';
+import 'intake_classification_test.dart' as classification;
+import 'intake_assignment_test.dart' as assignment;
 import 'package:segunda_opinion_panel/domain/panel_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -34,6 +36,45 @@ Future<void> tapText(WidgetTester tester, String text) async {
 }
 
 void main() {
+  for (final role in [PanelRole.superadmin, PanelRole.operations]) {
+    for (final width in [320.0, 768.0, 1440.0]) {
+      testWidgets('classification and assignment coexist for $role at $width', (
+        tester,
+      ) async {
+        tester.view.physicalSize = Size(width, 1100);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
+        await tester.pumpWidget(
+          PanelApp(
+            identity: FakeIdentity(
+              current: PanelPrincipal(
+                id: 'qa',
+                roles: {role},
+                countries: {'CL'},
+              ),
+            ),
+            repository: PreviewIntakeRepository(),
+            classificationRepository: classification.Repository(),
+            specialtyRepository: classification.Catalog(),
+            assignmentRepository: assignment.Repository(),
+          ),
+        );
+        await tester.pumpAndSettle();
+        Navigator.of(
+          tester.element(find.byType(Scaffold).first),
+        ).pushNamed('/requests/example-1');
+        await tester.pumpAndSettle();
+        expect(find.text('Clasificación por especialidad'), findsOneWidget);
+        expect(find.text('Asignación manual'), findsOneWidget);
+        if (role == PanelRole.superadmin) {
+          expect(find.text('Elegir médico'), findsNothing);
+          expect(find.text('Clasificar solicitud'), findsNothing);
+        }
+        expect(tester.takeException(), isNull);
+      });
+    }
+  }
+
   testWidgets(
     'enabling intake does not redirect other roles into a denied inbox',
     (tester) async {

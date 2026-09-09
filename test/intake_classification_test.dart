@@ -175,7 +175,9 @@ void main() {
         role: PanelRole.superadmin,
       );
       await denied.load();
-      expect(denied.issue, ClassificationIssue.denied);
+      expect(denied.issue, isNull);
+      expect(denied.record, isNotNull);
+      expect(denied.canSave, isFalse);
       denied.dispose();
     },
   );

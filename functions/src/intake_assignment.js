@@ -3,18 +3,19 @@ const {FieldValue, FieldPath} = require("firebase-admin/firestore");
 const {readOperationalAvailability} = require("./doctor_availability");
 const {fail} = require("./policy");
 function createIntakeAssignment({database, auth, now}) {
-  function allowed(actor, country) {
+  function allowed(actor, country, read) {
     if (!actor || actor.active !== true || actor.provisioning !== "ready" ||
-        !actor.memberships?.[country]?.includes("operations")) fail("permission-denied", "denied");
+        !(actor.memberships?.[country]?.includes("operations") || (read && actor.memberships?.[country]?.includes("superadmin")))) fail("permission-denied", "denied");
   }
   return async function assign(actor, input) {
-    allowed(actor, input.country);
+    allowed(actor, input.country, input.action === "intakeAssignmentGet");
     return database.runTransaction(async transaction => {
       const reference = database.doc("intakeAssignments/" + input.id);
       const [canonical, intake, classification, existing] = await transaction.getAll(
         database.doc("panelStaff/" + actor.uid), database.doc("intakeRequests/" + input.id),
         database.doc("intakeClassifications/" + input.id), reference);
-      allowed(canonical.data(), input.country);
+      allowed(canonical.data(), input.country, input.action === "intakeAssignmentGet");
+      const operator = canonical.data().memberships[input.country].includes("operations");
       const request = intake.data(), route = classification.data(), previous = existing.data();
       if (!request || request.id !== input.id || request.countryCode !== input.country ||
           request.environment !== "development") fail("permission-denied", "denied");
@@ -32,7 +33,7 @@ function createIntakeAssignment({database, auth, now}) {
       const view = {id: input.id, revision: previous?.revision || 0, status: previous?.status || "unassigned",
         doctorId: previous?.doctorId || null, doctorName: previous?.doctorName || null,
         updatedAt: previous?.updatedAt?.toDate().toISOString() || null, classificationRevision: route?.revision || 0,
-        specialtyName: specialty?.name || null, canAssign: !!ready, canRelease: active && request.status === "received"};
+        specialtyName: specialty?.name || null, canAssign: operator && !!ready, canRelease: operator && active && request.status === "received"};
       if (input.action === "intakeAssignmentGet") return view;
       if (input.action === "intakeAssignmentCandidates") {
         if (!ready || route.revision !== input.classificationRevision) fail("failed-precondition", "routing-changed");

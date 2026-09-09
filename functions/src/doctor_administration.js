@@ -10,7 +10,7 @@ function createDoctorAdministration({database, auth, now}) {
   function allowed(actor, country, write) {
     const roles = actor?.memberships?.[country] || [];
     if (!actor || actor.active !== true || actor.provisioning !== "ready" ||
-        !(roles.includes("operations") || (!write && roles.includes("medicalDirector")))) fail("permission-denied", "denied");
+        !(roles.includes("operations") || (!write && (roles.includes("medicalDirector") || roles.includes("superadmin"))))) fail("permission-denied", "denied");
   }
   function requireDoctor(doctor, country, id) {
     if (!doctor || doctor.id !== id || doctor.countryCode !== country || doctor.environment !== "development") fail("permission-denied", "denied");
@@ -29,7 +29,7 @@ function createDoctorAdministration({database, auth, now}) {
         const docs = await transaction.getAll(...input.ids.map(id => database.doc("doctorRecords/" + id)));
         docs.forEach((snapshot, index) => requireDoctor(snapshot.data(), input.country, input.ids[index]));
         const states = await transaction.getAll(...input.ids.map(id => database.doc("doctorAdministration/" + id)));
-        const availability = currentActor.memberships[input.country].includes("operations")
+        const availability = currentActor.memberships[input.country].some(role => ["operations", "superadmin"].includes(role))
           ? await readOperationalAvailability({transaction, database, auth, country: input.country,
             doctors: docs.map(snapshot => snapshot.data()), administrations: states.map(snapshot => snapshot.data()),
             checkedAt: new Date(now()).toISOString()}) : null;

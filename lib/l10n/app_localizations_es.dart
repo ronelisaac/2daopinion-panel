@@ -1285,4 +1285,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String assignmentPrevious(String name) {
     return 'Último médico: $name';
   }
+
+  @override
+  String get superadminReadOnly =>
+      'Vista de supervisión. Las acciones operativas y la revisión profesional conservan sus permisos específicos.';
+
+  @override
+  String get moduleRoleRequired =>
+      'Este espacio es personal del médico. Superadmin puede ver el módulo, pero no actuar como un profesional ni acceder a expedientes por ese motivo.';
 }

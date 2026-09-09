@@ -108,7 +108,7 @@ service cloud.firestore {
       let staff = get(/databases/$(database)/documents/panelStaff/$(request.auth.uid)).data;
       return request.auth != null && request.auth.token.email_verified == true
         && staff.active == true && staff.provisioning == 'ready'
-        && 'operations' in staff.memberships.get(country, []);
+        && staff.memberships.get(country, []).hasAny(['operations', 'superadmin']);
     }
     function validSubmissionAttachments(data, uid, intake) {
       return !('attachmentBatch' in data)
@@ -365,7 +365,7 @@ service cloud.firestore {
         && role in staff.memberships.get(country, []);
     }
     function doctorReader(country) {
-      return doctorRole(country, 'operations') || doctorRole(country, 'medicalDirector');
+      return doctorRole(country, 'operations') || doctorRole(country, 'medicalDirector') || doctorRole(country, 'superadmin');
     }
     function doctorText(value, minimum, maximum) {
       return value is string && value.size() >= minimum && value.size() <= maximum
@@ -434,7 +434,7 @@ service cloud.firestore {
         allow get: if doctorReader(get(/databases/$(database)/documents/doctorRecords/$(id)).data.countryCode);
         allow list: if request.query.limit != null && request.query.limit <= 50
           && doctorReader(get(/databases/$(database)/documents/doctorRecords/$(id)).data.countryCode);
-        allow create: if doctorReader(request.resource.data.countryCode)
+        allow create: if (doctorRole(request.resource.data.countryCode, 'operations') || doctorRole(request.resource.data.countryCode, 'medicalDirector'))
           && revision == string(request.resource.data.revision)
           && (!exists(/databases/$(database)/documents/doctorRecords/$(id))
             || request.resource.data.revision == get(/databases/$(database)/documents/doctorRecords/$(id)).data.revision + 1)

@@ -29,11 +29,13 @@ class IntakeClassificationController extends ChangeNotifier {
   bool get allowed =>
       country == 'CL' &&
       PanelAccess.allows(principal, country, PanelModule.requests);
+  bool get canEdit =>
+      allowed && principal.rolesFor(country).contains(PanelRole.operations);
   bool get canSave =>
       !_disposed &&
       !busy &&
       !catalogBusy &&
-      allowed &&
+      canEdit &&
       record?.editable == true &&
       ![
         ClassificationIssue.denied,

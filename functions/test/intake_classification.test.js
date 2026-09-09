@@ -61,7 +61,8 @@ test("only canonical country operations; revoked, disabled and unverified actors
   const data = await fixture();
   for (const role of ["medicalDirector", "superadmin", "doctor", "finance"]) {
     const uid = await account(role);
-    await assert.rejects(read({...data, uid}), code("permission-denied"));
+    if (role === "superadmin") assert.equal((await read({...data, uid})).editable, false);
+    else await assert.rejects(read({...data, uid}), code("permission-denied"));
     await assert.rejects(service(context(uid), input(data)), code("permission-denied"));
   }
   await assert.rejects(service(null, input(data)), code("unauthenticated"));
@@ -110,4 +111,14 @@ test("specialty deactivation is shown, unchanged input rejected and daily bound 
   await database.doc("intakeClassificationLimits/" + data.uid).set({day: new Date().toISOString().slice(0, 10), count: 20});
   await assert.rejects(service(context(data.uid), {...input(data), revision: 1, source: "unconfirmed", specialtyId: null}), code("resource-exhausted"));
   assert.equal((await read(data)).revision, 1);
+});
+
+test("superadmin reads saved classification without edit rights and canonical scope remains authoritative",async()=>{
+ const data=await fixture(),uid=await account("superadmin");
+ await service(context(data.uid),input(data));
+ const view=await read({...data,uid});assert.equal(view.editable,false);assert.ok(view.specialtyId);
+ await database.doc("panelStaff/"+uid).update({memberships:{AR:["superadmin"]}});
+ await assert.rejects(read({...data,uid}),code("permission-denied"));
+ await database.doc("panelStaff/"+uid).update({memberships:{CL:["superadmin"]},active:false});
+ await assert.rejects(read({...data,uid}),code("permission-denied"));
 });

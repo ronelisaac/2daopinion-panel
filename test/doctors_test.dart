@@ -130,6 +130,25 @@ Future<void> open(
 }
 
 void main() {
+  for (final width in [320.0, 768.0, 1440.0]) {
+    testWidgets(
+      'superadmin sees doctors without clinical or operations actions at $width',
+      (tester) async {
+        tester.view.physicalSize = Size(width, 1000);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
+        final repository = TestDoctors()..records = [record()];
+        await open(tester, repository, principal(PanelRole.superadmin));
+        expect(find.text('Nombre ficticio'), findsOneWidget);
+        expect(find.textContaining('Vista de supervisión'), findsOneWidget);
+        expect(find.byType(DoctorEditor), findsNothing);
+        expect(find.byType(DoctorReviewEditor), findsNothing);
+        expect(repository.writes, 0);
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
   test(
     'catalog is paged, filtered and cleared after permission failure',
     () async {

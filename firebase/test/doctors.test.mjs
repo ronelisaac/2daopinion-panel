@@ -2,7 +2,7 @@ import {before, beforeEach, after, test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {initializeTestEnvironment, assertSucceeds, assertFails} from '@firebase/rules-unit-testing';
-import {doc, setDoc, getDoc, getDocs, collection, query, where, limit, writeBatch, serverTimestamp, deleteDoc} from 'firebase/firestore';
+import {doc, setDoc, updateDoc, getDoc, getDocs, collection, query, where, limit, writeBatch, serverTimestamp, deleteDoc} from 'firebase/firestore';
 import {developmentRules} from '../../scripts/development-rules.mjs';
 
 let environment;
@@ -111,9 +111,9 @@ test('duplicate/stale revisions, deletion and audit alteration are denied', asyn
   await assertFails(deleteDoc(doc(database, 'doctorRecords', recordId, 'events', '1')));
   await assertFails(setDoc(doc(database, 'doctorRecords', recordId, 'events', '1'), {actorId: 'other'}));
 });
-test('untrusted clients, superadmin and doctor do not gain registry access', async () => {
+test('untrusted clients and doctor do not gain registry access', async () => {
   await create();
-  for (const database of [environment.unauthenticatedContext().firestore(), client('patient', []), client('admin', ['superadmin']), client('doctor', ['doctor'])]) {
+  for (const database of [environment.unauthenticatedContext().firestore(), client('patient', []), client('doctor', ['doctor'])]) {
     await assertFails(getDoc(doc(database, 'doctorRecords', recordId)));
     await assertFails(getDoc(doc(database, 'doctorRecords', recordId, 'events', '1')));
   }
@@ -155,4 +155,16 @@ test('legacy pending needs explicit operations mapping; existing verified can st
   await environment.withSecurityRulesDisabled(context => setDoc(doc(context.firestore(), 'doctorRecords', recordId), {...legacy, status: 'verified', revision: 10}));
   const verified = (await getDoc(doc(database, 'doctorRecords', recordId))).data();
   await assertSucceeds(write(client('director', ['medicalDirector']), reviewed(verified, 'suspended'), 'review'));
+});
+
+test('superadmin reads registry and audit without writes, scoped and revocable', async () => {
+  const previous = await create(), database = client('admin', ['superadmin']);
+  await assertSucceeds(getDoc(doc(database, 'doctorRecords', recordId)));
+  await assertSucceeds(getDoc(doc(database, 'doctorRecords', recordId, 'events', '1')));
+  await assertFails(write(database, {...previous, revision: 2, updatedBy: 'admin', updatedAt: serverTimestamp()}, 'edit'));
+  await assertFails(write(database, reviewed(previous), 'review'));
+  await assertFails(deleteDoc(doc(database, 'doctorRecords', recordId)));
+  await assertFails(getDoc(doc(environment.authenticatedContext('admin', {email_verified: true, panelAccess: {version: 1, active: true, memberships: {AR: ['superadmin']}}}).firestore(), 'doctorRecords', recordId)));
+  await environment.withSecurityRulesDisabled(context => updateDoc(doc(context.firestore(), 'panelStaff', 'admin'), {active: false}));
+  await assertFails(getDoc(doc(database, 'doctorRecords', recordId)));
 });

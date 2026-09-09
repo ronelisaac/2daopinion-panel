@@ -77,14 +77,17 @@ class _IntakeClassificationCardState extends State<IntakeClassificationCard> {
                         ).add_Hm().format(record.updatedAt!.toLocal()),
                       ),
                     ),
-                  if (!record.editable) Text(text.classificationLocked),
+                  if (!controller.canEdit)
+                    Text(text.superadminReadOnly)
+                  else if (!record.editable)
+                    Text(text.classificationLocked),
                 ],
                 const SizedBox(height: 12),
                 Wrap(
                   spacing: 12,
                   runSpacing: 8,
                   children: [
-                    if (record?.editable == true)
+                    if (controller.canEdit && record?.editable == true)
                       FilledButton.icon(
                         icon: const Icon(Icons.category_outlined),
                         label: Text(text.classificationEdit),

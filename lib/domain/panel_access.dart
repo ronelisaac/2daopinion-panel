@@ -52,6 +52,8 @@ class PanelPrincipal {
 class PanelAccess {
   static const modules = {
     PanelRole.superadmin: {
+      PanelModule.doctors,
+      PanelModule.requests,
       PanelModule.clinics,
       PanelModule.specialties,
       PanelModule.dashboard,
@@ -95,6 +97,15 @@ class PanelAccess {
       PanelModule.payouts,
     },
   };
+  static bool visible(
+    PanelPrincipal principal,
+    String country,
+    PanelModule module,
+  ) =>
+      principal.active &&
+      principal.countries.contains(country) &&
+      (principal.rolesFor(country).contains(PanelRole.superadmin) ||
+          allows(principal, country, module));
   static bool allows(
     PanelPrincipal principal,
     String country,

@@ -3,9 +3,9 @@ const {FieldValue} = require("firebase-admin/firestore");
 const {fail} = require("./policy");
 
 function createIntakeClassification({database, now}) {
-  function allowed(actor, country) {
+  function allowed(actor, country, read) {
     if (!actor || actor.active !== true || actor.provisioning !== "ready" ||
-        !actor.memberships?.[country]?.includes("operations")) fail("permission-denied", "denied");
+        !(actor.memberships?.[country]?.includes("operations") || (read && actor.memberships?.[country]?.includes("superadmin")))) fail("permission-denied", "denied");
   }
   function view(id, record, editable, specialty) {
     return {id, revision: record?.revision || 0, specialtyId: record?.specialtyId || null,
@@ -15,12 +15,12 @@ function createIntakeClassification({database, now}) {
         specialty?.countryCode === "CL" && specialty?.active === true};
   }
   return async function classify(actor, input) {
-    allowed(actor, input.country);
+    allowed(actor, input.country, input.action === "intakeClassificationGet");
     return database.runTransaction(async transaction => {
       const reference = database.doc("intakeClassifications/" + input.id);
       const [canonical, intake, stored, assignment] = await transaction.getAll(
         database.doc("panelStaff/" + actor.uid), database.doc("intakeRequests/" + input.id), reference, database.doc("intakeAssignments/" + input.id));
-      allowed(canonical.data(), input.country);
+      allowed(canonical.data(), input.country, input.action === "intakeClassificationGet");
       const request = intake.data(), previous = stored.data();
       if (!request || request.id !== input.id || request.countryCode !== input.country ||
           request.environment !== "development") fail("permission-denied", "denied");
@@ -29,7 +29,7 @@ function createIntakeClassification({database, now}) {
       if (input.action === "intakeClassificationGet") {
         const specialty = previous?.specialtyId
           ? (await transaction.get(database.doc("specialties/" + previous.specialtyId))).data() : null;
-        return view(input.id, previous, request.status === "received" && (!assignment.exists || assignment.data().status === "released"), specialty);
+        return view(input.id, previous, canonical.data().memberships[input.country].includes("operations") && request.status === "received" && (!assignment.exists || assignment.data().status === "released"), specialty);
       }
       const eventRef = reference.collection("events").doc(input.requestId);
       const quotaRef = database.doc("intakeClassificationLimits/" + actor.uid);

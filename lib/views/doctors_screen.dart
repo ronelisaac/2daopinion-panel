@@ -5,6 +5,7 @@ import '../widgets/doctor_administration_editor.dart';
 import '../core/doctor_messages.dart';
 import '../core/localization.dart';
 import '../domain/doctor_record.dart';
+import '../domain/panel_access.dart';
 import '../widgets/doctor_editor.dart';
 import '../widgets/doctor_record_card.dart';
 import '../widgets/doctor_review_editor.dart';
@@ -79,6 +80,11 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
             ),
             const SizedBox(height: 12),
             Text(text.doctorsIntro),
+            if (!controller.canRegister &&
+                !controller.principal
+                    .rolesFor(controller.country)
+                    .contains(PanelRole.medicalDirector))
+              Text(text.superadminReadOnly),
             if (controller.canRegister &&
                 controller.administrationRepository != null) ...[
               const SizedBox(height: 12),

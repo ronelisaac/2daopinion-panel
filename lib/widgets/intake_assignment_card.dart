@@ -90,20 +90,24 @@ class _IntakeAssignmentCardState extends State<IntakeAssignmentCard> {
                       ),
                     ),
                   if (!record.canAssign && !record.canRelease)
-                    Text(text.assignmentBlocked),
+                    Text(
+                      controller.canOperate
+                          ? text.assignmentBlocked
+                          : text.superadminReadOnly,
+                    ),
                 ],
                 const SizedBox(height: 12),
                 Wrap(
                   spacing: 12,
                   runSpacing: 8,
                   children: [
-                    if (record?.canAssign == true)
+                    if (controller.canEdit && record?.canAssign == true)
                       FilledButton.icon(
                         onPressed: controller.busy ? null : () => edit(false),
                         icon: const Icon(Icons.person_add_alt_1),
                         label: Text(text.assignmentChoose),
                       ),
-                    if (record?.canRelease == true)
+                    if (controller.canEdit && record?.canRelease == true)
                       OutlinedButton(
                         onPressed: controller.busy ? null : () => edit(true),
                         child: Text(text.assignmentRelease),

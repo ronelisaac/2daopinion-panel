@@ -443,4 +443,7 @@
         "type": "String"
       }
     }
-  }}
+  },
+  "superadminReadOnly": "Vista de supervisión. Las acciones operativas y la revisión profesional conservan sus permisos específicos.",
+  "moduleRoleRequired": "Este espacio es personal del médico. Superadmin puede ver el módulo, pero no actuar como un profesional ni acceder a expedientes por ese motivo."
+}

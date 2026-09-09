@@ -56,7 +56,8 @@ test("director gets administration without doctor availability; other roles cann
   assert.equal((await service(context(director),input)).items[0].availability,undefined);
   for(const role of ["superadmin","doctor","finance"]) {
     const uid = await account(role);
-    await assert.rejects(service(context(uid),input),error=>error.code==="permission-denied");
+    if (role === "superadmin") assert.ok((await service(context(uid),input)).items[0].availability);
+    else await assert.rejects(service(context(uid),input),error=>error.code==="permission-denied");
   }
   await database.doc("panelStaff/"+data.operator).update({active:false});
   await assert.rejects(list(data),error=>error.code==="permission-denied");

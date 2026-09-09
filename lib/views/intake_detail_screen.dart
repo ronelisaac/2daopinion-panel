@@ -66,7 +66,7 @@ class _IntakeDetailScreenState extends State<IntakeDetailScreen> {
               widget.createClassificationController != null) ...[
             const SizedBox(height: 24),
             IntakeClassificationCard(
-              key: ValueKey(classificationEpoch),
+              key: ValueKey('classification-$classificationEpoch'),
               onChanged: () => setState(() => assignmentEpoch++),
               createController: widget.createClassificationController!,
             ),
@@ -75,7 +75,7 @@ class _IntakeDetailScreenState extends State<IntakeDetailScreen> {
               widget.createAssignmentController != null) ...[
             const SizedBox(height: 24),
             IntakeAssignmentCard(
-              key: ValueKey(assignmentEpoch),
+              key: ValueKey('assignment-$assignmentEpoch'),
               createController: widget.createAssignmentController!,
               onChanged: () => setState(() => classificationEpoch++),
             ),

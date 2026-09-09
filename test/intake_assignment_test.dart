@@ -124,11 +124,13 @@ void main() {
     },
   );
   test(
-    'no superadmin inheritance; late loads disposed; release and reload update state',
+    'superadmin reads without write inheritance; late loads disposed; release and reload update state',
     () async {
       final denied = controller(Repository(), role: PanelRole.superadmin);
       await denied.load();
-      expect(denied.issue, AssignmentIssue.denied);
+      expect(denied.issue, isNull);
+      expect(denied.record, isNotNull);
+      expect(denied.canEdit, isFalse);
       denied.dispose();
       final repository = Repository()
             ..current = Repository.record(AssignmentStatus.pendingAcceptance),
