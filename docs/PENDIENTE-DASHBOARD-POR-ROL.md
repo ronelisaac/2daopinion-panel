@@ -1,6 +1,8 @@
 # DEV-045 · Dashboard por rol y país
 
-8 de septiembre de 2026 · Solicitado por Ronel · Pendiente de implementación.
+Solicitud original: 8 de septiembre de 2026 · Prioridad confirmada el 11 de septiembre de 2026 · Pendiente de implementación.
+
+**Siguiente bloque de desarrollo.** El [plan completo Chile V1](2DAOPINION-PLAN-CHILE-V1.md) define B1 para la primera entrega operativa con fuentes existentes y B12 para cerrar las vistas completas de los cinco roles. No volver a posponer el inicio del dashboard hasta finalizar todo el circuito clínico/financiero; tampoco inventar indicadores de módulos aún no operativos.
 
 ## Objetivo acordado
 
@@ -40,8 +42,8 @@ Las tarjetas concretas, fórmulas y umbrales se definirán al implementar cada m
 
 ## Secuencia y aceptación
 
-1. Mantener el siguiente bloque acordado: envío de solicitud y recepción real en el panel.
-2. Incorporar dashboard operativo por rol cuando existan casos/eventos y permisos comprobables, con componentes visuales reutilizables desde la primera versión.
+1. La recepción real y las bases administrativas ya tienen entregas dev verificadas. Empezar B1 ahora con contrato de indicadores, permisos, período y componentes visuales.
+2. Incorporar dashboard operativo por rol con las fuentes reales y permisos existentes; los indicadores sin fuente se identifican como pendientes y no como cero. No confundir esta entrega parcial con DEV-045 completo.
 3. Completar agenda, supervisión y estadísticas financieras a medida que sus módulos estén operativos; enlazar finanzas con DEV-028, sin duplicar su implementación.
 4. Ajustar animaciones y rendimiento con datos reales de desarrollo, no mediante un nuevo simulador de usuarios o estadísticas.
 

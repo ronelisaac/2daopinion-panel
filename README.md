@@ -2,6 +2,10 @@
 
 Base Flutter web para administración y portal médico. Login Firebase conectado; módulos clínicos y financieros aún no operativos.
 
+## Plan vigente hasta el lanzamiento en Chile
+
+[Plan completo Chile V1](docs/2DAOPINION-PLAN-CHILE-V1.md): estado real, dashboards como siguiente bloque, todas las entregas del MVP, decisiones externas, dependencias y condiciones verificables de lanzamiento. Sustituye como orden de trabajo los próximos pasos de las notas históricas.
+
 ## Clínicas · E2-18 · Firebase de desarrollo
 
 CRUD operativo: código, nombre, ciudad, dirección, contacto y descripción; alta, edición, baja/reactivación y auditoría. Superadmin administra; Operaciones y Dirección médica consultan. Campos validados en formulario/dominio/reglas, recuperación de sesión/datos probada y revisión visual responsiva. No acredita instituciones ni crea convenios o afiliaciones médicas. [Entrega, pruebas y límites](docs/E2-18-CLINICAS-FIREBASE.md).
